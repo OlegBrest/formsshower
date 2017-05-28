@@ -31,21 +31,26 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.PictureViewer = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chanse_txtbx = new System.Windows.Forms.NumericUpDown();
+            this.txtbx_StepAuto = new System.Windows.Forms.NumericUpDown();
+            this.porog_txtbx = new System.Windows.Forms.NumericUpDown();
+            this.chk_AutoFilter = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.chanse_txtbx = new System.Windows.Forms.MaskedTextBox();
             this.bttn_Grey = new System.Windows.Forms.Button();
             this.bttn_Filter = new System.Windows.Forms.Button();
             this.bttn_Noise = new System.Windows.Forms.Button();
             this.bttn_Load = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.porog_txtbx = new System.Windows.Forms.MaskedTextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.chk_AutoFilter = new System.Windows.Forms.CheckBox();
-            this.txtbx_StepAuto = new System.Windows.Forms.MaskedTextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.bttn_save = new System.Windows.Forms.Button();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureViewer)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtbx_StepAuto)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.porog_txtbx)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -60,16 +65,15 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(871, 469);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(874, 469);
             this.tableLayoutPanel1.TabIndex = 0;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // PictureViewer
             // 
             this.PictureViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureViewer.Location = new System.Drawing.Point(3, 3);
             this.PictureViewer.Name = "PictureViewer";
-            this.PictureViewer.Size = new System.Drawing.Size(865, 418);
+            this.PictureViewer.Size = new System.Drawing.Size(868, 418);
             this.PictureViewer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureViewer.TabIndex = 0;
             this.PictureViewer.TabStop = false;
@@ -77,22 +81,97 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chanse_txtbx);
+            this.panel1.Controls.Add(this.txtbx_StepAuto);
+            this.panel1.Controls.Add(this.porog_txtbx);
             this.panel1.Controls.Add(this.chk_AutoFilter);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.txtbx_StepAuto);
-            this.panel1.Controls.Add(this.porog_txtbx);
-            this.panel1.Controls.Add(this.chanse_txtbx);
             this.panel1.Controls.Add(this.bttn_Grey);
             this.panel1.Controls.Add(this.bttn_Filter);
             this.panel1.Controls.Add(this.bttn_Noise);
+            this.panel1.Controls.Add(this.bttn_save);
             this.panel1.Controls.Add(this.bttn_Load);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 427);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(865, 39);
+            this.panel1.Size = new System.Drawing.Size(868, 39);
             this.panel1.TabIndex = 1;
+            // 
+            // chanse_txtbx
+            // 
+            this.chanse_txtbx.Location = new System.Drawing.Point(171, 17);
+            this.chanse_txtbx.Name = "chanse_txtbx";
+            this.chanse_txtbx.Size = new System.Drawing.Size(41, 20);
+            this.chanse_txtbx.TabIndex = 9;
+            this.chanse_txtbx.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // txtbx_StepAuto
+            // 
+            this.txtbx_StepAuto.Location = new System.Drawing.Point(692, 17);
+            this.txtbx_StepAuto.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.txtbx_StepAuto.Name = "txtbx_StepAuto";
+            this.txtbx_StepAuto.Size = new System.Drawing.Size(41, 20);
+            this.txtbx_StepAuto.TabIndex = 8;
+            this.txtbx_StepAuto.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // porog_txtbx
+            // 
+            this.porog_txtbx.Location = new System.Drawing.Point(563, 16);
+            this.porog_txtbx.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.porog_txtbx.Name = "porog_txtbx";
+            this.porog_txtbx.Size = new System.Drawing.Size(49, 20);
+            this.porog_txtbx.TabIndex = 7;
+            this.porog_txtbx.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // chk_AutoFilter
+            // 
+            this.chk_AutoFilter.AutoSize = true;
+            this.chk_AutoFilter.Location = new System.Drawing.Point(616, 16);
+            this.chk_AutoFilter.Name = "chk_AutoFilter";
+            this.chk_AutoFilter.Size = new System.Drawing.Size(70, 17);
+            this.chk_AutoFilter.TabIndex = 6;
+            this.chk_AutoFilter.Text = "AutoFilter";
+            this.chk_AutoFilter.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(678, 1);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(76, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "AutoFilter Step";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(560, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(52, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Filter gain";
             // 
             // label1
             // 
@@ -102,15 +181,6 @@
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 5;
             this.label1.Text = "% of noise";
-            // 
-            // chanse_txtbx
-            // 
-            this.chanse_txtbx.Location = new System.Drawing.Point(184, 16);
-            this.chanse_txtbx.Mask = "00";
-            this.chanse_txtbx.Name = "chanse_txtbx";
-            this.chanse_txtbx.Size = new System.Drawing.Size(24, 20);
-            this.chanse_txtbx.TabIndex = 4;
-            this.chanse_txtbx.Text = "10";
             // 
             // bttn_Grey
             // 
@@ -124,7 +194,7 @@
             // 
             // bttn_Filter
             // 
-            this.bttn_Filter.Location = new System.Drawing.Point(496, 16);
+            this.bttn_Filter.Location = new System.Drawing.Point(482, 14);
             this.bttn_Filter.Name = "bttn_Filter";
             this.bttn_Filter.Size = new System.Drawing.Size(75, 23);
             this.bttn_Filter.TabIndex = 2;
@@ -154,60 +224,31 @@
             // 
             // openFileDialog
             // 
-            this.openFileDialog.Filter = "\"Images |*.bmp;*.png;*.jpg;*.jpeg|All files|*.*\"";
+            this.openFileDialog.Filter = "Images |*.bmp;*.png;*.jpg;*.jpeg|All files|*.*";
+            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
             // 
-            // porog_txtbx
+            // bttn_save
             // 
-            this.porog_txtbx.Location = new System.Drawing.Point(576, 16);
-            this.porog_txtbx.Mask = "900";
-            this.porog_txtbx.Name = "porog_txtbx";
-            this.porog_txtbx.Size = new System.Drawing.Size(24, 20);
-            this.porog_txtbx.TabIndex = 4;
-            this.porog_txtbx.Text = "100";
+            this.bttn_save.Location = new System.Drawing.Point(770, 14);
+            this.bttn_save.Name = "bttn_save";
+            this.bttn_save.Size = new System.Drawing.Size(75, 23);
+            this.bttn_save.TabIndex = 0;
+            this.bttn_save.Text = "Save";
+            this.bttn_save.UseVisualStyleBackColor = true;
+            this.bttn_save.Click += new System.EventHandler(this.bttn_save_Click);
             // 
-            // label2
+            // saveFileDialog
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(560, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Filter gain";
-            // 
-            // chk_AutoFilter
-            // 
-            this.chk_AutoFilter.AutoSize = true;
-            this.chk_AutoFilter.Location = new System.Drawing.Point(616, 16);
-            this.chk_AutoFilter.Name = "chk_AutoFilter";
-            this.chk_AutoFilter.Size = new System.Drawing.Size(70, 17);
-            this.chk_AutoFilter.TabIndex = 6;
-            this.chk_AutoFilter.Text = "AutoFilter";
-            this.chk_AutoFilter.UseVisualStyleBackColor = true;
-            // 
-            // txtbx_StepAuto
-            // 
-            this.txtbx_StepAuto.Location = new System.Drawing.Point(688, 16);
-            this.txtbx_StepAuto.Mask = "00";
-            this.txtbx_StepAuto.Name = "txtbx_StepAuto";
-            this.txtbx_StepAuto.Size = new System.Drawing.Size(24, 20);
-            this.txtbx_StepAuto.TabIndex = 4;
-            this.txtbx_StepAuto.Text = "5";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(672, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "AutoFilter Step";
+            this.saveFileDialog.Filter = "Image|*.bmp";
+            this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(871, 469);
+            this.ClientSize = new System.Drawing.Size(874, 469);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.MinimumSize = new System.Drawing.Size(890, 0);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Баловство всё это";
@@ -215,6 +256,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.PictureViewer)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtbx_StepAuto)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.porog_txtbx)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -229,13 +273,15 @@
         private System.Windows.Forms.Button bttn_Noise;
         private System.Windows.Forms.Button bttn_Load;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
-        private System.Windows.Forms.MaskedTextBox chanse_txtbx;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.MaskedTextBox porog_txtbx;
         private System.Windows.Forms.CheckBox chk_AutoFilter;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.MaskedTextBox txtbx_StepAuto;
+        private System.Windows.Forms.NumericUpDown txtbx_StepAuto;
+        private System.Windows.Forms.NumericUpDown porog_txtbx;
+        private System.Windows.Forms.NumericUpDown chanse_txtbx;
+        private System.Windows.Forms.Button bttn_save;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }
 
