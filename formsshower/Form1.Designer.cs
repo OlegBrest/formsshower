@@ -97,11 +97,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(160, 0);
+            this.label1.Location = new System.Drawing.Point(168, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 13);
+            this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 5;
-            this.label1.Text = "% заполнения";
+            this.label1.Text = "% of noise";
             // 
             // chanse_txtbx
             // 
@@ -168,11 +168,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(544, 0);
+            this.label2.Location = new System.Drawing.Point(560, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 13);
+            this.label2.Size = new System.Drawing.Size(52, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Порог фильтра";
+            this.label2.Text = "Filter gain";
             // 
             // chk_AutoFilter
             // 
