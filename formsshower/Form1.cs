@@ -259,6 +259,10 @@ namespace formsshower
             }
         }
 
+        /// <summary>
+        /// Array to BMP
+        /// </summary>
+        /// <param name="matrix"></param>
         public void refresh_image(byte [,,] matrix)
         {
             Bitmap bmp = new Bitmap(PictureViewer.Image);
