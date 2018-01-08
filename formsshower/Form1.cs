@@ -19,6 +19,44 @@ namespace formsshower
         Bitmap OriginPicture; // original bitmap
         Random rnd1 = new Random();
 
+        struct BitmapFileHeader
+        {
+            uint bfType;
+            uint bfSize;
+            uint bfReserved1;
+            uint bfReserved2;
+            uint bfOffBits;
+        }
+
+        struct BitmapInfoHeader
+        {
+            int biSize;
+            long biWidth;
+            long biHeight;
+            Int16 biPlanes;
+            Int16 biBitCount;
+            uint biCompression;
+            uint biSizeImage;
+            long biXpelsPerMeter;
+            long biYpelsPerMeter;
+            uint biClrUsed;
+            uint biClrImportant;
+        }
+
+        struct RGBQUAD
+        {
+            byte rgbBlue;
+            byte rgbGreen;
+            byte rgbRed;
+            byte rgbReserved;
+        }
+
+        struct BitmapInfo
+        {
+            BitmapInfoHeader bmiHeader;
+            RGBQUAD bmiColors;
+        }
+
 
         public Form1()
         {
@@ -436,6 +474,22 @@ namespace formsshower
         private void Form1_Shown(object sender, EventArgs e)
         {
             for (int i = 0; i < 3; i++) weigh_dgv.Rows.Add(1, 1, 1);
+            Headers_dgv.Rows.Add("bfType", "");
+            Headers_dgv.Rows.Add("bfSize", "");
+            Headers_dgv.Rows.Add("bfReserved1", "");
+            Headers_dgv.Rows.Add("bfReserved2", "");
+            Headers_dgv.Rows.Add("bfOffBits", "");
+            Headers_dgv.Rows.Add("biSize", "");
+            Headers_dgv.Rows.Add("biWidth", "");
+            Headers_dgv.Rows.Add("biHeight", "");
+            Headers_dgv.Rows.Add("biPlanes", "");
+            Headers_dgv.Rows.Add("biBitCount", "");
+            Headers_dgv.Rows.Add("biCompression", "");
+            Headers_dgv.Rows.Add("biSizeImage", "");
+            Headers_dgv.Rows.Add("biXPelsPerMeter", "");
+            Headers_dgv.Rows.Add("biYPelsPerMeter", "");
+            Headers_dgv.Rows.Add("biClrUsed", "");
+            Headers_dgv.Rows.Add("biClrImportant", "");
         }
 
         // ограничим только цифры
@@ -452,6 +506,56 @@ namespace formsshower
         {
             TextBox tb = (TextBox)e.Control;
             tb.KeyPress += new KeyPressEventHandler(tb_KeyPress);
+        }
+
+        private unsafe void header_bttn_Click(object sender, EventArgs e)
+        {
+            FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            byte[] reads = new byte[54];
+            fs.Read(reads, 0, 54);
+            fs.Close();
+            Headers_dgv.Rows[0].Cells[1].Value = Convert.ToChar(reads[0]).ToString() + Convert.ToChar(reads[1]).ToString();
+            Headers_dgv.Rows[1].Cells[1].Value = ConvFrom4(reads, 2, 5);
+            Headers_dgv.Rows[2].Cells[1].Value = ConvFrom2(reads, 6, 7);
+            Headers_dgv.Rows[3].Cells[1].Value = ConvFrom2(reads, 8, 9); 
+            Headers_dgv.Rows[4].Cells[1].Value = ConvFrom4(reads, 10, 13);
+            Headers_dgv.Rows[5].Cells[1].Value = ConvFrom4(reads, 14, 17);
+            Headers_dgv.Rows[6].Cells[1].Value = ConvFrom4(reads, 18, 21);
+            Headers_dgv.Rows[7].Cells[1].Value = ConvFrom4(reads, 22, 25);
+            Headers_dgv.Rows[8].Cells[1].Value = ConvFrom2(reads, 26, 27);
+            Headers_dgv.Rows[9].Cells[1].Value = ConvFrom2(reads, 28, 29);
+            Headers_dgv.Rows[10].Cells[1].Value = ConvFrom4(reads, 30, 33);
+            Headers_dgv.Rows[11].Cells[1].Value = ConvFrom4(reads, 34, 37);
+            Headers_dgv.Rows[12].Cells[1].Value = ConvFrom4(reads, 38, 41);
+            Headers_dgv.Rows[13].Cells[1].Value = ConvFrom4(reads, 42, 45);
+            Headers_dgv.Rows[14].Cells[1].Value = ConvFrom4(reads, 46, 49);
+            Headers_dgv.Rows[15].Cells[1].Value = ConvFrom4(reads, 50, 53);
+        }
+
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private int ConvFrom2(byte[] arr, int start_pos, int end_pos)
+        {
+            int result = 0;
+            result += arr[end_pos];
+            result = result << 8;
+            result += arr[start_pos];
+            return result;
+        }
+
+        private uint ConvFrom4(byte[] arr, int start_pos, int end_pos)
+        {
+            uint result = 0;
+            for (int i = end_pos; i > start_pos; i--)
+            {
+                result += arr[i];
+                result = result << 8;
+            }
+            result += arr[start_pos];
+            return result;
         }
     }
 }
