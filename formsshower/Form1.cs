@@ -93,6 +93,7 @@ namespace formsshower
                 byte[,,] work_res = new byte[3, height, width];
                 work_res = res;
                 int Prec = 3; // how much for precious when porog <25
+                int stop_auto = Convert.ToInt32(Stop_StepAuto.Value);
                 do
                 {
                     do
@@ -140,7 +141,7 @@ namespace formsshower
                                 work_res[0, x, y] = (byte)R;
                                 work_res[1, x, y] = (byte)G;
                                 work_res[2, x, y] = (byte)B;
-//                                bmp.SetPixel(y, x, Color.FromArgb(255, R, G, B));
+                                //                                bmp.SetPixel(y, x, Color.FromArgb(255, R, G, B));
                             }
                         }
                         Prec++;
@@ -148,9 +149,9 @@ namespace formsshower
 
                     if (AutoFilter)
                     {
-                        Thread trd = new Thread(delegate () { refresh_image(res); } );
+                        Thread trd = new Thread(delegate () { refresh_image(res); });
                         trd.Start();
-                        
+
                         porog -= step;
                         porog_txtbx.Value = porog;
                         porog_txtbx.Refresh();
@@ -164,6 +165,12 @@ namespace formsshower
                         AutoFilter = false;
                     }
                     if (porog < 25) Prec = 0;
+                    if (porog < stop_auto)
+                    {
+                        chk_AutoFilter.Checked = false;
+                        chk_AutoFilter.Refresh();
+                        AutoFilter = false;
+                    }
                 } while (AutoFilter);
 
             }
@@ -232,6 +239,8 @@ namespace formsshower
                         FilterImage.SetPixel(x, y, Color.FromArgb(255, R, G, B));
                     }
 
+
+                    // рисовалка линии обработки
                     if ((x > 3) && (x < (FilterImage.Size.Width - 3)) && ((x / (AutoFilter ? 30 : 5)) == ((double)x / (AutoFilter ? 30 : 5))))
                     {
                         int xx = x - 2;
@@ -263,7 +272,7 @@ namespace formsshower
         /// Array to BMP
         /// </summary>
         /// <param name="matrix"></param>
-        public void refresh_image(byte [,,] matrix)
+        public void refresh_image(byte[,,] matrix)
         {
             Bitmap bmp = new Bitmap(PictureViewer.Image);
             int heigh = bmp.Size.Height;
@@ -272,7 +281,7 @@ namespace formsshower
             {
                 for (int y = 0; y < heigh; y++)
                 {
-                    bmp.SetPixel(x, y, Color.FromArgb(255, (byte) matrix[0, y, x], (byte)matrix[1, y, x], (byte) matrix[2, y, x]));
+                    bmp.SetPixel(x, y, Color.FromArgb(255, (byte)matrix[0, y, x], (byte)matrix[1, y, x], (byte)matrix[2, y, x]));
                 }
             }
             Invoke((MethodInvoker)delegate ()
@@ -326,7 +335,123 @@ namespace formsshower
         {
             FileName = saveFileDialog.FileName;
             Bitmap bmp_out = (Bitmap)PictureViewer.Image;
-            bmp_out.Save(FileName,ImageFormat.Bmp);
+            bmp_out.Save(FileName, ImageFormat.Bmp);
+        }
+
+        private void filtr_Menu_item_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem ddi_source = sender as ToolStripMenuItem;
+            foreach (ToolStripDropDownItem ddi in this.FilterToolStripMenuItem.DropDownItems)
+            {
+                ToolStripMenuItem tsmi = ddi as ToolStripMenuItem;
+                if (ddi_source.Name == ddi.Name)
+                {
+                    tsmi.Checked = true;
+                    this.Text = "Обработка фото. " + tsmi.Text;
+                }
+                else
+                {
+                    tsmi.Checked = false;
+                }
+            }
+            if (ddi_source.Name == LF_filtr_Menu_item.Name)
+            {
+                Filter_tabs.SelectedTab = LF_filter_tab;
+            }
+
+            if (ddi_source.Name == Median_3x3_Menu_Item.Name)
+            {
+                Filter_tabs.SelectedTab = median_filter_tab;
+            }
+        }
+
+
+        // медианная фильтрация
+        private void median_filter_bttn_Click(object sender, EventArgs e)
+        {
+            Bitmap FilterImage = new Bitmap(PictureViewer.Image);
+            Bitmap WorkImage = new Bitmap(PictureViewer.Image);
+            PictureViewer.Image = FilterImage;
+            int array_size = 0;
+            foreach (DataGridViewRow dgvr in weigh_dgv.Rows)
+            {
+                for (int i = 0; i < 3; i++) array_size += Convert.ToInt32(dgvr.Cells[i].Value);
+            }
+
+            byte[] median_arr_R = new byte[array_size];
+            byte[] median_arr_G = new byte[array_size];
+            byte[] median_arr_B = new byte[array_size];
+
+            int median_center = array_size / 2 + 1;
+            for (int x = 1; x < WorkImage.Size.Width - 1; x++)
+            {
+                for (int y = 1; y < WorkImage.Size.Height - 1; y++)
+                {
+                    int med_arr_pos = 0;
+                    for (int j = 0; j < 3; j++)
+                    {
+                        for (int k = 0; k < 3; k++)
+                        {
+                            int arr_count = Convert.ToInt32(weigh_dgv.Rows[k].Cells[j].Value);
+                            Color clr = WorkImage.GetPixel(x - 1 + j, y - 1 + k);
+
+                            for (int i = 0; i < arr_count; i++)
+                            {
+                                median_arr_R[med_arr_pos] = clr.R;
+                                median_arr_G[med_arr_pos] = clr.G;
+                                median_arr_B[med_arr_pos] = clr.B;
+                                med_arr_pos++;
+                            }
+
+                        }
+                    }
+
+                    Array.Sort(median_arr_R);
+                    Array.Sort(median_arr_G);
+                    Array.Sort(median_arr_B);
+
+                    FilterImage.SetPixel(x, y, Color.FromArgb(255, median_arr_R[median_center], median_arr_G[median_center], median_arr_B[median_center]));
+                }
+
+                // рисовалка линии обработки
+                if ((x > 3) && (x < (FilterImage.Size.Width - 3)))
+                {
+                    int xx = x - 2;
+                    for (int yy = 0; yy < FilterImage.Size.Height; yy++)
+                    {
+                        Color tmp_pixel = FilterImage.GetPixel(xx, yy);
+                        FilterImage.SetPixel(xx, yy, Color.FromArgb(255, 255 - tmp_pixel.R, 255 - tmp_pixel.G, 255 - tmp_pixel.B));
+                    }
+                    PictureViewer.Refresh();
+                    for (int yy = 0; yy < FilterImage.Size.Height; yy++)
+                    {
+                        Color tmp_pixel = FilterImage.GetPixel(xx, yy);
+                        FilterImage.SetPixel(xx, yy, Color.FromArgb(255, 255 - tmp_pixel.R, 255 - tmp_pixel.G, 255 - tmp_pixel.B));
+                    }
+                }
+            }
+            PictureViewer.Refresh();
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 3; i++) weigh_dgv.Rows.Add(1, 1, 1);
+        }
+
+        // ограничим только цифры
+        private void tb_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(Char.IsDigit(e.KeyChar)))
+            {
+                if (e.KeyChar != (char)Keys.Back)
+                { e.Handled = true; }
+            }
+        }
+
+        private void weigh_dgv_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox tb = (TextBox)e.Control;
+            tb.KeyPress += new KeyPressEventHandler(tb_KeyPress);
         }
     }
 }

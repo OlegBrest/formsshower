@@ -28,29 +28,56 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.PictureViewer = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.chanse_txtbx = new System.Windows.Forms.NumericUpDown();
-            this.txtbx_StepAuto = new System.Windows.Forms.NumericUpDown();
+            this.Filter_tabs = new System.Windows.Forms.TabControl();
+            this.LF_filter_tab = new System.Windows.Forms.TabPage();
+            this.LF_filtring_panel = new System.Windows.Forms.Panel();
+            this.Stop_StepAuto = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.bttn_Filter = new System.Windows.Forms.Button();
             this.porog_txtbx = new System.Windows.Forms.NumericUpDown();
-            this.chk_AutoFilter = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtbx_StepAuto = new System.Windows.Forms.NumericUpDown();
+            this.chk_AutoFilter = new System.Windows.Forms.CheckBox();
+            this.median_filter_tab = new System.Windows.Forms.TabPage();
+            this.median_filter_panel = new System.Windows.Forms.Panel();
+            this.chanse_txtbx = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.bttn_Grey = new System.Windows.Forms.Button();
-            this.bttn_Filter = new System.Windows.Forms.Button();
             this.bttn_Noise = new System.Windows.Forms.Button();
-            this.bttn_Load = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.bttn_save = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LF_filtr_Menu_item = new System.Windows.Forms.ToolStripMenuItem();
+            this.Median_3x3_Menu_Item = new System.Windows.Forms.ToolStripMenuItem();
+            this.median_filter_bttn = new System.Windows.Forms.Button();
+            this.weigh_dgv = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureViewer)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtbx_StepAuto)).BeginInit();
+            this.Filter_tabs.SuspendLayout();
+            this.LF_filter_tab.SuspendLayout();
+            this.LF_filtring_panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Stop_StepAuto)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.porog_txtbx)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtbx_StepAuto)).BeginInit();
+            this.median_filter_tab.SuspendLayout();
+            this.median_filter_panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).BeginInit();
+            this.menuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.weigh_dgv)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -60,12 +87,12 @@
             this.tableLayoutPanel1.Controls.Add(this.PictureViewer, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 24);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(874, 469);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(876, 447);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // PictureViewer
@@ -73,7 +100,7 @@
             this.PictureViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureViewer.Location = new System.Drawing.Point(3, 3);
             this.PictureViewer.Name = "PictureViewer";
-            this.PictureViewer.Size = new System.Drawing.Size(868, 418);
+            this.PictureViewer.Size = new System.Drawing.Size(870, 360);
             this.PictureViewer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureViewer.TabIndex = 0;
             this.PictureViewer.TabStop = false;
@@ -81,56 +108,98 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.Filter_tabs);
             this.panel1.Controls.Add(this.chanse_txtbx);
-            this.panel1.Controls.Add(this.txtbx_StepAuto);
-            this.panel1.Controls.Add(this.porog_txtbx);
-            this.panel1.Controls.Add(this.chk_AutoFilter);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.bttn_Grey);
-            this.panel1.Controls.Add(this.bttn_Filter);
             this.panel1.Controls.Add(this.bttn_Noise);
-            this.panel1.Controls.Add(this.bttn_save);
-            this.panel1.Controls.Add(this.bttn_Load);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 427);
+            this.panel1.Location = new System.Drawing.Point(3, 369);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(868, 39);
+            this.panel1.Size = new System.Drawing.Size(870, 75);
             this.panel1.TabIndex = 1;
             // 
-            // chanse_txtbx
+            // Filter_tabs
             // 
-            this.chanse_txtbx.Location = new System.Drawing.Point(171, 17);
-            this.chanse_txtbx.Name = "chanse_txtbx";
-            this.chanse_txtbx.Size = new System.Drawing.Size(41, 20);
-            this.chanse_txtbx.TabIndex = 9;
-            this.chanse_txtbx.Value = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
+            this.Filter_tabs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.Filter_tabs.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.Filter_tabs.Controls.Add(this.LF_filter_tab);
+            this.Filter_tabs.Controls.Add(this.median_filter_tab);
+            this.Filter_tabs.ItemSize = new System.Drawing.Size(1, 1);
+            this.Filter_tabs.Location = new System.Drawing.Point(111, 0);
+            this.Filter_tabs.Name = "Filter_tabs";
+            this.Filter_tabs.SelectedIndex = 0;
+            this.Filter_tabs.Size = new System.Drawing.Size(444, 78);
+            this.Filter_tabs.TabIndex = 11;
             // 
-            // txtbx_StepAuto
+            // LF_filter_tab
             // 
-            this.txtbx_StepAuto.Location = new System.Drawing.Point(692, 17);
-            this.txtbx_StepAuto.Maximum = new decimal(new int[] {
+            this.LF_filter_tab.Controls.Add(this.LF_filtring_panel);
+            this.LF_filter_tab.Location = new System.Drawing.Point(4, 5);
+            this.LF_filter_tab.Name = "LF_filter_tab";
+            this.LF_filter_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.LF_filter_tab.Size = new System.Drawing.Size(436, 65);
+            this.LF_filter_tab.TabIndex = 0;
+            this.LF_filter_tab.Text = "lf";
+            this.LF_filter_tab.UseVisualStyleBackColor = true;
+            // 
+            // LF_filtring_panel
+            // 
+            this.LF_filtring_panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LF_filtring_panel.Controls.Add(this.Stop_StepAuto);
+            this.LF_filtring_panel.Controls.Add(this.label5);
+            this.LF_filtring_panel.Controls.Add(this.bttn_Filter);
+            this.LF_filtring_panel.Controls.Add(this.porog_txtbx);
+            this.LF_filtring_panel.Controls.Add(this.label2);
+            this.LF_filtring_panel.Controls.Add(this.label3);
+            this.LF_filtring_panel.Controls.Add(this.txtbx_StepAuto);
+            this.LF_filtring_panel.Controls.Add(this.chk_AutoFilter);
+            this.LF_filtring_panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LF_filtring_panel.Location = new System.Drawing.Point(3, 3);
+            this.LF_filtring_panel.Name = "LF_filtring_panel";
+            this.LF_filtring_panel.Size = new System.Drawing.Size(430, 59);
+            this.LF_filtring_panel.TabIndex = 10;
+            // 
+            // Stop_StepAuto
+            // 
+            this.Stop_StepAuto.Location = new System.Drawing.Point(198, 26);
+            this.Stop_StepAuto.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
-            this.txtbx_StepAuto.Name = "txtbx_StepAuto";
-            this.txtbx_StepAuto.Size = new System.Drawing.Size(41, 20);
-            this.txtbx_StepAuto.TabIndex = 8;
-            this.txtbx_StepAuto.Value = new decimal(new int[] {
+            this.Stop_StepAuto.Name = "Stop_StepAuto";
+            this.Stop_StepAuto.Size = new System.Drawing.Size(49, 20);
+            this.Stop_StepAuto.TabIndex = 10;
+            this.Stop_StepAuto.Value = new decimal(new int[] {
             10,
             0,
             0,
             0});
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(195, 13);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(100, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Стоп автофильтра";
+            // 
+            // bttn_Filter
+            // 
+            this.bttn_Filter.Location = new System.Drawing.Point(306, 23);
+            this.bttn_Filter.Name = "bttn_Filter";
+            this.bttn_Filter.Size = new System.Drawing.Size(75, 23);
+            this.bttn_Filter.TabIndex = 2;
+            this.bttn_Filter.Text = "Фильтр";
+            this.bttn_Filter.UseVisualStyleBackColor = true;
+            this.bttn_Filter.Click += new System.EventHandler(this.bttn_Filter_Click);
+            // 
             // porog_txtbx
             // 
-            this.porog_txtbx.Location = new System.Drawing.Point(563, 16);
+            this.porog_txtbx.Location = new System.Drawing.Point(6, 28);
             this.porog_txtbx.Maximum = new decimal(new int[] {
             255,
             0,
@@ -145,38 +214,89 @@
             0,
             0});
             // 
-            // chk_AutoFilter
+            // label2
             // 
-            this.chk_AutoFilter.AutoSize = true;
-            this.chk_AutoFilter.Location = new System.Drawing.Point(616, 16);
-            this.chk_AutoFilter.Name = "chk_AutoFilter";
-            this.chk_AutoFilter.Size = new System.Drawing.Size(70, 17);
-            this.chk_AutoFilter.TabIndex = 6;
-            this.chk_AutoFilter.Text = "AutoFilter";
-            this.chk_AutoFilter.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 13);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(84, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Порог фильтра";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(678, 1);
+            this.label3.Location = new System.Drawing.Point(93, 13);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 13);
+            this.label3.Size = new System.Drawing.Size(96, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "AutoFilter Step";
+            this.label3.Text = "Шаг автофильтра";
             // 
-            // label2
+            // txtbx_StepAuto
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(560, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Filter gain";
+            this.txtbx_StepAuto.Location = new System.Drawing.Point(96, 28);
+            this.txtbx_StepAuto.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.txtbx_StepAuto.Name = "txtbx_StepAuto";
+            this.txtbx_StepAuto.Size = new System.Drawing.Size(41, 20);
+            this.txtbx_StepAuto.TabIndex = 8;
+            this.txtbx_StepAuto.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // chk_AutoFilter
+            // 
+            this.chk_AutoFilter.AutoSize = true;
+            this.chk_AutoFilter.Location = new System.Drawing.Point(306, 2);
+            this.chk_AutoFilter.Name = "chk_AutoFilter";
+            this.chk_AutoFilter.Size = new System.Drawing.Size(111, 17);
+            this.chk_AutoFilter.TabIndex = 6;
+            this.chk_AutoFilter.Text = "Вкл. автофильтр";
+            this.chk_AutoFilter.UseVisualStyleBackColor = true;
+            // 
+            // median_filter_tab
+            // 
+            this.median_filter_tab.Controls.Add(this.median_filter_panel);
+            this.median_filter_tab.Location = new System.Drawing.Point(4, 5);
+            this.median_filter_tab.Name = "median_filter_tab";
+            this.median_filter_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.median_filter_tab.Size = new System.Drawing.Size(436, 69);
+            this.median_filter_tab.TabIndex = 1;
+            this.median_filter_tab.Text = "mf";
+            this.median_filter_tab.UseVisualStyleBackColor = true;
+            // 
+            // median_filter_panel
+            // 
+            this.median_filter_panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.median_filter_panel.Controls.Add(this.weigh_dgv);
+            this.median_filter_panel.Controls.Add(this.median_filter_bttn);
+            this.median_filter_panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.median_filter_panel.Location = new System.Drawing.Point(3, 3);
+            this.median_filter_panel.Name = "median_filter_panel";
+            this.median_filter_panel.Size = new System.Drawing.Size(430, 63);
+            this.median_filter_panel.TabIndex = 0;
+            // 
+            // chanse_txtbx
+            // 
+            this.chanse_txtbx.Location = new System.Drawing.Point(3, 6);
+            this.chanse_txtbx.Name = "chanse_txtbx";
+            this.chanse_txtbx.Size = new System.Drawing.Size(41, 20);
+            this.chanse_txtbx.TabIndex = 9;
+            this.chanse_txtbx.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(168, 0);
+            this.label1.Location = new System.Drawing.Point(50, 8);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 5;
@@ -184,82 +304,189 @@
             // 
             // bttn_Grey
             // 
-            this.bttn_Grey.Location = new System.Drawing.Point(296, 16);
+            this.bttn_Grey.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bttn_Grey.Location = new System.Drawing.Point(795, 17);
             this.bttn_Grey.Name = "bttn_Grey";
-            this.bttn_Grey.Size = new System.Drawing.Size(75, 23);
+            this.bttn_Grey.Size = new System.Drawing.Size(75, 55);
             this.bttn_Grey.TabIndex = 3;
-            this.bttn_Grey.Text = "Grey";
+            this.bttn_Grey.Text = "Сделать серым";
             this.bttn_Grey.UseVisualStyleBackColor = true;
             this.bttn_Grey.Click += new System.EventHandler(this.bttn_Grey_Click);
             // 
-            // bttn_Filter
-            // 
-            this.bttn_Filter.Location = new System.Drawing.Point(482, 14);
-            this.bttn_Filter.Name = "bttn_Filter";
-            this.bttn_Filter.Size = new System.Drawing.Size(75, 23);
-            this.bttn_Filter.TabIndex = 2;
-            this.bttn_Filter.Text = "Filter";
-            this.bttn_Filter.UseVisualStyleBackColor = true;
-            this.bttn_Filter.Click += new System.EventHandler(this.bttn_Filter_Click);
-            // 
             // bttn_Noise
             // 
-            this.bttn_Noise.Location = new System.Drawing.Point(88, 16);
+            this.bttn_Noise.Location = new System.Drawing.Point(3, 32);
             this.bttn_Noise.Name = "bttn_Noise";
             this.bttn_Noise.Size = new System.Drawing.Size(75, 23);
             this.bttn_Noise.TabIndex = 1;
-            this.bttn_Noise.Text = "Noise";
+            this.bttn_Noise.Text = "Шум";
             this.bttn_Noise.UseVisualStyleBackColor = true;
             this.bttn_Noise.Click += new System.EventHandler(this.bttn_Noise_Click);
-            // 
-            // bttn_Load
-            // 
-            this.bttn_Load.Location = new System.Drawing.Point(0, 16);
-            this.bttn_Load.Name = "bttn_Load";
-            this.bttn_Load.Size = new System.Drawing.Size(75, 23);
-            this.bttn_Load.TabIndex = 0;
-            this.bttn_Load.Text = "Load";
-            this.bttn_Load.UseVisualStyleBackColor = true;
-            this.bttn_Load.Click += new System.EventHandler(this.bttn_Load_Click);
             // 
             // openFileDialog
             // 
             this.openFileDialog.Filter = "Images |*.bmp;*.png;*.jpg;*.jpeg|All files|*.*";
             this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
             // 
-            // bttn_save
-            // 
-            this.bttn_save.Location = new System.Drawing.Point(770, 14);
-            this.bttn_save.Name = "bttn_save";
-            this.bttn_save.Size = new System.Drawing.Size(75, 23);
-            this.bttn_save.TabIndex = 0;
-            this.bttn_save.Text = "Save";
-            this.bttn_save.UseVisualStyleBackColor = true;
-            this.bttn_save.Click += new System.EventHandler(this.bttn_save_Click);
-            // 
             // saveFileDialog
             // 
             this.saveFileDialog.Filter = "Image|*.bmp";
             this.saveFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog_FileOk);
             // 
+            // menuStrip
+            // 
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FileToolStripMenuItem,
+            this.FilterToolStripMenuItem});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(876, 24);
+            this.menuStrip.TabIndex = 1;
+            this.menuStrip.Text = "menuStrip1";
+            // 
+            // FileToolStripMenuItem
+            // 
+            this.FileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.LoadToolStripMenuItem,
+            this.SaveToolStripMenuItem,
+            this.SaveAsToolStripMenuItem});
+            this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.FileToolStripMenuItem.Text = "Файл";
+            // 
+            // LoadToolStripMenuItem
+            // 
+            this.LoadToolStripMenuItem.Name = "LoadToolStripMenuItem";
+            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.LoadToolStripMenuItem.Text = "Загрузить";
+            this.LoadToolStripMenuItem.Click += new System.EventHandler(this.bttn_Load_Click);
+            // 
+            // SaveToolStripMenuItem
+            // 
+            this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
+            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.SaveToolStripMenuItem.Text = "Сохранить";
+            this.SaveToolStripMenuItem.Click += new System.EventHandler(this.bttn_save_Click);
+            // 
+            // SaveAsToolStripMenuItem
+            // 
+            this.SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem";
+            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.SaveAsToolStripMenuItem.Text = "Сохранить как";
+            // 
+            // FilterToolStripMenuItem
+            // 
+            this.FilterToolStripMenuItem.CheckOnClick = true;
+            this.FilterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.LF_filtr_Menu_item,
+            this.Median_3x3_Menu_Item});
+            this.FilterToolStripMenuItem.Name = "FilterToolStripMenuItem";
+            this.FilterToolStripMenuItem.Size = new System.Drawing.Size(125, 20);
+            this.FilterToolStripMenuItem.Text = "Метод фильтрации";
+            // 
+            // LF_filtr_Menu_item
+            // 
+            this.LF_filtr_Menu_item.Checked = true;
+            this.LF_filtr_Menu_item.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.LF_filtr_Menu_item.Name = "LF_filtr_Menu_item";
+            this.LF_filtr_Menu_item.Size = new System.Drawing.Size(460, 22);
+            this.LF_filtr_Menu_item.Text = "Низкочастотная пространственная фильтрация ";
+            this.LF_filtr_Menu_item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
+            // 
+            // Median_3x3_Menu_Item
+            // 
+            this.Median_3x3_Menu_Item.Name = "Median_3x3_Menu_Item";
+            this.Median_3x3_Menu_Item.Size = new System.Drawing.Size(460, 22);
+            this.Median_3x3_Menu_Item.Text = "Взвешенный двумерный медианный фильтр с квадратным окном 3х3";
+            this.Median_3x3_Menu_Item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
+            // 
+            // median_filter_bttn
+            // 
+            this.median_filter_bttn.Location = new System.Drawing.Point(350, 31);
+            this.median_filter_bttn.Name = "median_filter_bttn";
+            this.median_filter_bttn.Size = new System.Drawing.Size(75, 23);
+            this.median_filter_bttn.TabIndex = 9;
+            this.median_filter_bttn.Text = "Фильтр";
+            this.median_filter_bttn.UseVisualStyleBackColor = true;
+            this.median_filter_bttn.Click += new System.EventHandler(this.median_filter_bttn_Click);
+            // 
+            // weigh_dgv
+            // 
+            this.weigh_dgv.AllowUserToAddRows = false;
+            this.weigh_dgv.AllowUserToDeleteRows = false;
+            this.weigh_dgv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.weigh_dgv.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
+            this.weigh_dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.weigh_dgv.ColumnHeadersVisible = false;
+            this.weigh_dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.Format = "N0";
+            dataGridViewCellStyle1.NullValue = null;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.weigh_dgv.DefaultCellStyle = dataGridViewCellStyle1;
+            this.weigh_dgv.Location = new System.Drawing.Point(-1, -1);
+            this.weigh_dgv.Name = "weigh_dgv";
+            this.weigh_dgv.RowHeadersVisible = false;
+            this.weigh_dgv.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.weigh_dgv.Size = new System.Drawing.Size(136, 66);
+            this.weigh_dgv.TabIndex = 10;
+            this.weigh_dgv.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.weigh_dgv_EditingControlShowing);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Column1";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Column2";
+            this.Column2.Name = "Column2";
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Column3";
+            this.Column3.Name = "Column3";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(874, 469);
+            this.ClientSize = new System.Drawing.Size(876, 471);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.MinimumSize = new System.Drawing.Size(890, 0);
+            this.Controls.Add(this.menuStrip);
+            this.MainMenuStrip = this.menuStrip;
+            this.MinimumSize = new System.Drawing.Size(890, 39);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Баловство всё это";
+            this.Text = "Обработка фото";
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PictureViewer)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtbx_StepAuto)).EndInit();
+            this.Filter_tabs.ResumeLayout(false);
+            this.LF_filter_tab.ResumeLayout(false);
+            this.LF_filtring_panel.ResumeLayout(false);
+            this.LF_filtring_panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Stop_StepAuto)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.porog_txtbx)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtbx_StepAuto)).EndInit();
+            this.median_filter_tab.ResumeLayout(false);
+            this.median_filter_panel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).EndInit();
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.weigh_dgv)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -271,7 +498,6 @@
         private System.Windows.Forms.Button bttn_Grey;
         private System.Windows.Forms.Button bttn_Filter;
         private System.Windows.Forms.Button bttn_Noise;
-        private System.Windows.Forms.Button bttn_Load;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -280,8 +506,27 @@
         private System.Windows.Forms.NumericUpDown txtbx_StepAuto;
         private System.Windows.Forms.NumericUpDown porog_txtbx;
         private System.Windows.Forms.NumericUpDown chanse_txtbx;
-        private System.Windows.Forms.Button bttn_save;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem FileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem LoadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SaveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SaveAsToolStripMenuItem;
+        private System.Windows.Forms.Panel LF_filtring_panel;
+        private System.Windows.Forms.ToolStripMenuItem FilterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem LF_filtr_Menu_item;
+        private System.Windows.Forms.NumericUpDown Stop_StepAuto;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ToolStripMenuItem Median_3x3_Menu_Item;
+        private System.Windows.Forms.TabControl Filter_tabs;
+        private System.Windows.Forms.TabPage LF_filter_tab;
+        private System.Windows.Forms.TabPage median_filter_tab;
+        private System.Windows.Forms.Panel median_filter_panel;
+        private System.Windows.Forms.Button median_filter_bttn;
+        private System.Windows.Forms.DataGridView weigh_dgv;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
     }
 }
 
