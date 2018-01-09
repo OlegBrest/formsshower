@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.PictureViewer = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -54,6 +54,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.bttn_Grey = new System.Windows.Forms.Button();
             this.bttn_Noise = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.Headers_dgv = new System.Windows.Forms.DataGridView();
+            this.label4 = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.custom_header_bttn = new System.Windows.Forms.Button();
+            this.header_bttn = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -64,14 +71,10 @@
             this.FilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LF_filtr_Menu_item = new System.Windows.Forms.ToolStripMenuItem();
             this.Median_3x3_Menu_Item = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.Headers_dgv = new System.Windows.Forms.DataGridView();
-            this.Name_adgv = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LoadSpecificToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Name_adgv = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Value_dgv = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.header_bttn = new System.Windows.Forms.Button();
+            this.size_dgv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureViewer)).BeginInit();
             this.panel1.SuspendLayout();
@@ -85,11 +88,11 @@
             this.median_filter_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.weigh_dgv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).BeginInit();
-            this.menuStrip.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Headers_dgv)).BeginInit();
             this.panel4.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -308,16 +311,16 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.Format = "N0";
-            dataGridViewCellStyle8.NullValue = null;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.weigh_dgv.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.Format = "N0";
+            dataGridViewCellStyle6.NullValue = null;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.weigh_dgv.DefaultCellStyle = dataGridViewCellStyle6;
             this.weigh_dgv.Location = new System.Drawing.Point(-1, -1);
             this.weigh_dgv.Name = "weigh_dgv";
             this.weigh_dgv.RowHeadersVisible = false;
@@ -393,6 +396,89 @@
             this.bttn_Noise.UseVisualStyleBackColor = true;
             this.bttn_Noise.Click += new System.EventHandler(this.bttn_Noise_Click);
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.panel3);
+            this.panel2.Controls.Add(this.label4);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(664, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(209, 360);
+            this.panel2.TabIndex = 13;
+            // 
+            // panel3
+            // 
+            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel3.Controls.Add(this.Headers_dgv);
+            this.panel3.Location = new System.Drawing.Point(3, 16);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(203, 341);
+            this.panel3.TabIndex = 4;
+            // 
+            // Headers_dgv
+            // 
+            this.Headers_dgv.AllowUserToAddRows = false;
+            this.Headers_dgv.AllowUserToDeleteRows = false;
+            this.Headers_dgv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.Headers_dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Headers_dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Name_adgv,
+            this.Value_dgv,
+            this.size_dgv});
+            this.Headers_dgv.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Headers_dgv.Location = new System.Drawing.Point(0, 0);
+            this.Headers_dgv.Name = "Headers_dgv";
+            this.Headers_dgv.ReadOnly = true;
+            this.Headers_dgv.RowHeadersVisible = false;
+            this.Headers_dgv.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.Headers_dgv.Size = new System.Drawing.Size(203, 341);
+            this.Headers_dgv.TabIndex = 0;
+            this.Headers_dgv.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Headers_dgv_CellValueChanged);
+            this.Headers_dgv.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Headers_dgv_EditingControlShowing);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(75, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(61, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Заголовок";
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.custom_header_bttn);
+            this.panel4.Controls.Add(this.header_bttn);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel4.Location = new System.Drawing.Point(664, 369);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(209, 75);
+            this.panel4.TabIndex = 14;
+            // 
+            // custom_header_bttn
+            // 
+            this.custom_header_bttn.Location = new System.Drawing.Point(46, 3);
+            this.custom_header_bttn.Name = "custom_header_bttn";
+            this.custom_header_bttn.Size = new System.Drawing.Size(71, 68);
+            this.custom_header_bttn.TabIndex = 14;
+            this.custom_header_bttn.Text = "Своя структура заголовка";
+            this.custom_header_bttn.UseVisualStyleBackColor = true;
+            this.custom_header_bttn.Click += new System.EventHandler(this.custom_header_bttn_Click);
+            // 
+            // header_bttn
+            // 
+            this.header_bttn.Location = new System.Drawing.Point(123, 3);
+            this.header_bttn.Name = "header_bttn";
+            this.header_bttn.Size = new System.Drawing.Size(83, 68);
+            this.header_bttn.TabIndex = 13;
+            this.header_bttn.Text = "Стандартная структура заголовка";
+            this.header_bttn.UseVisualStyleBackColor = true;
+            this.header_bttn.Click += new System.EventHandler(this.header_bttn_Click);
+            // 
             // openFileDialog
             // 
             this.openFileDialog.Filter = "Images |*.bmp;*.png;*.jpg;*.jpeg|All files|*.*";
@@ -418,6 +504,7 @@
             // 
             this.FileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LoadToolStripMenuItem,
+            this.LoadSpecificToolStripMenuItem,
             this.SaveToolStripMenuItem,
             this.SaveAsToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
@@ -427,22 +514,22 @@
             // LoadToolStripMenuItem
             // 
             this.LoadToolStripMenuItem.Name = "LoadToolStripMenuItem";
-            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.LoadToolStripMenuItem.Text = "Загрузить";
             this.LoadToolStripMenuItem.Click += new System.EventHandler(this.bttn_Load_Click);
             // 
             // SaveToolStripMenuItem
             // 
             this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
-            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.SaveToolStripMenuItem.Text = "Сохранить";
             this.SaveToolStripMenuItem.Click += new System.EventHandler(this.bttn_save_Click);
             // 
             // SaveAsToolStripMenuItem
             // 
             this.SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem";
-            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.SaveAsToolStripMenuItem.Text = "Сохранить как (свой формат)";
+            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.SaveAsToolStripMenuItem.Text = "Сохранить свой формат";
             this.SaveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
             // FilterToolStripMenuItem
@@ -471,85 +558,37 @@
             this.Median_3x3_Menu_Item.Text = "Взвешенный двумерный медианный фильтр с квадратным окном 3х3";
             this.Median_3x3_Menu_Item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
-            // panel2
+            // LoadSpecificToolStripMenuItem
             // 
-            this.panel2.Controls.Add(this.panel3);
-            this.panel2.Controls.Add(this.label4);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(664, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(209, 360);
-            this.panel2.TabIndex = 13;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(75, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Заголовок";
-            // 
-            // panel3
-            // 
-            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel3.Controls.Add(this.Headers_dgv);
-            this.panel3.Location = new System.Drawing.Point(3, 16);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(203, 341);
-            this.panel3.TabIndex = 4;
-            // 
-            // Headers_dgv
-            // 
-            this.Headers_dgv.AllowUserToAddRows = false;
-            this.Headers_dgv.AllowUserToDeleteRows = false;
-            this.Headers_dgv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.Headers_dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Headers_dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Name_adgv,
-            this.Value_dgv});
-            this.Headers_dgv.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Headers_dgv.Location = new System.Drawing.Point(0, 0);
-            this.Headers_dgv.Name = "Headers_dgv";
-            this.Headers_dgv.ReadOnly = true;
-            this.Headers_dgv.RowHeadersVisible = false;
-            this.Headers_dgv.Size = new System.Drawing.Size(203, 341);
-            this.Headers_dgv.TabIndex = 0;
+            this.LoadSpecificToolStripMenuItem.Name = "LoadSpecificToolStripMenuItem";
+            this.LoadSpecificToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.LoadSpecificToolStripMenuItem.Text = "Загрузить свой формат";
             // 
             // Name_adgv
             // 
+            this.Name_adgv.DataPropertyName = "Name";
             this.Name_adgv.HeaderText = "Параметр";
             this.Name_adgv.Name = "Name_adgv";
             this.Name_adgv.ReadOnly = true;
+            this.Name_adgv.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Name_adgv.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Name_adgv.Width = 83;
             // 
             // Value_dgv
             // 
+            this.Value_dgv.DataPropertyName = "Value";
             this.Value_dgv.HeaderText = "Значение";
             this.Value_dgv.Name = "Value_dgv";
             this.Value_dgv.ReadOnly = true;
+            this.Value_dgv.Width = 80;
             // 
-            // panel4
+            // size_dgv
             // 
-            this.panel4.Controls.Add(this.header_bttn);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(664, 369);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(209, 75);
-            this.panel4.TabIndex = 14;
-            // 
-            // header_bttn
-            // 
-            this.header_bttn.Location = new System.Drawing.Point(134, 3);
-            this.header_bttn.Name = "header_bttn";
-            this.header_bttn.Size = new System.Drawing.Size(72, 54);
-            this.header_bttn.TabIndex = 13;
-            this.header_bttn.Text = "Структура заголовка";
-            this.header_bttn.UseVisualStyleBackColor = true;
-            this.header_bttn.Click += new System.EventHandler(this.header_bttn_Click);
+            this.size_dgv.DataPropertyName = "Size";
+            this.size_dgv.HeaderText = "Размерность";
+            this.size_dgv.Name = "size_dgv";
+            this.size_dgv.ReadOnly = true;
+            this.size_dgv.Visible = false;
             // 
             // Form1
             // 
@@ -579,13 +618,13 @@
             this.median_filter_panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.weigh_dgv)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).EndInit();
-            this.menuStrip.ResumeLayout(false);
-            this.menuStrip.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Headers_dgv)).EndInit();
             this.panel4.ResumeLayout(false);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -631,11 +670,14 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView Headers_dgv;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Name_adgv;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Value_dgv;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button header_bttn;
+        private System.Windows.Forms.Button custom_header_bttn;
+        private System.Windows.Forms.ToolStripMenuItem LoadSpecificToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Name_adgv;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Value_dgv;
+        private System.Windows.Forms.DataGridViewTextBoxColumn size_dgv;
     }
 }
 

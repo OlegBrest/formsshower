@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace formsshower
@@ -18,7 +17,8 @@ namespace formsshower
         String FileName = "";
         Bitmap OriginPicture; // original bitmap
         Random rnd1 = new Random();
-
+        DataTable dataTable;
+        /*
         struct BitmapFileHeader
         {
             uint bfType;
@@ -56,11 +56,30 @@ namespace formsshower
             BitmapInfoHeader bmiHeader;
             RGBQUAD bmiColors;
         }
-
+        */
 
         public Form1()
         {
             InitializeComponent();
+            dataTable = new DataTable();
+            dataTable.Columns.Add("Name");
+            dataTable.Columns.Add("Values");
+            dataTable.Columns.Add("Size");
+            dataTable.Rows.Add("1.идентификатор типа файла", "BM", "2");
+            dataTable.Rows.Add("2.размер файла в байтах", "", "4");
+            dataTable.Rows.Add("3.размер заголовка в байтах", "", "2");
+            dataTable.Rows.Add("4.размер растра в байтах", "", "4");
+            dataTable.Rows.Add("5.смещение растровых данных от начала файла в байтах", "", "2");
+            dataTable.Rows.Add("6.ширина изображения в пикселях", "", "4");
+            dataTable.Rows.Add("7.высота изображения в пикселях", "", "4");
+            dataTable.Rows.Add("8.размер изображения в пикселях", "", "4");
+            dataTable.Rows.Add("9.глубина цвета", "", "1");
+            dataTable.Rows.Add("10.количество различных цветов на изображении", "", "4");
+            dataTable.Rows.Add("11.комментарий", "", "16");
+            dataTable.Rows.Add("12.версия файла", "", "2");
+            dataTable.Rows.Add("13.тип сжатия", "", "1");
+            dataTable.Rows.Add("14.автор формата", "", "20");
+            dataTable.Rows.Add("15.название программы, создающей файлы данного формата", "", "8");
         }
 
         /// <summary>
@@ -372,7 +391,7 @@ namespace formsshower
         private void saveFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             FileName = saveFileDialog.FileName;
-            Bitmap bmp_out = (Bitmap)PictureViewer.Image;
+            Bitmap bmp_out = (Bitmap)this.PictureViewer.Image;
             bmp_out.Save(FileName, ImageFormat.Bmp);
         }
 
@@ -404,7 +423,7 @@ namespace formsshower
         }
 
 
-        // медианная фильтрация
+        // медианная фильтрация 3*3
         private void median_filter_bttn_Click(object sender, EventArgs e)
         {
             Bitmap FilterImage = new Bitmap(PictureViewer.Image);
@@ -474,22 +493,7 @@ namespace formsshower
         private void Form1_Shown(object sender, EventArgs e)
         {
             for (int i = 0; i < 3; i++) weigh_dgv.Rows.Add(1, 1, 1);
-            Headers_dgv.Rows.Add("bfType", "");
-            Headers_dgv.Rows.Add("bfSize", "");
-            Headers_dgv.Rows.Add("bfReserved1", "");
-            Headers_dgv.Rows.Add("bfReserved2", "");
-            Headers_dgv.Rows.Add("bfOffBits", "");
-            Headers_dgv.Rows.Add("biSize", "");
-            Headers_dgv.Rows.Add("biWidth", "");
-            Headers_dgv.Rows.Add("biHeight", "");
-            Headers_dgv.Rows.Add("biPlanes", "");
-            Headers_dgv.Rows.Add("biBitCount", "");
-            Headers_dgv.Rows.Add("biCompression", "");
-            Headers_dgv.Rows.Add("biSizeImage", "");
-            Headers_dgv.Rows.Add("biXPelsPerMeter", "");
-            Headers_dgv.Rows.Add("biYPelsPerMeter", "");
-            Headers_dgv.Rows.Add("biClrUsed", "");
-            Headers_dgv.Rows.Add("biClrImportant", "");
+
         }
 
         // ограничим только цифры
@@ -508,33 +512,51 @@ namespace formsshower
             tb.KeyPress += new KeyPressEventHandler(tb_KeyPress);
         }
 
-        private unsafe void header_bttn_Click(object sender, EventArgs e)
+        private void header_bttn_Click(object sender, EventArgs e)
         {
             FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             byte[] reads = new byte[54];
             fs.Read(reads, 0, 54);
             fs.Close();
-            Headers_dgv.Rows[0].Cells[1].Value = Convert.ToChar(reads[0]).ToString() + Convert.ToChar(reads[1]).ToString();
-            Headers_dgv.Rows[1].Cells[1].Value = ConvFrom4(reads, 2, 5);
-            Headers_dgv.Rows[2].Cells[1].Value = ConvFrom2(reads, 6, 7);
-            Headers_dgv.Rows[3].Cells[1].Value = ConvFrom2(reads, 8, 9); 
-            Headers_dgv.Rows[4].Cells[1].Value = ConvFrom4(reads, 10, 13);
-            Headers_dgv.Rows[5].Cells[1].Value = ConvFrom4(reads, 14, 17);
-            Headers_dgv.Rows[6].Cells[1].Value = ConvFrom4(reads, 18, 21);
-            Headers_dgv.Rows[7].Cells[1].Value = ConvFrom4(reads, 22, 25);
-            Headers_dgv.Rows[8].Cells[1].Value = ConvFrom2(reads, 26, 27);
-            Headers_dgv.Rows[9].Cells[1].Value = ConvFrom2(reads, 28, 29);
-            Headers_dgv.Rows[10].Cells[1].Value = ConvFrom4(reads, 30, 33);
-            Headers_dgv.Rows[11].Cells[1].Value = ConvFrom4(reads, 34, 37);
-            Headers_dgv.Rows[12].Cells[1].Value = ConvFrom4(reads, 38, 41);
-            Headers_dgv.Rows[13].Cells[1].Value = ConvFrom4(reads, 42, 45);
-            Headers_dgv.Rows[14].Cells[1].Value = ConvFrom4(reads, 46, 49);
-            Headers_dgv.Rows[15].Cells[1].Value = ConvFrom4(reads, 50, 53);
+            Headers_dgv.AllowUserToAddRows = false;
+            Headers_dgv.AllowUserToDeleteRows = false;
+            Headers_dgv.ReadOnly = true;
+            int rows_count = Headers_dgv.Rows.Count;
+            for (int i = 0; i < rows_count; i++) Headers_dgv.Rows.RemoveAt(0);
+
+            DataGridViewTextBoxColumn dgtbx = new DataGridViewTextBoxColumn();
+            dgtbx.Name = Headers_dgv.Columns[0].Name;
+            dgtbx.HeaderText = Headers_dgv.Columns[0].HeaderText;
+            Headers_dgv.Columns.RemoveAt(0);
+            Headers_dgv.Columns.Insert(0, dgtbx);
+
+
+            Headers_dgv.Rows.Add("bfType", Convert.ToChar(reads[0]).ToString() + Convert.ToChar(reads[1]).ToString());
+            Headers_dgv.Rows.Add("bfSize", ConvFrom4(reads, 2, 5));
+            Headers_dgv.Rows.Add("bfReserved1", ConvFrom2(reads, 6, 7));
+            Headers_dgv.Rows.Add("bfReserved2", ConvFrom2(reads, 8, 9));
+            Headers_dgv.Rows.Add("bfOffBits", ConvFrom4(reads, 10, 13));
+            Headers_dgv.Rows.Add("biSize", ConvFrom4(reads, 14, 17));
+            Headers_dgv.Rows.Add("biWidth", ConvFrom4(reads, 18, 21));
+            Headers_dgv.Rows.Add("biHeight", ConvFrom4(reads, 22, 25));
+            Headers_dgv.Rows.Add("biPlanes", ConvFrom2(reads, 26, 27));
+            Headers_dgv.Rows.Add("biBitCount", ConvFrom2(reads, 28, 29));
+            Headers_dgv.Rows.Add("biCompression", ConvFrom4(reads, 30, 33));
+            Headers_dgv.Rows.Add("biSizeImage", ConvFrom4(reads, 34, 37));
+            Headers_dgv.Rows.Add("biXPelsPerMeter", ConvFrom4(reads, 38, 41));
+            Headers_dgv.Rows.Add("biYPelsPerMeter", ConvFrom4(reads, 42, 45));
+            Headers_dgv.Rows.Add("biClrUsed", ConvFrom4(reads, 46, 49));
+            Headers_dgv.Rows.Add("biClrImportant", ConvFrom4(reads, 50, 53));
         }
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            for (int i = 0; i < Headers_dgv.Rows.Count; i++)
+            {
+                string indx = Headers_dgv[0, i].Value.ToString();
+                DataRow[] res = dataTable.Select("Name = '" + indx + "'");
+                //Headers_dgv.Rows[i].Cells[1].Value = res[0]["Size"]; тут надо запользовать полученные размеры в запись на диск
+            }
         }
 
         private int ConvFrom2(byte[] arr, int start_pos, int end_pos)
@@ -556,6 +578,117 @@ namespace formsshower
             }
             result += arr[start_pos];
             return result;
+        }
+
+        private void custom_header_bttn_Click(object sender, EventArgs e)
+        {
+            int rows_count = Headers_dgv.Rows.Count;
+            for (int i = 0; i < rows_count; i++) Headers_dgv.Rows.RemoveAt(0);
+            Headers_dgv.AllowUserToAddRows = true;
+            Headers_dgv.AllowUserToDeleteRows = true;
+            DataGridViewComboBoxColumn dgcbx = new DataGridViewComboBoxColumn();
+            dgcbx.DataSource = dataTable;
+            dgcbx.DataPropertyName = "Name";
+            dgcbx.DisplayMember = "Name";
+            dgcbx.ValueMember = "Name";
+            dgcbx.Name = Headers_dgv.Columns[0].Name;
+            dgcbx.HeaderText = Headers_dgv.Columns[0].HeaderText;
+            Headers_dgv.Columns.RemoveAt(0);
+            Headers_dgv.Columns.Insert(0, dgcbx);
+            Headers_dgv.ReadOnly = false;
+        }
+
+        private void Headers_dgv_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if ((e.ColumnIndex == 1) && (e.RowIndex >= 0))
+            {
+                string str_value = Headers_dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                             if (Headers_dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "1.идентификатор типа файла") MessageBox.Show ("Это менять нельзя");
+                if ((str_value == "2.размер файла в байтах") || (str_value == "4.размер растра в байтах") || (str_value == "6.ширина изображения в пикселях")
+                    || (str_value == "7.высота изображения в пикселях") || (str_value == "7.высота изображения в пикселях") || (str_value == "8.размер изображения в пикселях")
+                    || (str_value == "10.количество различных цветов на изображении"))
+                {
+
+                }
+                /*
+                dataTable.Rows.Add("3.размер заголовка в байтах", "", "2");
+                dataTable.Rows.Add("5.смещение растровых данных от начала файла в байтах", "", "2");
+                dataTable.Rows.Add("9.глубина цвета (количество бит на один пиксель) (1 байт)");
+
+                dataTable.Rows.Add("11.комментарий", "", "16");
+                dataTable.Rows.Add("12.версия файла", "", "2");
+                dataTable.Rows.Add("13.тип сжатия", "", "1");
+                dataTable.Rows.Add("14.автор формата", "", "20");
+                dataTable.Rows.Add("15.название программы, создающей файлы данного формата", "", "8");
+                */
+            }
+
+            if ((e.ColumnIndex == 0) && (e.RowIndex >= 0))
+            {
+                Bitmap bmp = new Bitmap(PictureViewer.Image);
+                int rows_count = Headers_dgv.Rows.Count;
+                int bpp = Image.GetPixelFormatSize(bmp.PixelFormat);
+                int pictureSize = (bmp.Height * bmp.Width) * bpp / 8;
+                for (int i = 0; i < (rows_count - 1); i++)
+                {
+                    DataGridViewComboBoxCell dgvcbc = Headers_dgv.Rows[i].Cells[0] as DataGridViewComboBoxCell;
+                    string str_val = dgvcbc.FormattedValue.ToString();
+
+                    
+                    if (str_val == "2.размер файла в байтах")
+                    {
+                        Headers_dgv[1, i].Value = getHeaderSize() + pictureSize;
+                    }
+
+                    if (str_val == "1.идентификатор типа файла")
+                    {
+                        Headers_dgv[1, i].Value = "BM";
+                    }
+
+
+                    /*
+                    dataTable.Rows.Add("3.размер заголовка в байтах", "", "2");
+                    dataTable.Rows.Add("4.размер растра в байтах", "", "4");
+                    dataTable.Rows.Add("5.смещение растровых данных от начала файла в байтах", "", "2");
+                    dataTable.Rows.Add("6.ширина изображения в пикселях", "", "4");
+                    dataTable.Rows.Add("7.высота изображения в пикселях", "", "4");
+                    dataTable.Rows.Add("8.размер изображения в пикселях", "", "4");
+                    dataTable.Rows.Add("9.глубина цвета", "", "1");
+                    dataTable.Rows.Add("10.количество различных цветов на изображении", "", "4");
+                    dataTable.Rows.Add("11.комментарий", "", "16");
+                    dataTable.Rows.Add("12.версия файла", "", "2");
+                    dataTable.Rows.Add("13.тип сжатия", "", "1");
+                    dataTable.Rows.Add("14.автор формата", "", "20");
+                    dataTable.Rows.Add("15.название программы, создающей файлы данного формата", "", "8");
+                    */
+                }
+            }
+        }
+
+        int getHeaderSize()
+        {
+            int result = 0;
+            int rows_count = Headers_dgv.Rows.Count;
+            for (int i = 0; i < (rows_count - 1); i++)
+            {
+                string indx = Headers_dgv[0, i].Value.ToString();
+                DataRow[] res = dataTable.Select("Name = '" + indx + "'");
+                result += Convert.ToInt32(res[0]["Size"]);
+                Headers_dgv[2, i].Value = res[0]["Size"];
+            }
+            return result;
+        }
+
+        private void Headers_dgv_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            //MessageBox.Show(sender.ToString());
+            /* if (e.Control. == 1)
+             {
+                 string str_value = Headers_dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                 //             if (Headers_dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "1.идентификатор типа файла") MessageBox.Show ("Это менять нельзя");
+                 if ((str_value == "2.размер файла в байтах") || (str_value == "4.размер растра в байтах") || (str_value == "6.ширина изображения в пикселях")
+                     || (str_value == "7.высота изображения в пикселях") || (str_value == "7.высота изображения в пикселях") || (str_value == "8.размер изображения в пикселях")
+                     || (str_value == "10.количество различных цветов на изображении"))*/
         }
     }
 }
