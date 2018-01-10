@@ -28,7 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+<<<<<<< HEAD
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+=======
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+>>>>>>> parent of f886e77... some changes
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.PictureViewer = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -57,9 +61,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.Headers_dgv = new System.Windows.Forms.DataGridView();
-            this.Name_adgv = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Value_dgv = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.size_dgv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.custom_header_bttn = new System.Windows.Forms.Button();
@@ -69,12 +70,19 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.FileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.LoadSpecificToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LF_filtr_Menu_item = new System.Windows.Forms.ToolStripMenuItem();
             this.Median_3x3_Menu_Item = new System.Windows.Forms.ToolStripMenuItem();
+<<<<<<< HEAD
+            this.saveFileAsDialog = new System.Windows.Forms.SaveFileDialog();
+=======
+            this.LoadSpecificToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Name_adgv = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Value_dgv = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.size_dgv = new System.Windows.Forms.DataGridViewTextBoxColumn();
+>>>>>>> parent of f886e77... some changes
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureViewer)).BeginInit();
             this.panel1.SuspendLayout();
@@ -99,7 +107,11 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 254F));
+<<<<<<< HEAD
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 235F));
+=======
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 215F));
+>>>>>>> parent of f886e77... some changes
             this.tableLayoutPanel1.Controls.Add(this.PictureViewer, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
@@ -118,7 +130,11 @@
             this.PictureViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureViewer.Location = new System.Drawing.Point(3, 3);
             this.PictureViewer.Name = "PictureViewer";
-            this.PictureViewer.Size = new System.Drawing.Size(616, 360);
+<<<<<<< HEAD
+            this.PictureViewer.Size = new System.Drawing.Size(635, 360);
+=======
+            this.PictureViewer.Size = new System.Drawing.Size(655, 360);
+>>>>>>> parent of f886e77... some changes
             this.PictureViewer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureViewer.TabIndex = 0;
             this.PictureViewer.TabStop = false;
@@ -134,7 +150,11 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 369);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(616, 75);
+<<<<<<< HEAD
+            this.panel1.Size = new System.Drawing.Size(635, 75);
+=======
+            this.panel1.Size = new System.Drawing.Size(655, 75);
+>>>>>>> parent of f886e77... some changes
             this.panel1.TabIndex = 1;
             // 
             // Filter_tabs
@@ -311,16 +331,29 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.Format = "N0";
-            dataGridViewCellStyle1.NullValue = null;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.weigh_dgv.DefaultCellStyle = dataGridViewCellStyle1;
+<<<<<<< HEAD
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.Format = "N0";
+            dataGridViewCellStyle5.NullValue = null;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.weigh_dgv.DefaultCellStyle = dataGridViewCellStyle5;
+=======
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.Format = "N0";
+            dataGridViewCellStyle6.NullValue = null;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.weigh_dgv.DefaultCellStyle = dataGridViewCellStyle6;
+>>>>>>> parent of f886e77... some changes
             this.weigh_dgv.Location = new System.Drawing.Point(-1, -1);
             this.weigh_dgv.Name = "weigh_dgv";
             this.weigh_dgv.RowHeadersVisible = false;
@@ -401,9 +434,15 @@
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(625, 3);
+<<<<<<< HEAD
+            this.panel2.Location = new System.Drawing.Point(644, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(248, 360);
+            this.panel2.Size = new System.Drawing.Size(229, 360);
+=======
+            this.panel2.Location = new System.Drawing.Point(664, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(209, 360);
+>>>>>>> parent of f886e77... some changes
             this.panel2.TabIndex = 13;
             // 
             // panel3
@@ -414,7 +453,11 @@
             this.panel3.Controls.Add(this.Headers_dgv);
             this.panel3.Location = new System.Drawing.Point(3, 16);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(242, 341);
+<<<<<<< HEAD
+            this.panel3.Size = new System.Drawing.Size(223, 341);
+=======
+            this.panel3.Size = new System.Drawing.Size(203, 341);
+>>>>>>> parent of f886e77... some changes
             this.panel3.TabIndex = 4;
             // 
             // Headers_dgv
@@ -433,36 +476,14 @@
             this.Headers_dgv.ReadOnly = true;
             this.Headers_dgv.RowHeadersVisible = false;
             this.Headers_dgv.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.Headers_dgv.Size = new System.Drawing.Size(242, 341);
+<<<<<<< HEAD
+            this.Headers_dgv.Size = new System.Drawing.Size(223, 341);
+=======
+            this.Headers_dgv.Size = new System.Drawing.Size(203, 341);
+>>>>>>> parent of f886e77... some changes
             this.Headers_dgv.TabIndex = 0;
             this.Headers_dgv.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Headers_dgv_CellValueChanged);
             this.Headers_dgv.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Headers_dgv_EditingControlShowing);
-            // 
-            // Name_adgv
-            // 
-            this.Name_adgv.DataPropertyName = "Name";
-            this.Name_adgv.HeaderText = "Параметр";
-            this.Name_adgv.Name = "Name_adgv";
-            this.Name_adgv.ReadOnly = true;
-            this.Name_adgv.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Name_adgv.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Name_adgv.Width = 83;
-            // 
-            // Value_dgv
-            // 
-            this.Value_dgv.DataPropertyName = "Value";
-            this.Value_dgv.HeaderText = "Значение";
-            this.Value_dgv.Name = "Value_dgv";
-            this.Value_dgv.ReadOnly = true;
-            this.Value_dgv.Width = 80;
-            // 
-            // size_dgv
-            // 
-            this.size_dgv.DataPropertyName = "Size";
-            this.size_dgv.HeaderText = "Размерность";
-            this.size_dgv.Name = "size_dgv";
-            this.size_dgv.ReadOnly = true;
-            this.size_dgv.Visible = false;
             // 
             // label4
             // 
@@ -480,14 +501,24 @@
             this.panel4.Controls.Add(this.custom_header_bttn);
             this.panel4.Controls.Add(this.header_bttn);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(625, 369);
+<<<<<<< HEAD
+            this.panel4.Location = new System.Drawing.Point(644, 369);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(248, 75);
+            this.panel4.Size = new System.Drawing.Size(229, 75);
+=======
+            this.panel4.Location = new System.Drawing.Point(664, 369);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(209, 75);
+>>>>>>> parent of f886e77... some changes
             this.panel4.TabIndex = 14;
             // 
             // custom_header_bttn
             // 
-            this.custom_header_bttn.Location = new System.Drawing.Point(85, 5);
+<<<<<<< HEAD
+            this.custom_header_bttn.Location = new System.Drawing.Point(66, 3);
+=======
+            this.custom_header_bttn.Location = new System.Drawing.Point(46, 3);
+>>>>>>> parent of f886e77... some changes
             this.custom_header_bttn.Name = "custom_header_bttn";
             this.custom_header_bttn.Size = new System.Drawing.Size(71, 68);
             this.custom_header_bttn.TabIndex = 14;
@@ -497,7 +528,11 @@
             // 
             // header_bttn
             // 
-            this.header_bttn.Location = new System.Drawing.Point(162, 5);
+<<<<<<< HEAD
+            this.header_bttn.Location = new System.Drawing.Point(143, 3);
+=======
+            this.header_bttn.Location = new System.Drawing.Point(123, 3);
+>>>>>>> parent of f886e77... some changes
             this.header_bttn.Name = "header_bttn";
             this.header_bttn.Size = new System.Drawing.Size(83, 68);
             this.header_bttn.TabIndex = 13;
@@ -525,6 +560,7 @@
             this.menuStrip.Size = new System.Drawing.Size(876, 24);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
+            this.menuStrip.Click += new System.EventHandler(this.menuStrip_Click);
             // 
             // FileToolStripMenuItem
             // 
@@ -543,12 +579,6 @@
             this.LoadToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.LoadToolStripMenuItem.Text = "Загрузить";
             this.LoadToolStripMenuItem.Click += new System.EventHandler(this.bttn_Load_Click);
-            // 
-            // LoadSpecificToolStripMenuItem
-            // 
-            this.LoadSpecificToolStripMenuItem.Name = "LoadSpecificToolStripMenuItem";
-            this.LoadSpecificToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.LoadSpecificToolStripMenuItem.Text = "Загрузить свой формат";
             // 
             // SaveToolStripMenuItem
             // 
@@ -589,6 +619,44 @@
             this.Median_3x3_Menu_Item.Size = new System.Drawing.Size(460, 22);
             this.Median_3x3_Menu_Item.Text = "Взвешенный двумерный медианный фильтр с квадратным окном 3х3";
             this.Median_3x3_Menu_Item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
+            // 
+<<<<<<< HEAD
+            // saveFileAsDialog
+            // 
+            this.saveFileAsDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileAsDialog_FileOk);
+=======
+            // LoadSpecificToolStripMenuItem
+            // 
+            this.LoadSpecificToolStripMenuItem.Name = "LoadSpecificToolStripMenuItem";
+            this.LoadSpecificToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.LoadSpecificToolStripMenuItem.Text = "Загрузить свой формат";
+            // 
+            // Name_adgv
+            // 
+            this.Name_adgv.DataPropertyName = "Name";
+            this.Name_adgv.HeaderText = "Параметр";
+            this.Name_adgv.Name = "Name_adgv";
+            this.Name_adgv.ReadOnly = true;
+            this.Name_adgv.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Name_adgv.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Name_adgv.Width = 83;
+            // 
+            // Value_dgv
+            // 
+            this.Value_dgv.DataPropertyName = "Value";
+            this.Value_dgv.HeaderText = "Значение";
+            this.Value_dgv.Name = "Value_dgv";
+            this.Value_dgv.ReadOnly = true;
+            this.Value_dgv.Width = 80;
+            // 
+            // size_dgv
+            // 
+            this.size_dgv.DataPropertyName = "Size";
+            this.size_dgv.HeaderText = "Размерность";
+            this.size_dgv.Name = "size_dgv";
+            this.size_dgv.ReadOnly = true;
+            this.size_dgv.Visible = false;
+>>>>>>> parent of f886e77... some changes
             // 
             // Form1
             // 
@@ -678,6 +746,7 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn Name_adgv;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value_dgv;
         private System.Windows.Forms.DataGridViewTextBoxColumn size_dgv;
+        private System.Windows.Forms.SaveFileDialog saveFileAsDialog;
     }
 }
 

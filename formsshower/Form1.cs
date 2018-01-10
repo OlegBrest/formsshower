@@ -18,6 +18,7 @@ namespace formsshower
         Bitmap OriginPicture; // original bitmap
         Random rnd1 = new Random();
         DataTable dataTable;
+        byte[] dataToDisk;
         /*
         struct BitmapFileHeader
         {
@@ -532,52 +533,155 @@ namespace formsshower
 
 
             Headers_dgv.Rows.Add("bfType", Convert.ToChar(reads[0]).ToString() + Convert.ToChar(reads[1]).ToString());
-            Headers_dgv.Rows.Add("bfSize", ConvFrom4(reads, 2, 5));
-            Headers_dgv.Rows.Add("bfReserved1", ConvFrom2(reads, 6, 7));
-            Headers_dgv.Rows.Add("bfReserved2", ConvFrom2(reads, 8, 9));
-            Headers_dgv.Rows.Add("bfOffBits", ConvFrom4(reads, 10, 13));
-            Headers_dgv.Rows.Add("biSize", ConvFrom4(reads, 14, 17));
-            Headers_dgv.Rows.Add("biWidth", ConvFrom4(reads, 18, 21));
-            Headers_dgv.Rows.Add("biHeight", ConvFrom4(reads, 22, 25));
-            Headers_dgv.Rows.Add("biPlanes", ConvFrom2(reads, 26, 27));
-            Headers_dgv.Rows.Add("biBitCount", ConvFrom2(reads, 28, 29));
-            Headers_dgv.Rows.Add("biCompression", ConvFrom4(reads, 30, 33));
-            Headers_dgv.Rows.Add("biSizeImage", ConvFrom4(reads, 34, 37));
-            Headers_dgv.Rows.Add("biXPelsPerMeter", ConvFrom4(reads, 38, 41));
-            Headers_dgv.Rows.Add("biYPelsPerMeter", ConvFrom4(reads, 42, 45));
-            Headers_dgv.Rows.Add("biClrUsed", ConvFrom4(reads, 46, 49));
-            Headers_dgv.Rows.Add("biClrImportant", ConvFrom4(reads, 50, 53));
+            Headers_dgv.Rows.Add("bfSize", BitConverter.ToInt32(reads, 2));
+            Headers_dgv.Rows.Add("bfReserved1", BitConverter.ToInt16(reads, 6));
+            Headers_dgv.Rows.Add("bfReserved2", BitConverter.ToInt16(reads, 8));
+            Headers_dgv.Rows.Add("bfOffBits", BitConverter.ToInt32(reads, 10));
+            Headers_dgv.Rows.Add("biSize", BitConverter.ToInt32(reads, 14));
+            Headers_dgv.Rows.Add("biWidth", BitConverter.ToInt32(reads, 18));
+            Headers_dgv.Rows.Add("biHeight", BitConverter.ToInt32(reads, 22));
+            Headers_dgv.Rows.Add("biPlanes", BitConverter.ToInt16(reads, 26));
+            Headers_dgv.Rows.Add("biBitCount", BitConverter.ToInt16(reads, 28));
+            Headers_dgv.Rows.Add("biCompression", BitConverter.ToInt32(reads, 30));
+            Headers_dgv.Rows.Add("biSizeImage", BitConverter.ToInt32(reads, 34));
+            Headers_dgv.Rows.Add("biXPelsPerMeter", BitConverter.ToInt32(reads, 38));
+            Headers_dgv.Rows.Add("biYPelsPerMeter", BitConverter.ToInt32(reads, 42));
+            Headers_dgv.Rows.Add("biClrUsed", BitConverter.ToInt32(reads, 46));
+            Headers_dgv.Rows.Add("biClrImportant", BitConverter.ToInt32(reads, 50));
         }
 
         private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < Headers_dgv.Rows.Count; i++)
+            int head_count = Headers_dgv.Rows.Count - 1;
+            Bitmap bmp = new Bitmap(PictureViewer.Image);
+            int bpp = Image.GetPixelFormatSize(bmp.PixelFormat);
+            int rastrSize = (bmp.Height * bmp.Width) * bpp / 8;
+            int headerSize = getHeaderSize();
+            int sizeOfData = headerSize + rastrSize;
+            int imgSize = bmp.Height * bmp.Width;
+            int uniqclrs = getUniqClrCount(imgSize, bmp);
+            dataToDisk = new byte[sizeOfData];
+            int dataPos = 0;
+            for (int i = 0; i < head_count; i++)
             {
+                DataGridViewComboBoxCell dgvcbc = Headers_dgv.Rows[i].Cells[0] as DataGridViewComboBoxCell;
+                string str_val = dgvcbc.FormattedValue.ToString();
+
+
+                if (str_val == "2.размер файла в байтах")
+                {
+                    Headers_dgv[1, i].Value = headerSize + rastrSize;
+                }
+
+                if (str_val == "1.идентификатор типа файла")
+                {
+                    Headers_dgv[1, i].Value = "BM";
+                }
+
+                if (str_val == "3.размер заголовка в байтах")
+                {
+                    Headers_dgv[1, i].Value = headerSize;
+                }
+
+                if (str_val == "4.размер растра в байтах")
+                {
+                    Headers_dgv[1, i].Value = rastrSize;
+                }
+
+                if (str_val == "5.смещение растровых данных от начала файла в байтах")
+                {
+                    Headers_dgv[1, i].Value = headerSize + 1;
+                }
+
+                if (str_val == "6.ширина изображения в пикселях")
+                {
+                    Headers_dgv[1, i].Value = bmp.Width;
+                }
+
+
+                if (str_val == "7.высота изображения в пикселях")
+                {
+                    Headers_dgv[1, i].Value = bmp.Height;
+                }
+
+                if (str_val == "8.размер изображения в пикселях")
+                {
+                    Headers_dgv[1, i].Value = imgSize;
+                }
+
+                if (str_val == "9.глубина цвета")
+                {
+                    Headers_dgv[1, i].Value = bpp;
+                }
+
+                if (str_val == "10.количество различных цветов на изображении")
+                {
+                    Headers_dgv[1, i].Value = uniqclrs;
+                }
+
+
                 string indx = Headers_dgv[0, i].Value.ToString();
                 DataRow[] res = dataTable.Select("Name = '" + indx + "'");
-                //Headers_dgv.Rows[i].Cells[1].Value = res[0]["Size"]; тут надо запользовать полученные размеры в запись на диск
+                int byteSize = Convert.ToInt32(res[0]["Size"]);
+                if (byteSize == 1) dataToDisk[dataPos] = Convert.ToByte(Headers_dgv[1, i].Value.ToString());
+                if (byteSize == 2)
+                {
+                    Int16 sht16 = 0;
+                    if (Int16.TryParse(Headers_dgv[1, i].Value.ToString(), out sht16))
+                    {
+                        byte[] dataInt16 = BitConverter.GetBytes(sht16);
+                        for (int pos = 0; pos < byteSize; pos++)
+                        {
+                            dataToDisk[dataPos + pos] = dataInt16[pos];
+                        }
+                    }
+                    else
+                    {
+                        string text = Headers_dgv[1, i].Value.ToString();
+                        for (int pos = 0; pos < byteSize; pos++)
+                        {
+                            dataToDisk[dataPos + pos] = (byte)text.ElementAt(pos);
+                        }
+                    }
+                }
+                if (byteSize == 4)
+                {
+                    byte[] dataInt32 = BitConverter.GetBytes((Int32)Headers_dgv[1, i].Value);
+                    for (int pos = 0; pos < byteSize; pos++)
+                    {
+                        dataToDisk[dataPos + pos] = dataInt32[pos];
+                    }
+                }
+                if (byteSize > 4)
+                {
+                    string text = Headers_dgv[1, i].Value.ToString();
+                    for (int pos = 0; pos < byteSize; pos++)
+                    {
+                        dataToDisk[dataPos + pos] = (byte)text.ElementAt(pos);
+                    }
+                }
+                dataPos += byteSize;
             }
-        }
 
-        private int ConvFrom2(byte[] arr, int start_pos, int end_pos)
-        {
-            int result = 0;
-            result += arr[end_pos];
-            result = result << 8;
-            result += arr[start_pos];
-            return result;
-        }
+            Color clr;
 
-        private uint ConvFrom4(byte[] arr, int start_pos, int end_pos)
-        {
-            uint result = 0;
-            for (int i = end_pos; i > start_pos; i--)
+            for (int y = 0; y < bmp.Height; y++)
             {
-                result += arr[i];
-                result = result << 8;
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    clr = bmp.GetPixel(x, y);
+                    dataToDisk[dataPos] = clr.B;
+                    dataPos++;
+                    dataToDisk[dataPos] = clr.G;
+                    dataPos++;
+                    dataToDisk[dataPos] = clr.R;
+                    dataPos++;
+                    dataToDisk[dataPos] = clr.A;
+                    dataPos++;
+                }
             }
-            result += arr[start_pos];
-            return result;
+            saveFileAsDialog.ShowDialog();
+
         }
 
         private void custom_header_bttn_Click(object sender, EventArgs e)
@@ -603,24 +707,13 @@ namespace formsshower
             if ((e.ColumnIndex == 1) && (e.RowIndex >= 0))
             {
                 string str_value = Headers_dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                             if (Headers_dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "1.идентификатор типа файла") MessageBox.Show ("Это менять нельзя");
+                if (Headers_dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "1.идентификатор типа файла") MessageBox.Show("Это менять нельзя");
                 if ((str_value == "2.размер файла в байтах") || (str_value == "4.размер растра в байтах") || (str_value == "6.ширина изображения в пикселях")
                     || (str_value == "7.высота изображения в пикселях") || (str_value == "7.высота изображения в пикселях") || (str_value == "8.размер изображения в пикселях")
                     || (str_value == "10.количество различных цветов на изображении"))
                 {
 
                 }
-                /*
-                dataTable.Rows.Add("3.размер заголовка в байтах", "", "2");
-                dataTable.Rows.Add("5.смещение растровых данных от начала файла в байтах", "", "2");
-                dataTable.Rows.Add("9.глубина цвета (количество бит на один пиксель) (1 байт)");
-
-                dataTable.Rows.Add("11.комментарий", "", "16");
-                dataTable.Rows.Add("12.версия файла", "", "2");
-                dataTable.Rows.Add("13.тип сжатия", "", "1");
-                dataTable.Rows.Add("14.автор формата", "", "20");
-                dataTable.Rows.Add("15.название программы, создающей файлы данного формата", "", "8");
-                */
             }
 
             if ((e.ColumnIndex == 0) && (e.RowIndex >= 0))
@@ -628,16 +721,19 @@ namespace formsshower
                 Bitmap bmp = new Bitmap(PictureViewer.Image);
                 int rows_count = Headers_dgv.Rows.Count;
                 int bpp = Image.GetPixelFormatSize(bmp.PixelFormat);
-                int pictureSize = (bmp.Height * bmp.Width) * bpp / 8;
+                int rastrSize = (bmp.Height * bmp.Width) * bpp / 8;
+                int headerSize = getHeaderSize();
+                int pictureSize = bmp.Height * bmp.Width;
+                int uniqclrs = getUniqClrCount(pictureSize, bmp);
                 for (int i = 0; i < (rows_count - 1); i++)
                 {
                     DataGridViewComboBoxCell dgvcbc = Headers_dgv.Rows[i].Cells[0] as DataGridViewComboBoxCell;
                     string str_val = dgvcbc.FormattedValue.ToString();
 
-                    
+
                     if (str_val == "2.размер файла в байтах")
                     {
-                        Headers_dgv[1, i].Value = getHeaderSize() + pictureSize;
+                        Headers_dgv[1, i].Value = headerSize + rastrSize;
                     }
 
                     if (str_val == "1.идентификатор типа файла")
@@ -645,16 +741,47 @@ namespace formsshower
                         Headers_dgv[1, i].Value = "BM";
                     }
 
+                    if (str_val == "3.размер заголовка в байтах")
+                    {
+                        Headers_dgv[1, i].Value = headerSize;
+                    }
 
+                    if (str_val == "4.размер растра в байтах")
+                    {
+                        Headers_dgv[1, i].Value = rastrSize;
+                    }
+
+                    if (str_val == "5.смещение растровых данных от начала файла в байтах")
+                    {
+                        Headers_dgv[1, i].Value = headerSize + 1;
+                    }
+
+                    if (str_val == "6.ширина изображения в пикселях")
+                    {
+                        Headers_dgv[1, i].Value = bmp.Width;
+                    }
+
+
+                    if (str_val == "7.высота изображения в пикселях")
+                    {
+                        Headers_dgv[1, i].Value = bmp.Height;
+                    }
+
+                    if (str_val == "8.размер изображения в пикселях")
+                    {
+                        Headers_dgv[1, i].Value = pictureSize;
+                    }
+
+                    if (str_val == "9.глубина цвета")
+                    {
+                        Headers_dgv[1, i].Value = bpp;
+                    }
+
+                    if (str_val == "10.количество различных цветов на изображении")
+                    {
+                        Headers_dgv[1, i].Value = uniqclrs;
+                    }
                     /*
-                    dataTable.Rows.Add("3.размер заголовка в байтах", "", "2");
-                    dataTable.Rows.Add("4.размер растра в байтах", "", "4");
-                    dataTable.Rows.Add("5.смещение растровых данных от начала файла в байтах", "", "2");
-                    dataTable.Rows.Add("6.ширина изображения в пикселях", "", "4");
-                    dataTable.Rows.Add("7.высота изображения в пикселях", "", "4");
-                    dataTable.Rows.Add("8.размер изображения в пикселях", "", "4");
-                    dataTable.Rows.Add("9.глубина цвета", "", "1");
-                    dataTable.Rows.Add("10.количество различных цветов на изображении", "", "4");
                     dataTable.Rows.Add("11.комментарий", "", "16");
                     dataTable.Rows.Add("12.версия файла", "", "2");
                     dataTable.Rows.Add("13.тип сжатия", "", "1");
@@ -665,7 +792,7 @@ namespace formsshower
             }
         }
 
-        int getHeaderSize()
+        private int getHeaderSize()
         {
             int result = 0;
             int rows_count = Headers_dgv.Rows.Count;
@@ -679,6 +806,33 @@ namespace formsshower
             return result;
         }
 
+        private int getUniqClrCount(int arraySize, Bitmap bmp)
+        {
+            int result = 0;
+            int[] array = new int[arraySize];
+            for (int a = 0; a < array.Length; a++) array[a] = 0;
+            int arr_pos = 0;
+            Color clr;
+
+            for (int y = 0; y < bmp.Height; y++)
+            {
+                for (int x = 0; x < bmp.Width; x++)
+                {
+                    clr = bmp.GetPixel(x, y);
+                    array[arr_pos] += clr.B;
+                    array[arr_pos] = array[arr_pos] << 8;
+                    array[arr_pos] += clr.G;
+                    array[arr_pos] = array[arr_pos] << 8;
+                    array[arr_pos] += clr.R;
+                    array[arr_pos] = array[arr_pos] << 8;
+                    array[arr_pos] += clr.A;
+                    arr_pos++;
+                }
+            }
+            result = array.GroupBy(p => p).Count();
+            return result;
+        }
+
         private void Headers_dgv_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             //MessageBox.Show(sender.ToString());
@@ -689,6 +843,23 @@ namespace formsshower
                  if ((str_value == "2.размер файла в байтах") || (str_value == "4.размер растра в байтах") || (str_value == "6.ширина изображения в пикселях")
                      || (str_value == "7.высота изображения в пикселях") || (str_value == "7.высота изображения в пикселях") || (str_value == "8.размер изображения в пикселях")
                      || (str_value == "10.количество различных цветов на изображении"))*/
+        }
+
+        private void saveFileAsDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            FileName = saveFileAsDialog.FileName;
+            StreamWriter str = new StreamWriter(FileName);
+            for (int i = 0; i < dataToDisk.Length; i++)
+            {
+                char value = (char) dataToDisk[i]; // что то тут не так , unsigned нет
+                str.Write(value);
+            }
+            str.Close();
+        }
+
+        private void menuStrip_Click(object sender, EventArgs e)
+        {
+            Headers_dgv.CurrentCell = null;
         }
     }
 }
