@@ -848,12 +848,8 @@ namespace formsshower
         private void saveFileAsDialog_FileOk(object sender, CancelEventArgs e)
         {
             FileName = saveFileAsDialog.FileName;
-            StreamWriter str = new StreamWriter(FileName);
-            for (int i = 0; i < dataToDisk.Length; i++)
-            {
-                char value = (char) dataToDisk[i]; // что то тут не так , unsigned нет
-                str.Write(value);
-            }
+            FileStream str = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            str.Write(dataToDisk, 0, dataToDisk.Length);
             str.Close();
         }
 
