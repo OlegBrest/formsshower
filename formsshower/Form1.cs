@@ -20,45 +20,6 @@ namespace formsshower
         DataTable dataTable;
         byte[] dataToDisk;
         float[] contrast_resulter;
-        /*
-        struct BitmapFileHeader
-        {
-            uint bfType;
-            uint bfSize;
-            uint bfReserved1;
-            uint bfReserved2;
-            uint bfOffBits;
-        }
-
-        struct BitmapInfoHeader
-        {
-            int biSize;
-            long biWidth;
-            long biHeight;
-            Int16 biPlanes;
-            Int16 biBitCount;
-            uint biCompression;
-            uint biSizeImage;
-            long biXpelsPerMeter;
-            long biYpelsPerMeter;
-            uint biClrUsed;
-            uint biClrImportant;
-        }
-
-        struct RGBQUAD
-        {
-            byte rgbBlue;
-            byte rgbGreen;
-            byte rgbRed;
-            byte rgbReserved;
-        }
-
-        struct BitmapInfo
-        {
-            BitmapInfoHeader bmiHeader;
-            RGBQUAD bmiColors;
-        }
-        */
 
         public Form1()
         {
@@ -845,13 +806,7 @@ namespace formsshower
                         {
                             Headers_dgv[1, i].Value = uniqclrs;
                         }
-                        /*
-                        dataTable.Rows.Add("11.комментарий", "", "16");
-                        dataTable.Rows.Add("12.версия файла", "", "2");
-                        dataTable.Rows.Add("13.тип сжатия", "", "1");
-                        dataTable.Rows.Add("14.автор формата", "", "20");
-                        dataTable.Rows.Add("15.название программы, создающей файлы данного формата", "", "8");
-                        */
+
                     }
                 }
                 catch
@@ -904,14 +859,7 @@ namespace formsshower
 
         private void Headers_dgv_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            //MessageBox.Show(sender.ToString());
-            /* if (e.Control. == 1)
-             {
-                 string str_value = Headers_dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                 //             if (Headers_dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value == "1.идентификатор типа файла") MessageBox.Show ("Это менять нельзя");
-                 if ((str_value == "2.размер файла в байтах") || (str_value == "4.размер растра в байтах") || (str_value == "6.ширина изображения в пикселях")
-                     || (str_value == "7.высота изображения в пикселях") || (str_value == "7.высота изображения в пикселях") || (str_value == "8.размер изображения в пикселях")
-                     || (str_value == "10.количество различных цветов на изображении"))*/
+
         }
 
         private void saveFileAsDialog_FileOk(object sender, CancelEventArgs e)
