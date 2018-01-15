@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.PictureViewer = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -56,6 +56,14 @@
             this.Columns_nums = new System.Windows.Forms.NumericUpDown();
             this.Rows_nums = new System.Windows.Forms.NumericUpDown();
             this.Median_filter_bttn = new System.Windows.Forms.Button();
+            this.Sobel_kontrast_tab = new System.Windows.Forms.TabPage();
+            this.invert_chkbx = new System.Windows.Forms.CheckBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.Sobel_mnoj = new System.Windows.Forms.NumericUpDown();
+            this.modul_sobel_radio = new System.Windows.Forms.RadioButton();
+            this.qudr_sobel_radio = new System.Windows.Forms.RadioButton();
+            this.Sobel_bttn = new System.Windows.Forms.Button();
+            this.Uoles_kontrast_tab = new System.Windows.Forms.TabPage();
             this.chanse_txtbx = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.bttn_Grey = new System.Windows.Forms.Button();
@@ -82,16 +90,15 @@
             this.LF_filtr_Menu_item = new System.Windows.Forms.ToolStripMenuItem();
             this.Median_vzvesh_Menu_Item = new System.Windows.Forms.ToolStripMenuItem();
             this.Median_Menu_Item = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveFileAsDialog = new System.Windows.Forms.SaveFileDialog();
-            this.openFileAsDialog = new System.Windows.Forms.OpenFileDialog();
             this.методКонтрастированияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Sobel_contrast_menu_item = new System.Windows.Forms.ToolStripMenuItem();
-            this.Sobel_kontrast_tab = new System.Windows.Forms.TabPage();
-            this.Sobel_bttn = new System.Windows.Forms.Button();
-            this.qudr_sobel_radio = new System.Windows.Forms.RadioButton();
-            this.modul_sobel_radio = new System.Windows.Forms.RadioButton();
-            this.Sobel_mnoj = new System.Windows.Forms.NumericUpDown();
-            this.label8 = new System.Windows.Forms.Label();
+            this.Uolis_contrast_menu_item = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileAsDialog = new System.Windows.Forms.SaveFileDialog();
+            this.openFileAsDialog = new System.Windows.Forms.OpenFileDialog();
+            this.Uolis_start_bttn = new System.Windows.Forms.Button();
+            this.Uolis_invert_chkbx = new System.Windows.Forms.CheckBox();
+            this.Uolis_porog = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureViewer)).BeginInit();
             this.panel1.SuspendLayout();
@@ -107,14 +114,16 @@
             this.Median_filter_tab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Columns_nums)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Rows_nums)).BeginInit();
+            this.Sobel_kontrast_tab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Sobel_mnoj)).BeginInit();
+            this.Uoles_kontrast_tab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Headers_dgv)).BeginInit();
             this.panel4.SuspendLayout();
             this.menuStrip.SuspendLayout();
-            this.Sobel_kontrast_tab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Sobel_mnoj)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Uolis_porog)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -169,6 +178,7 @@
             this.Filter_tabs.Controls.Add(this.Median_vzvesh_filter_tab);
             this.Filter_tabs.Controls.Add(this.Median_filter_tab);
             this.Filter_tabs.Controls.Add(this.Sobel_kontrast_tab);
+            this.Filter_tabs.Controls.Add(this.Uoles_kontrast_tab);
             this.Filter_tabs.ItemSize = new System.Drawing.Size(1, 1);
             this.Filter_tabs.Location = new System.Drawing.Point(111, 0);
             this.Filter_tabs.Name = "Filter_tabs";
@@ -336,16 +346,16 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.Format = "N0";
-            dataGridViewCellStyle5.NullValue = null;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.weigh_dgv.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.Format = "N0";
+            dataGridViewCellStyle3.NullValue = null;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.weigh_dgv.DefaultCellStyle = dataGridViewCellStyle3;
             this.weigh_dgv.Location = new System.Drawing.Point(-1, -1);
             this.weigh_dgv.Name = "weigh_dgv";
             this.weigh_dgv.RowHeadersVisible = false;
@@ -446,6 +456,106 @@
             this.Median_filter_bttn.Text = "Фильтр";
             this.Median_filter_bttn.UseVisualStyleBackColor = true;
             this.Median_filter_bttn.Click += new System.EventHandler(this.Median_filter_bttn_Click_1);
+            // 
+            // Sobel_kontrast_tab
+            // 
+            this.Sobel_kontrast_tab.Controls.Add(this.invert_chkbx);
+            this.Sobel_kontrast_tab.Controls.Add(this.label8);
+            this.Sobel_kontrast_tab.Controls.Add(this.Sobel_mnoj);
+            this.Sobel_kontrast_tab.Controls.Add(this.modul_sobel_radio);
+            this.Sobel_kontrast_tab.Controls.Add(this.qudr_sobel_radio);
+            this.Sobel_kontrast_tab.Controls.Add(this.Sobel_bttn);
+            this.Sobel_kontrast_tab.Location = new System.Drawing.Point(4, 5);
+            this.Sobel_kontrast_tab.Name = "Sobel_kontrast_tab";
+            this.Sobel_kontrast_tab.Padding = new System.Windows.Forms.Padding(3);
+            this.Sobel_kontrast_tab.Size = new System.Drawing.Size(436, 69);
+            this.Sobel_kontrast_tab.TabIndex = 3;
+            this.Sobel_kontrast_tab.Text = "tabPage1";
+            this.Sobel_kontrast_tab.UseVisualStyleBackColor = true;
+            // 
+            // invert_chkbx
+            // 
+            this.invert_chkbx.AutoSize = true;
+            this.invert_chkbx.Location = new System.Drawing.Point(275, 32);
+            this.invert_chkbx.Name = "invert_chkbx";
+            this.invert_chkbx.Size = new System.Drawing.Size(76, 17);
+            this.invert_chkbx.TabIndex = 4;
+            this.invert_chkbx.Text = "Инверсия";
+            this.invert_chkbx.UseVisualStyleBackColor = true;
+            this.invert_chkbx.CheckStateChanged += new System.EventHandler(this.Sobel_mnoj_ValueChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(272, 9);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(77, 13);
+            this.label8.TabIndex = 3;
+            this.label8.Text = "Коэффициент";
+            // 
+            // Sobel_mnoj
+            // 
+            this.Sobel_mnoj.Location = new System.Drawing.Point(355, 7);
+            this.Sobel_mnoj.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.Sobel_mnoj.Name = "Sobel_mnoj";
+            this.Sobel_mnoj.Size = new System.Drawing.Size(52, 20);
+            this.Sobel_mnoj.TabIndex = 2;
+            this.Sobel_mnoj.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Sobel_mnoj.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.Sobel_mnoj.ValueChanged += new System.EventHandler(this.Sobel_mnoj_ValueChanged);
+            // 
+            // modul_sobel_radio
+            // 
+            this.modul_sobel_radio.AutoSize = true;
+            this.modul_sobel_radio.Location = new System.Drawing.Point(7, 30);
+            this.modul_sobel_radio.Name = "modul_sobel_radio";
+            this.modul_sobel_radio.Size = new System.Drawing.Size(131, 17);
+            this.modul_sobel_radio.TabIndex = 1;
+            this.modul_sobel_radio.Text = "Модульное значение";
+            this.modul_sobel_radio.UseVisualStyleBackColor = true;
+            // 
+            // qudr_sobel_radio
+            // 
+            this.qudr_sobel_radio.AutoSize = true;
+            this.qudr_sobel_radio.Checked = true;
+            this.qudr_sobel_radio.Location = new System.Drawing.Point(7, 7);
+            this.qudr_sobel_radio.Name = "qudr_sobel_radio";
+            this.qudr_sobel_radio.Size = new System.Drawing.Size(191, 17);
+            this.qudr_sobel_radio.TabIndex = 1;
+            this.qudr_sobel_radio.TabStop = true;
+            this.qudr_sobel_radio.Text = "Среднее квадратичное значение";
+            this.qudr_sobel_radio.UseVisualStyleBackColor = true;
+            // 
+            // Sobel_bttn
+            // 
+            this.Sobel_bttn.Location = new System.Drawing.Point(355, 40);
+            this.Sobel_bttn.Name = "Sobel_bttn";
+            this.Sobel_bttn.Size = new System.Drawing.Size(75, 23);
+            this.Sobel_bttn.TabIndex = 0;
+            this.Sobel_bttn.Text = "Применить";
+            this.Sobel_bttn.UseVisualStyleBackColor = true;
+            this.Sobel_bttn.Click += new System.EventHandler(this.Sobel_bttn_Click);
+            // 
+            // Uoles_kontrast_tab
+            // 
+            this.Uoles_kontrast_tab.Controls.Add(this.label9);
+            this.Uoles_kontrast_tab.Controls.Add(this.Uolis_porog);
+            this.Uoles_kontrast_tab.Controls.Add(this.Uolis_invert_chkbx);
+            this.Uoles_kontrast_tab.Controls.Add(this.Uolis_start_bttn);
+            this.Uoles_kontrast_tab.Location = new System.Drawing.Point(4, 5);
+            this.Uoles_kontrast_tab.Name = "Uoles_kontrast_tab";
+            this.Uoles_kontrast_tab.Size = new System.Drawing.Size(436, 69);
+            this.Uoles_kontrast_tab.TabIndex = 4;
+            this.Uoles_kontrast_tab.Text = "tabPage1";
+            this.Uoles_kontrast_tab.UseVisualStyleBackColor = true;
             // 
             // chanse_txtbx
             // 
@@ -696,14 +806,11 @@
             this.Median_Menu_Item.Text = "Медианный фильтр";
             this.Median_Menu_Item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
-            // saveFileAsDialog
-            // 
-            this.saveFileAsDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileAsDialog_FileOk);
-            // 
             // методКонтрастированияToolStripMenuItem
             // 
             this.методКонтрастированияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Sobel_contrast_menu_item});
+            this.Sobel_contrast_menu_item,
+            this.Uolis_contrast_menu_item});
             this.методКонтрастированияToolStripMenuItem.Name = "методКонтрастированияToolStripMenuItem";
             this.методКонтрастированияToolStripMenuItem.Size = new System.Drawing.Size(159, 20);
             this.методКонтрастированияToolStripMenuItem.Text = "Метод контрастирования";
@@ -711,84 +818,73 @@
             // Sobel_contrast_menu_item
             // 
             this.Sobel_contrast_menu_item.Name = "Sobel_contrast_menu_item";
-            this.Sobel_contrast_menu_item.Size = new System.Drawing.Size(159, 22);
+            this.Sobel_contrast_menu_item.Size = new System.Drawing.Size(169, 22);
             this.Sobel_contrast_menu_item.Text = "фильтр Собела";
             this.Sobel_contrast_menu_item.Click += new System.EventHandler(this.Sobel_contrast_menu_item_Click);
             // 
-            // Sobel_kontrast_tab
+            // Uolis_contrast_menu_item
             // 
-            this.Sobel_kontrast_tab.Controls.Add(this.label8);
-            this.Sobel_kontrast_tab.Controls.Add(this.Sobel_mnoj);
-            this.Sobel_kontrast_tab.Controls.Add(this.modul_sobel_radio);
-            this.Sobel_kontrast_tab.Controls.Add(this.qudr_sobel_radio);
-            this.Sobel_kontrast_tab.Controls.Add(this.Sobel_bttn);
-            this.Sobel_kontrast_tab.Location = new System.Drawing.Point(4, 5);
-            this.Sobel_kontrast_tab.Name = "Sobel_kontrast_tab";
-            this.Sobel_kontrast_tab.Padding = new System.Windows.Forms.Padding(3);
-            this.Sobel_kontrast_tab.Size = new System.Drawing.Size(436, 69);
-            this.Sobel_kontrast_tab.TabIndex = 3;
-            this.Sobel_kontrast_tab.Text = "tabPage1";
-            this.Sobel_kontrast_tab.UseVisualStyleBackColor = true;
+            this.Uolis_contrast_menu_item.Name = "Uolis_contrast_menu_item";
+            this.Uolis_contrast_menu_item.Size = new System.Drawing.Size(169, 22);
+            this.Uolis_contrast_menu_item.Text = "оператор Уолиса";
+            this.Uolis_contrast_menu_item.Click += new System.EventHandler(this.Uolis_contrast_menu_item_Click);
             // 
-            // Sobel_bttn
+            // saveFileAsDialog
             // 
-            this.Sobel_bttn.Location = new System.Drawing.Point(355, 40);
-            this.Sobel_bttn.Name = "Sobel_bttn";
-            this.Sobel_bttn.Size = new System.Drawing.Size(75, 23);
-            this.Sobel_bttn.TabIndex = 0;
-            this.Sobel_bttn.Text = "Применить";
-            this.Sobel_bttn.UseVisualStyleBackColor = true;
-            this.Sobel_bttn.Click += new System.EventHandler(this.Sobel_bttn_Click);
+            this.saveFileAsDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileAsDialog_FileOk);
             // 
-            // qudr_sobel_radio
+            // Uolis_start_bttn
             // 
-            this.qudr_sobel_radio.AutoSize = true;
-            this.qudr_sobel_radio.Checked = true;
-            this.qudr_sobel_radio.Location = new System.Drawing.Point(7, 7);
-            this.qudr_sobel_radio.Name = "qudr_sobel_radio";
-            this.qudr_sobel_radio.Size = new System.Drawing.Size(191, 17);
-            this.qudr_sobel_radio.TabIndex = 1;
-            this.qudr_sobel_radio.TabStop = true;
-            this.qudr_sobel_radio.Text = "Среднее квадратичное значение";
-            this.qudr_sobel_radio.UseVisualStyleBackColor = true;
+            this.Uolis_start_bttn.Location = new System.Drawing.Point(358, 38);
+            this.Uolis_start_bttn.Name = "Uolis_start_bttn";
+            this.Uolis_start_bttn.Size = new System.Drawing.Size(75, 23);
+            this.Uolis_start_bttn.TabIndex = 0;
+            this.Uolis_start_bttn.Text = "Применить";
+            this.Uolis_start_bttn.UseVisualStyleBackColor = true;
+            this.Uolis_start_bttn.Click += new System.EventHandler(this.Uolis_start_bttn_Click);
             // 
-            // modul_sobel_radio
+            // Uolis_invert_chkbx
             // 
-            this.modul_sobel_radio.AutoSize = true;
-            this.modul_sobel_radio.Location = new System.Drawing.Point(7, 30);
-            this.modul_sobel_radio.Name = "modul_sobel_radio";
-            this.modul_sobel_radio.Size = new System.Drawing.Size(131, 17);
-            this.modul_sobel_radio.TabIndex = 1;
-            this.modul_sobel_radio.Text = "Модульное значение";
-            this.modul_sobel_radio.UseVisualStyleBackColor = true;
+            this.Uolis_invert_chkbx.AutoSize = true;
+            this.Uolis_invert_chkbx.Location = new System.Drawing.Point(4, 4);
+            this.Uolis_invert_chkbx.Name = "Uolis_invert_chkbx";
+            this.Uolis_invert_chkbx.Size = new System.Drawing.Size(76, 17);
+            this.Uolis_invert_chkbx.TabIndex = 1;
+            this.Uolis_invert_chkbx.Text = "Инверсия";
+            this.Uolis_invert_chkbx.UseVisualStyleBackColor = true;
             // 
-            // Sobel_mnoj
+            // Uolis_porog
             // 
-            this.Sobel_mnoj.Location = new System.Drawing.Point(355, 7);
-            this.Sobel_mnoj.Maximum = new decimal(new int[] {
+            this.Uolis_porog.DecimalPlaces = 3;
+            this.Uolis_porog.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.Uolis_porog.Location = new System.Drawing.Point(4, 27);
+            this.Uolis_porog.Maximum = new decimal(new int[] {
             1000,
             0,
             0,
             0});
-            this.Sobel_mnoj.Name = "Sobel_mnoj";
-            this.Sobel_mnoj.Size = new System.Drawing.Size(52, 20);
-            this.Sobel_mnoj.TabIndex = 2;
-            this.Sobel_mnoj.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.Sobel_mnoj.Value = new decimal(new int[] {
-            50,
+            this.Uolis_porog.Name = "Uolis_porog";
+            this.Uolis_porog.Size = new System.Drawing.Size(62, 20);
+            this.Uolis_porog.TabIndex = 3;
+            this.Uolis_porog.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Uolis_porog.Value = new decimal(new int[] {
+            1,
             0,
             0,
-            0});
-            this.Sobel_mnoj.ValueChanged += new System.EventHandler(this.Sobel_mnoj_ValueChanged);
+            65536});
             // 
-            // label8
+            // label9
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(272, 9);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(77, 13);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "Коэффициент";
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(62, 32);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(38, 13);
+            this.label9.TabIndex = 4;
+            this.label9.Text = "Порог";
             // 
             // Form1
             // 
@@ -821,6 +917,11 @@
             this.Median_filter_tab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Columns_nums)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Rows_nums)).EndInit();
+            this.Sobel_kontrast_tab.ResumeLayout(false);
+            this.Sobel_kontrast_tab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Sobel_mnoj)).EndInit();
+            this.Uoles_kontrast_tab.ResumeLayout(false);
+            this.Uoles_kontrast_tab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -829,9 +930,7 @@
             this.panel4.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            this.Sobel_kontrast_tab.ResumeLayout(false);
-            this.Sobel_kontrast_tab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Sobel_mnoj)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Uolis_porog)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -902,6 +1001,13 @@
         private System.Windows.Forms.RadioButton qudr_sobel_radio;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown Sobel_mnoj;
+        private System.Windows.Forms.CheckBox invert_chkbx;
+        private System.Windows.Forms.TabPage Uoles_kontrast_tab;
+        private System.Windows.Forms.ToolStripMenuItem Uolis_contrast_menu_item;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown Uolis_porog;
+        private System.Windows.Forms.CheckBox Uolis_invert_chkbx;
+        private System.Windows.Forms.Button Uolis_start_bttn;
     }
 }
 

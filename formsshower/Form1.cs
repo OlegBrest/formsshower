@@ -1062,8 +1062,10 @@ namespace formsshower
         private void Sobel_contrast_menu_item_Click(object sender, EventArgs e)
         {
             Filter_tabs.SelectedTab = Sobel_kontrast_tab;
+            this.Text = "Обработка фото. Контрастирование Собела";
         }
 
+        // фильтр Собела (Контраст)
         private void Sobel_bttn_Click(object sender, EventArgs e)
         {
             Bitmap FilterImage = new Bitmap(PictureViewer.Image);
@@ -1122,6 +1124,7 @@ namespace formsshower
                     contrast_resulter[cur_pos] = result;
                     int res_int = (int) (result * (float)Sobel_mnoj.Value);
                     if (res_int > 255) res_int = 255;
+                    if (this.invert_chkbx.Checked) res_int = 255 - res_int;
                     FilterImage.SetPixel(x, y, Color.FromArgb(255, res_int, res_int, res_int));
                     cur_pos++;
                 }
@@ -1144,6 +1147,55 @@ namespace formsshower
                     result = contrast_resulter[cur_pos];
                     int res_int = (int)(result * (float)Sobel_mnoj.Value);
                     if (res_int > 255) res_int = 255;
+                    if (this.invert_chkbx.Checked) res_int = 255 - res_int;
+                    FilterImage.SetPixel(x, y, Color.FromArgb(255, res_int, res_int, res_int));
+                    cur_pos++;
+                }
+                if (x % 10 == 0) PictureViewer.Refresh();
+            }
+            PictureViewer.Refresh();
+        }
+
+        private void Uolis_contrast_menu_item_Click(object sender, EventArgs e)
+        {
+            Filter_tabs.SelectedTab = Uoles_kontrast_tab;
+            this.Text = "Обработка фото. Контрастирование Уолиса";
+        }
+
+
+        //Фильтр Уолиса (Контраст)
+        private void Uolis_start_bttn_Click(object sender, EventArgs e)
+        {
+            Bitmap FilterImage = new Bitmap(PictureViewer.Image);
+            Bitmap WorkImage = new Bitmap(PictureViewer.Image);
+            PictureViewer.Image = FilterImage;
+            contrast_resulter = new float[WorkImage.Width * WorkImage.Height];
+            int cur_pos = 0;
+            for (int x = 1; x < WorkImage.Size.Width - 1; x++)
+            {
+                for (int y = 1; y < WorkImage.Size.Height - 1; y++)
+                {
+                    Color clr;
+                    float temp1 = 0;
+                    float temp2 = 0;
+                    clr = WorkImage.GetPixel(x - 1, y);
+                    temp1 = clr.GetBrightness();
+                    clr = WorkImage.GetPixel(x , y - 1);
+                    temp1 *= (clr.GetBrightness());
+                    clr = WorkImage.GetPixel(x + 1, y);
+                    temp1 *= clr.GetBrightness();
+                    clr = WorkImage.GetPixel(x , y + 1);
+                    temp1 *= clr.GetBrightness();
+
+
+                    clr = WorkImage.GetPixel(x , y );
+                    temp2 = clr.GetBrightness();
+
+                    double result = Math.Log(Math.Pow((double)temp2, 4) / (double)temp1);
+                    double porog = (double)this.Uolis_porog.Value;
+                    int res_int = 255;
+                    if (result < porog) res_int = 0;
+                    if (this.Uolis_invert_chkbx.Checked) res_int = 255 - res_int;
                     FilterImage.SetPixel(x, y, Color.FromArgb(255, res_int, res_int, res_int));
                     cur_pos++;
                 }
