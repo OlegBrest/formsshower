@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.PictureViewer = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -64,6 +64,10 @@
             this.qudr_sobel_radio = new System.Windows.Forms.RadioButton();
             this.Sobel_bttn = new System.Windows.Forms.Button();
             this.Uoles_kontrast_tab = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.Uolis_porog = new System.Windows.Forms.NumericUpDown();
+            this.Uolis_invert_chkbx = new System.Windows.Forms.CheckBox();
+            this.Uolis_start_bttn = new System.Windows.Forms.Button();
             this.chanse_txtbx = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.bttn_Grey = new System.Windows.Forms.Button();
@@ -95,10 +99,6 @@
             this.Uolis_contrast_menu_item = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileAsDialog = new System.Windows.Forms.OpenFileDialog();
-            this.Uolis_start_bttn = new System.Windows.Forms.Button();
-            this.Uolis_invert_chkbx = new System.Windows.Forms.CheckBox();
-            this.Uolis_porog = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureViewer)).BeginInit();
             this.panel1.SuspendLayout();
@@ -117,13 +117,13 @@
             this.Sobel_kontrast_tab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Sobel_mnoj)).BeginInit();
             this.Uoles_kontrast_tab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Uolis_porog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).BeginInit();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Headers_dgv)).BeginInit();
             this.panel4.SuspendLayout();
             this.menuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Uolis_porog)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -142,7 +142,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1041, 447);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1049, 459);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // PictureViewer
@@ -150,7 +150,7 @@
             this.PictureViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureViewer.Location = new System.Drawing.Point(3, 3);
             this.PictureViewer.Name = "PictureViewer";
-            this.PictureViewer.Size = new System.Drawing.Size(634, 360);
+            this.PictureViewer.Size = new System.Drawing.Size(642, 372);
             this.PictureViewer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureViewer.TabIndex = 0;
             this.PictureViewer.TabStop = false;
@@ -164,9 +164,9 @@
             this.panel1.Controls.Add(this.bttn_Grey);
             this.panel1.Controls.Add(this.bttn_Noise);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 369);
+            this.panel1.Location = new System.Drawing.Point(3, 381);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(634, 75);
+            this.panel1.Size = new System.Drawing.Size(642, 75);
             this.panel1.TabIndex = 1;
             // 
             // Filter_tabs
@@ -346,16 +346,16 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.Format = "N0";
-            dataGridViewCellStyle3.NullValue = null;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.weigh_dgv.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.Format = "N0";
+            dataGridViewCellStyle1.NullValue = null;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.weigh_dgv.DefaultCellStyle = dataGridViewCellStyle1;
             this.weigh_dgv.Location = new System.Drawing.Point(-1, -1);
             this.weigh_dgv.Name = "weigh_dgv";
             this.weigh_dgv.RowHeadersVisible = false;
@@ -557,6 +557,59 @@
             this.Uoles_kontrast_tab.Text = "tabPage1";
             this.Uoles_kontrast_tab.UseVisualStyleBackColor = true;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(62, 32);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(38, 13);
+            this.label9.TabIndex = 4;
+            this.label9.Text = "Порог";
+            // 
+            // Uolis_porog
+            // 
+            this.Uolis_porog.DecimalPlaces = 3;
+            this.Uolis_porog.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.Uolis_porog.Location = new System.Drawing.Point(4, 27);
+            this.Uolis_porog.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.Uolis_porog.Name = "Uolis_porog";
+            this.Uolis_porog.Size = new System.Drawing.Size(62, 20);
+            this.Uolis_porog.TabIndex = 3;
+            this.Uolis_porog.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Uolis_porog.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            // 
+            // Uolis_invert_chkbx
+            // 
+            this.Uolis_invert_chkbx.AutoSize = true;
+            this.Uolis_invert_chkbx.Location = new System.Drawing.Point(4, 4);
+            this.Uolis_invert_chkbx.Name = "Uolis_invert_chkbx";
+            this.Uolis_invert_chkbx.Size = new System.Drawing.Size(76, 17);
+            this.Uolis_invert_chkbx.TabIndex = 1;
+            this.Uolis_invert_chkbx.Text = "Инверсия";
+            this.Uolis_invert_chkbx.UseVisualStyleBackColor = true;
+            // 
+            // Uolis_start_bttn
+            // 
+            this.Uolis_start_bttn.Location = new System.Drawing.Point(358, 38);
+            this.Uolis_start_bttn.Name = "Uolis_start_bttn";
+            this.Uolis_start_bttn.Size = new System.Drawing.Size(75, 23);
+            this.Uolis_start_bttn.TabIndex = 0;
+            this.Uolis_start_bttn.Text = "Применить";
+            this.Uolis_start_bttn.UseVisualStyleBackColor = true;
+            this.Uolis_start_bttn.Click += new System.EventHandler(this.Uolis_start_bttn_Click);
+            // 
             // chanse_txtbx
             // 
             this.chanse_txtbx.Location = new System.Drawing.Point(3, 6);
@@ -604,9 +657,9 @@
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(643, 3);
+            this.panel2.Location = new System.Drawing.Point(651, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(395, 360);
+            this.panel2.Size = new System.Drawing.Size(395, 372);
             this.panel2.TabIndex = 13;
             // 
             // panel3
@@ -617,7 +670,7 @@
             this.panel3.Controls.Add(this.Headers_dgv);
             this.panel3.Location = new System.Drawing.Point(3, 16);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(389, 341);
+            this.panel3.Size = new System.Drawing.Size(389, 353);
             this.panel3.TabIndex = 4;
             // 
             // Headers_dgv
@@ -636,7 +689,7 @@
             this.Headers_dgv.ReadOnly = true;
             this.Headers_dgv.RowHeadersVisible = false;
             this.Headers_dgv.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.Headers_dgv.Size = new System.Drawing.Size(389, 341);
+            this.Headers_dgv.Size = new System.Drawing.Size(389, 353);
             this.Headers_dgv.TabIndex = 0;
             this.Headers_dgv.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Headers_dgv_CellValueChanged);
             this.Headers_dgv.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Headers_dgv_EditingControlShowing);
@@ -683,7 +736,7 @@
             this.panel4.Controls.Add(this.custom_header_bttn);
             this.panel4.Controls.Add(this.header_bttn);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(643, 369);
+            this.panel4.Location = new System.Drawing.Point(651, 381);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(395, 75);
             this.panel4.TabIndex = 14;
@@ -728,7 +781,7 @@
             this.методКонтрастированияToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1041, 24);
+            this.menuStrip.Size = new System.Drawing.Size(1049, 24);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             this.menuStrip.Click += new System.EventHandler(this.menuStrip_Click);
@@ -741,34 +794,34 @@
             this.SaveToolStripMenuItem,
             this.SaveAsToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
-            this.FileToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.FileToolStripMenuItem.Text = "Файл";
             // 
             // LoadToolStripMenuItem
             // 
             this.LoadToolStripMenuItem.Name = "LoadToolStripMenuItem";
-            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.LoadToolStripMenuItem.Text = "Загрузить";
             this.LoadToolStripMenuItem.Click += new System.EventHandler(this.bttn_Load_Click);
             // 
             // LoadSpecificToolStripMenuItem
             // 
             this.LoadSpecificToolStripMenuItem.Name = "LoadSpecificToolStripMenuItem";
-            this.LoadSpecificToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.LoadSpecificToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.LoadSpecificToolStripMenuItem.Text = "Загрузить свой формат";
             this.LoadSpecificToolStripMenuItem.Click += new System.EventHandler(this.LoadSpecificToolStripMenuItem_Click);
             // 
             // SaveToolStripMenuItem
             // 
             this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
-            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.SaveToolStripMenuItem.Text = "Сохранить";
             this.SaveToolStripMenuItem.Click += new System.EventHandler(this.bttn_save_Click);
             // 
             // SaveAsToolStripMenuItem
             // 
             this.SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem";
-            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.SaveAsToolStripMenuItem.Text = "Сохранить свой формат";
             this.SaveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
@@ -780,7 +833,7 @@
             this.Median_vzvesh_Menu_Item,
             this.Median_Menu_Item});
             this.FilterToolStripMenuItem.Name = "FilterToolStripMenuItem";
-            this.FilterToolStripMenuItem.Size = new System.Drawing.Size(125, 20);
+            this.FilterToolStripMenuItem.Size = new System.Drawing.Size(117, 20);
             this.FilterToolStripMenuItem.Text = "Метод фильтрации";
             // 
             // LF_filtr_Menu_item
@@ -788,21 +841,21 @@
             this.LF_filtr_Menu_item.Checked = true;
             this.LF_filtr_Menu_item.CheckState = System.Windows.Forms.CheckState.Checked;
             this.LF_filtr_Menu_item.Name = "LF_filtr_Menu_item";
-            this.LF_filtr_Menu_item.Size = new System.Drawing.Size(460, 22);
+            this.LF_filtr_Menu_item.Size = new System.Drawing.Size(426, 22);
             this.LF_filtr_Menu_item.Text = "Низкочастотная пространственная фильтрация ";
             this.LF_filtr_Menu_item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
             // Median_vzvesh_Menu_Item
             // 
             this.Median_vzvesh_Menu_Item.Name = "Median_vzvesh_Menu_Item";
-            this.Median_vzvesh_Menu_Item.Size = new System.Drawing.Size(460, 22);
+            this.Median_vzvesh_Menu_Item.Size = new System.Drawing.Size(426, 22);
             this.Median_vzvesh_Menu_Item.Text = "Взвешенный двумерный медианный фильтр с квадратным окном 3х3";
             this.Median_vzvesh_Menu_Item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
             // Median_Menu_Item
             // 
             this.Median_Menu_Item.Name = "Median_Menu_Item";
-            this.Median_Menu_Item.Size = new System.Drawing.Size(460, 22);
+            this.Median_Menu_Item.Size = new System.Drawing.Size(426, 22);
             this.Median_Menu_Item.Text = "Медианный фильтр";
             this.Median_Menu_Item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
@@ -812,20 +865,20 @@
             this.Sobel_contrast_menu_item,
             this.Uolis_contrast_menu_item});
             this.методКонтрастированияToolStripMenuItem.Name = "методКонтрастированияToolStripMenuItem";
-            this.методКонтрастированияToolStripMenuItem.Size = new System.Drawing.Size(159, 20);
+            this.методКонтрастированияToolStripMenuItem.Size = new System.Drawing.Size(150, 20);
             this.методКонтрастированияToolStripMenuItem.Text = "Метод контрастирования";
             // 
             // Sobel_contrast_menu_item
             // 
             this.Sobel_contrast_menu_item.Name = "Sobel_contrast_menu_item";
-            this.Sobel_contrast_menu_item.Size = new System.Drawing.Size(169, 22);
+            this.Sobel_contrast_menu_item.Size = new System.Drawing.Size(161, 22);
             this.Sobel_contrast_menu_item.Text = "фильтр Собела";
             this.Sobel_contrast_menu_item.Click += new System.EventHandler(this.Sobel_contrast_menu_item_Click);
             // 
             // Uolis_contrast_menu_item
             // 
             this.Uolis_contrast_menu_item.Name = "Uolis_contrast_menu_item";
-            this.Uolis_contrast_menu_item.Size = new System.Drawing.Size(169, 22);
+            this.Uolis_contrast_menu_item.Size = new System.Drawing.Size(161, 22);
             this.Uolis_contrast_menu_item.Text = "оператор Уолиса";
             this.Uolis_contrast_menu_item.Click += new System.EventHandler(this.Uolis_contrast_menu_item_Click);
             // 
@@ -833,64 +886,11 @@
             // 
             this.saveFileAsDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileAsDialog_FileOk);
             // 
-            // Uolis_start_bttn
-            // 
-            this.Uolis_start_bttn.Location = new System.Drawing.Point(358, 38);
-            this.Uolis_start_bttn.Name = "Uolis_start_bttn";
-            this.Uolis_start_bttn.Size = new System.Drawing.Size(75, 23);
-            this.Uolis_start_bttn.TabIndex = 0;
-            this.Uolis_start_bttn.Text = "Применить";
-            this.Uolis_start_bttn.UseVisualStyleBackColor = true;
-            this.Uolis_start_bttn.Click += new System.EventHandler(this.Uolis_start_bttn_Click);
-            // 
-            // Uolis_invert_chkbx
-            // 
-            this.Uolis_invert_chkbx.AutoSize = true;
-            this.Uolis_invert_chkbx.Location = new System.Drawing.Point(4, 4);
-            this.Uolis_invert_chkbx.Name = "Uolis_invert_chkbx";
-            this.Uolis_invert_chkbx.Size = new System.Drawing.Size(76, 17);
-            this.Uolis_invert_chkbx.TabIndex = 1;
-            this.Uolis_invert_chkbx.Text = "Инверсия";
-            this.Uolis_invert_chkbx.UseVisualStyleBackColor = true;
-            // 
-            // Uolis_porog
-            // 
-            this.Uolis_porog.DecimalPlaces = 3;
-            this.Uolis_porog.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.Uolis_porog.Location = new System.Drawing.Point(4, 27);
-            this.Uolis_porog.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.Uolis_porog.Name = "Uolis_porog";
-            this.Uolis_porog.Size = new System.Drawing.Size(62, 20);
-            this.Uolis_porog.TabIndex = 3;
-            this.Uolis_porog.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.Uolis_porog.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(62, 32);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(38, 13);
-            this.label9.TabIndex = 4;
-            this.label9.Text = "Порог";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1041, 471);
+            this.ClientSize = new System.Drawing.Size(1049, 483);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.menuStrip);
             this.MainMenuStrip = this.menuStrip;
@@ -922,6 +922,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Sobel_mnoj)).EndInit();
             this.Uoles_kontrast_tab.ResumeLayout(false);
             this.Uoles_kontrast_tab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Uolis_porog)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chanse_txtbx)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -930,7 +931,6 @@
             this.panel4.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Uolis_porog)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace formsshower
@@ -20,6 +21,7 @@ namespace formsshower
         DataTable dataTable;
         byte[] dataToDisk;
         float[] contrast_resulter;
+        
 
         public Form1()
         {
@@ -65,9 +67,16 @@ namespace formsshower
             long total = OriginPicture.Size.Width * OriginPicture.Size.Height;
             total = (total * (long)chanse_txtbx.Value) / 100;
             Bitmap NoisePicture = new Bitmap(PictureViewer.Image);
-            for (long i = 0; i < total; i++) NoisePicture.SetPixel(rnd1.Next(OriginPicture.Size.Width), rnd1.Next(OriginPicture.Size.Height), Color.FromArgb(255, rnd1.Next(255), rnd1.Next(255), rnd1.Next(255)));
+
+            Parallel.For(0, total, i =>
+             {
+                 NoisePicture.SetPixel(rnd1.Next(OriginPicture.Size.Width), rnd1.Next(OriginPicture.Size.Height),
+                     Color.FromArgb(255, rnd1.Next(255), rnd1.Next(255), rnd1.Next(255)));
+             });
             PictureViewer.Image = NoisePicture;
         }
+
+        
 
         /// <summary>
         /// Filtering the picture
