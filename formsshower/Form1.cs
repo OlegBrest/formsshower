@@ -148,9 +148,9 @@ namespace formsshower
 
                     if (AutoFilter)
                     {
-                        Thread trd = new Thread(delegate () { refresh_image(res); } );
-                        trd.Start();
-                        
+                        //                        Thread trd = new Thread(delegate () { refresh_image(res); } );
+                        //                       trd.Start();
+//                        refresh_image(res);
                         porog -= step;
                         porog_txtbx.Value = porog;
                         porog_txtbx.Refresh();
@@ -162,14 +162,13 @@ namespace formsshower
                         chk_AutoFilter.Checked = false;
                         chk_AutoFilter.Refresh();
                         AutoFilter = false;
+                        refresh_image(res);
                     }
                     if (porog < 25) Prec = 0;
                 } while (AutoFilter);
-
             }
             else
             {
-
                 Bitmap FilterImage = new Bitmap(PictureViewer.Image);
                 Bitmap WorkImage = new Bitmap(PictureViewer.Image);
                 PictureViewer.Image = FilterImage;
@@ -271,11 +270,13 @@ namespace formsshower
                     bmp.SetPixel(x, y, Color.FromArgb(255, (byte) matrix[0, y, x], (byte)matrix[1, y, x], (byte) matrix[2, y, x]));
                 }
             }
-            Invoke((MethodInvoker)delegate ()
-            {
+ //           Invoke((MethodInvoker)delegate ()
+  //          {
                 PictureViewer.Image = bmp;
                 PictureViewer.Refresh();
-            });
+            //         });
+            matrix = null;
+            bmp = null;
         }
 
         /// <summary>
