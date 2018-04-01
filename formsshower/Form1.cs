@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using OpenCL.Net.Extensions;
+using OpenCL.Net;
 
 namespace formsshower
 {
@@ -365,7 +367,7 @@ namespace formsshower
                     using (FileStream fs = new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite))
                     {
                         Bitmap bmp = (Bitmap)this.PictureViewer.Image;
-                        bmp.Save(memory, ImageFormat.Bmp);
+                        bmp.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
                         byte[] bytes = memory.ToArray();
                         fs.Write(bytes, 0, bytes.Length);
                     }
