@@ -346,7 +346,7 @@ namespace formsshower
                 {
                     Parallel.For(1, WIH - 1, y =>
                    {
-                       byte R = 0, G = 0, B = 0;
+                       int R = 0, G = 0, B = 0;
                        bool R11 = false, G11 = false, B11 = false;
                        byte[,] R_matrix = new byte[3, 3];
                        byte[,] G_matrix = new byte[3, 3];
@@ -399,9 +399,9 @@ namespace formsshower
                            G /= 8;
                            B /= 8;
                        }
-                       FI_bt_arr[0, y, x] = R;
-                       FI_bt_arr[1, y, x] = G;
-                       FI_bt_arr[2, y, x] = B;
+                       FI_bt_arr[0, y, x] = (byte)R;
+                       FI_bt_arr[1, y, x] = (byte)G;
+                       FI_bt_arr[2, y, x] = (byte)B;
                    });
 
                     /*
