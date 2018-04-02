@@ -99,6 +99,7 @@
             this.Uolis_contrast_menu_item = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileAsDialog = new System.Windows.Forms.OpenFileDialog();
+            this.sw_label = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureViewer)).BeginInit();
             this.panel1.SuspendLayout();
@@ -200,6 +201,7 @@
             // LF_filtring_panel
             // 
             this.LF_filtring_panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LF_filtring_panel.Controls.Add(this.sw_label);
             this.LF_filtring_panel.Controls.Add(this.Stop_StepAuto);
             this.LF_filtring_panel.Controls.Add(this.label5);
             this.LF_filtring_panel.Controls.Add(this.bttn_Filter);
@@ -794,34 +796,34 @@
             this.SaveToolStripMenuItem,
             this.SaveAsToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
-            this.FileToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.FileToolStripMenuItem.Text = "Файл";
             // 
             // LoadToolStripMenuItem
             // 
             this.LoadToolStripMenuItem.Name = "LoadToolStripMenuItem";
-            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.LoadToolStripMenuItem.Text = "Загрузить";
             this.LoadToolStripMenuItem.Click += new System.EventHandler(this.bttn_Load_Click);
             // 
             // LoadSpecificToolStripMenuItem
             // 
             this.LoadSpecificToolStripMenuItem.Name = "LoadSpecificToolStripMenuItem";
-            this.LoadSpecificToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.LoadSpecificToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.LoadSpecificToolStripMenuItem.Text = "Загрузить свой формат";
             this.LoadSpecificToolStripMenuItem.Click += new System.EventHandler(this.LoadSpecificToolStripMenuItem_Click);
             // 
             // SaveToolStripMenuItem
             // 
             this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
-            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.SaveToolStripMenuItem.Text = "Сохранить";
             this.SaveToolStripMenuItem.Click += new System.EventHandler(this.bttn_save_Click);
             // 
             // SaveAsToolStripMenuItem
             // 
             this.SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem";
-            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.SaveAsToolStripMenuItem.Text = "Сохранить свой формат";
             this.SaveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
@@ -833,7 +835,7 @@
             this.Median_vzvesh_Menu_Item,
             this.Median_Menu_Item});
             this.FilterToolStripMenuItem.Name = "FilterToolStripMenuItem";
-            this.FilterToolStripMenuItem.Size = new System.Drawing.Size(117, 20);
+            this.FilterToolStripMenuItem.Size = new System.Drawing.Size(125, 20);
             this.FilterToolStripMenuItem.Text = "Метод фильтрации";
             // 
             // LF_filtr_Menu_item
@@ -841,21 +843,21 @@
             this.LF_filtr_Menu_item.Checked = true;
             this.LF_filtr_Menu_item.CheckState = System.Windows.Forms.CheckState.Checked;
             this.LF_filtr_Menu_item.Name = "LF_filtr_Menu_item";
-            this.LF_filtr_Menu_item.Size = new System.Drawing.Size(426, 22);
+            this.LF_filtr_Menu_item.Size = new System.Drawing.Size(460, 22);
             this.LF_filtr_Menu_item.Text = "Низкочастотная пространственная фильтрация ";
             this.LF_filtr_Menu_item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
             // Median_vzvesh_Menu_Item
             // 
             this.Median_vzvesh_Menu_Item.Name = "Median_vzvesh_Menu_Item";
-            this.Median_vzvesh_Menu_Item.Size = new System.Drawing.Size(426, 22);
+            this.Median_vzvesh_Menu_Item.Size = new System.Drawing.Size(460, 22);
             this.Median_vzvesh_Menu_Item.Text = "Взвешенный двумерный медианный фильтр с квадратным окном 3х3";
             this.Median_vzvesh_Menu_Item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
             // Median_Menu_Item
             // 
             this.Median_Menu_Item.Name = "Median_Menu_Item";
-            this.Median_Menu_Item.Size = new System.Drawing.Size(426, 22);
+            this.Median_Menu_Item.Size = new System.Drawing.Size(460, 22);
             this.Median_Menu_Item.Text = "Медианный фильтр";
             this.Median_Menu_Item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
@@ -865,26 +867,34 @@
             this.Sobel_contrast_menu_item,
             this.Uolis_contrast_menu_item});
             this.методКонтрастированияToolStripMenuItem.Name = "методКонтрастированияToolStripMenuItem";
-            this.методКонтрастированияToolStripMenuItem.Size = new System.Drawing.Size(150, 20);
+            this.методКонтрастированияToolStripMenuItem.Size = new System.Drawing.Size(159, 20);
             this.методКонтрастированияToolStripMenuItem.Text = "Метод контрастирования";
             // 
             // Sobel_contrast_menu_item
             // 
             this.Sobel_contrast_menu_item.Name = "Sobel_contrast_menu_item";
-            this.Sobel_contrast_menu_item.Size = new System.Drawing.Size(161, 22);
+            this.Sobel_contrast_menu_item.Size = new System.Drawing.Size(169, 22);
             this.Sobel_contrast_menu_item.Text = "фильтр Собела";
             this.Sobel_contrast_menu_item.Click += new System.EventHandler(this.Sobel_contrast_menu_item_Click);
             // 
             // Uolis_contrast_menu_item
             // 
             this.Uolis_contrast_menu_item.Name = "Uolis_contrast_menu_item";
-            this.Uolis_contrast_menu_item.Size = new System.Drawing.Size(161, 22);
+            this.Uolis_contrast_menu_item.Size = new System.Drawing.Size(169, 22);
             this.Uolis_contrast_menu_item.Text = "оператор Уолиса";
             this.Uolis_contrast_menu_item.Click += new System.EventHandler(this.Uolis_contrast_menu_item_Click);
             // 
             // saveFileAsDialog
             // 
             this.saveFileAsDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileAsDialog_FileOk);
+            // 
+            // sw_label
+            // 
+            this.sw_label.AutoSize = true;
+            this.sw_label.Location = new System.Drawing.Point(306, 48);
+            this.sw_label.Name = "sw_label";
+            this.sw_label.Size = new System.Drawing.Size(0, 13);
+            this.sw_label.TabIndex = 11;
             // 
             // Form1
             // 
@@ -1008,6 +1018,7 @@
         private System.Windows.Forms.NumericUpDown Uolis_porog;
         private System.Windows.Forms.CheckBox Uolis_invert_chkbx;
         private System.Windows.Forms.Button Uolis_start_bttn;
+        private System.Windows.Forms.Label sw_label;
     }
 }
 

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OpenCL.Net.Extensions;
 using OpenCL.Net;
+using System.Diagnostics;
 
 namespace formsshower
 {
@@ -23,7 +24,7 @@ namespace formsshower
         DataTable dataTable;
         byte[] dataToDisk;
         float[] contrast_resulter;
-        
+
 
         public Form1()
         {
@@ -64,21 +65,144 @@ namespace formsshower
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void bttn_Noise_Click(object sender, EventArgs e)
+        unsafe private void bttn_Noise_Click(object sender, EventArgs e)
         {
-            long total = OriginPicture.Size.Width * OriginPicture.Size.Height;
-            total = (total * (long)chanse_txtbx.Value) / 100;
+            int total = this.OriginPicture.Size.Width * this.OriginPicture.Size.Height;
+            double chanse = ((double)chanse_txtbx.Value);
+
             Bitmap NoisePicture = new Bitmap(PictureViewer.Image);
 
-            Parallel.For(0, total, i =>
-             {
-                 NoisePicture.SetPixel(rnd1.Next(OriginPicture.Size.Width), rnd1.Next(OriginPicture.Size.Height),
-                     Color.FromArgb(255, rnd1.Next(255), rnd1.Next(255), rnd1.Next(255)));
-             });
-            PictureViewer.Image = NoisePicture;
+            const int bytesPerPixel = 4;
+            byte[] pict_bytes = pic2arr(NoisePicture, bytesPerPixel);
+            int tst = 0;
+            rnd1 = new Random();
+            ParallelLoopResult parr_res =
+            Parallel.For(0, total, (i, loopState) =>
+            {
+                if ((((((double)tst) / (double)total)) * 100) < chanse)
+                {
+
+                    double next_rnd = rnd1.Next(0, 100);
+                    if (next_rnd <= chanse)
+                    {
+                        byte R = (byte)rnd1.Next(0, 255);
+                        byte G = (byte)rnd1.Next(0, 255);
+                        byte B = (byte)rnd1.Next(0, 255);
+                        int nxt = rnd1.Next(0, total);
+                        //int nxt = i;
+                        pict_bytes[nxt * bytesPerPixel] = R;
+                        pict_bytes[nxt * bytesPerPixel + 1] = G;
+                        pict_bytes[nxt * bytesPerPixel + 2] = B;
+                        pict_bytes[nxt * bytesPerPixel + 3] = 255;
+                        tst++;
+                        if (tst % 50000 == 0) rnd1 = new Random();
+                    }
+                }
+                /*
+                NoisePicture.SetPixel(rnd1.Next(OriginPicture.Size.Width), rnd1.Next(OriginPicture.Size.Height),
+                    Color.FromArgb(255, rnd1.Next(255), rnd1.Next(255), rnd1.Next(255)));*/
+            });
+            if (parr_res.IsCompleted)
+            {
+                NoisePicture = arr2pic(NoisePicture, bytesPerPixel, pict_bytes);
+                PictureViewer.Image = NoisePicture;
+            }
         }
 
-        
+        private byte[] pic2arr(Bitmap NP, int bytesPerPixel)
+        {
+            BitmapData bits = null;
+            Rectangle rect = new Rectangle(0, 0, NP.Width, NP.Height);
+            byte[] pict_bytes = new byte[NP.Height * NP.Width * bytesPerPixel];
+            int cur_pic_bt = 0;
+            try
+            {
+                bits = NP.LockBits(rect, ImageLockMode.ReadWrite, NP.PixelFormat);
+                unsafe
+                {
+                    // указатель на Pixel не имеет смысла, лэйаут структур
+                    // в C# не определён
+                    // используем указатель на байт
+                    byte* start = (byte*)bits.Scan0;
+                    // цикл должен быть до H
+                    for (int y = 0; y < NP.Height; y++)
+                    {
+                        // указатель на начало строки
+                        // поскольку Stride в байтах, мы вычисляем верно
+                        // а вот арифметика с Pixel* была бы здесь неверна
+                        byte* row = start + y * bits.Stride;
+                        for (int x = 0; x < NP.Width; x++)
+                        {
+                            // указатель на текущий пиксель
+                            // опять-таки, арифметика с Pixel* была бы неверна
+                            byte* pixel = row + x * bytesPerPixel;
+                            for (int d = 0; d < bytesPerPixel; d++)
+                            {
+                                pict_bytes[cur_pic_bt] = pixel[d];
+                                cur_pic_bt++;
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                if (bits != null)
+                    NP.UnlockBits(bits);
+            }
+            return pict_bytes;
+        }
+
+        unsafe private Bitmap arr2pic(Bitmap NP, int bytesPerPixel, byte[] pict_bytes)
+        {
+            BitmapData bits = null;
+            Rectangle rect = new Rectangle(0, 0, NP.Width, NP.Height);
+            int cur_pic_bt = 0;
+            try
+            {
+                bits = NP.LockBits(rect, ImageLockMode.ReadWrite, NP.PixelFormat);
+
+                {
+                    // указатель на Pixel не имеет смысла, лэйаут структур
+                    // в C# не определён
+                    // используем указатель на байт
+                    byte* start = (byte*)bits.Scan0;
+                    // цикл должен быть до H
+                    for (int y = 0; y < NP.Height; y++)
+                    {
+                        // указатель на начало строки
+                        // поскольку Stride в байтах, мы вычисляем верно
+                        // а вот арифметика с Pixel* была бы здесь неверна
+                        byte* row = start + y * bits.Stride;
+                        for (int x = 0; x < NP.Width; x++)
+                        {
+                            // указатель на текущий пиксель
+                            // опять-таки, арифметика с Pixel* была бы неверна
+                            byte* pixel = row + x * bytesPerPixel;
+                            for (int d = 0; d < bytesPerPixel; d++)
+                            {
+                                pixel[d] = pict_bytes[cur_pic_bt];
+                                cur_pic_bt++;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            finally
+            {
+                if (bits != null)
+                    NP.UnlockBits(bits);
+            }
+            return NP;
+
+        }
+
+
+
 
         /// <summary>
         /// Filtering the picture
@@ -207,70 +331,80 @@ namespace formsshower
             }
             else
             {
-
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
                 Bitmap FilterImage = new Bitmap(PictureViewer.Image);
                 Bitmap WorkImage = new Bitmap(PictureViewer.Image);
+                int WIW = WorkImage.Size.Width;
+                int WIH = WorkImage.Size.Height;
                 PictureViewer.Image = FilterImage;
-                int[,] R_matrix = new int[3, 3];
-                int[,] G_matrix = new int[3, 3];
-                int[,] B_matrix = new int[3, 3];
-                for (int x = 1; x < WorkImage.Size.Width - 1; x++)
+               
+                byte[,,] WI_bt_arr = BitmapToByteRgb(WorkImage);
+                byte[,,] FI_bt_arr = new byte[3, FilterImage.Height, FilterImage.Width];
+
+                for (int x = 1; x < WIW - 1; x++)
                 {
-                    for (int y = 1; y < WorkImage.Size.Height - 1; y++)
-                    {
-                        int R = 0, G = 0, B = 0;
-                        bool R11 = false, G11 = false, B11 = false;
-                        for (int j = 0; j < 3; j++)
-                        {
-                            for (int k = 0; k < 3; k++)
-                            {
-                                Color clr = WorkImage.GetPixel(x - 1 + j, y - 1 + k);
-                                R_matrix[j, k] = clr.R;
-                                G_matrix[j, k] = clr.G;
-                                B_matrix[j, k] = clr.B;
-                            }
-                        }
-                        for (int j = 0; j < 3; j++)
-                        {
-                            for (int k = 0; k < 3; k++)
-                            {
-                                if ((j != 1) || (k != 1))
-                                {
-                                    if (Math.Abs(R_matrix[j, k] - R_matrix[1, 1]) < porog) R11 = true;
-                                    if (Math.Abs(G_matrix[j, k] - G_matrix[1, 1]) < porog) G11 = true;
-                                    if (Math.Abs(B_matrix[j, k] - B_matrix[1, 1]) < porog) B11 = true;
-                                }
-                            }
-                        }
+                    Parallel.For(1, WIH - 1, y =>
+                   {
+                       byte R = 0, G = 0, B = 0;
+                       bool R11 = false, G11 = false, B11 = false;
+                       byte[,] R_matrix = new byte[3, 3];
+                       byte[,] G_matrix = new byte[3, 3];
+                       byte[,] B_matrix = new byte[3, 3];
+                       for (int j = 0; j < 3; j++)
+                       {
+                           for (int k = 0; k < 3; k++)
+                           {
+                               //Color clr = WI_clr_array[x - 1 + j, y - 1 + k];
+                               R_matrix[k, j] = WI_bt_arr[0, y - 1 + k, x - 1 + j];// clr.R;
+                               G_matrix[k, j] = WI_bt_arr[1, y - 1 + k, x - 1 + j];// clr.G;
+                               B_matrix[k, j] = WI_bt_arr[2, y - 1 + k, x - 1 + j];// clr.B;
+                           }
+                       }
 
-                        if ((R11) && (G11) && (B11))
-                        {
-                            R = R_matrix[1, 1];
-                            G = G_matrix[1, 1];
-                            B = B_matrix[1, 1];
-                        }
-                        else
-                        {
-                            for (int j = 0; j < 3; j++)
-                            {
-                                for (int k = 0; k < 3; k++)
-                                {
-                                    if ((j != 1) || (k != 1))
-                                    {
-                                        R += R_matrix[j, k];
-                                        G += G_matrix[j, k];
-                                        B += B_matrix[j, k];
-                                    }
-                                }
-                            }
-                            R /= 8;
-                            G /= 8;
-                            B /= 8;
-                        }
-                        FilterImage.SetPixel(x, y, Color.FromArgb(255, R, G, B));
-                    }
+                       for (int j = 0; j < 3; j++)
+                       {
+                           for (int k = 0; k < 3; k++)
+                           {
+                               if ((j != 1) || (k != 1))
+                               {
+                                   if (Math.Abs(R_matrix[k, j] - R_matrix[1, 1]) < porog) R11 = true;
+                                   if (Math.Abs(G_matrix[k, j] - G_matrix[1, 1]) < porog) G11 = true;
+                                   if (Math.Abs(B_matrix[k, j] - B_matrix[1, 1]) < porog) B11 = true;
+                               }
+                           }
+                       }
 
+                       if ((R11) && (G11) && (B11))
+                       {
+                           R = R_matrix[1, 1];
+                           G = G_matrix[1, 1];
+                           B = B_matrix[1, 1];
+                       }
+                       else
+                       {
+                           for (int j = 0; j < 3; j++)
+                           {
+                               for (int k = 0; k < 3; k++)
+                               {
+                                   if ((j != 1) || (k != 1))
+                                   {
+                                       R += R_matrix[k, j];
+                                       G += G_matrix[k, j];
+                                       B += B_matrix[k, j];
+                                   }
+                               }
+                           }
+                           R /= 8;
+                           G /= 8;
+                           B /= 8;
+                       }
+                       FI_bt_arr[0, y, x] = R;
+                       FI_bt_arr[1, y, x] = G;
+                       FI_bt_arr[2, y, x] = B;
+                   });
 
+                    /*
                     // рисовалка линии обработки
                     if ((x > 3) && (x < (FilterImage.Size.Width - 3)) && ((x / (AutoFilter ? 30 : 5)) == ((double)x / (AutoFilter ? 30 : 5))))
                     {
@@ -286,8 +420,10 @@ namespace formsshower
                             Color tmp_pixel = FilterImage.GetPixel(xx, yy);
                             FilterImage.SetPixel(xx, yy, Color.FromArgb(255, 255 - tmp_pixel.R, 255 - tmp_pixel.G, 255 - tmp_pixel.B));
                         }
-                    }
+                    }*/
                 }
+                
+                FilterImage = ByteToBitmapRgb(FilterImage, FI_bt_arr);
                 PictureViewer.Refresh();
                 if (AutoFilter)
                 {
@@ -296,7 +432,73 @@ namespace formsshower
                     porog_txtbx.Refresh();
                 }
                 if (porog < (step)) AutoFilter = false;
+                sw.Stop();
+                this.sw_label.Text = "Worked by " + sw.ElapsedMilliseconds.ToString() + " msec.";
             }
+        }
+
+        public unsafe static byte[,,] BitmapToByteRgb(Bitmap bmp)
+        {
+            int width = bmp.Width,
+                height = bmp.Height;
+            byte[,,] res = new byte[3, height, width];
+            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly,
+                PixelFormat.Format24bppRgb);
+            try
+            {
+                byte* curpos;
+                fixed (byte* _res = res)
+                {
+                    byte* _r = _res, _g = _res + width * height, _b = _res + 2 * width * height;
+                    for (int h = 0; h < height; h++)
+                    {
+                        curpos = ((byte*)bd.Scan0) + h * bd.Stride;
+                        for (int w = 0; w < width; w++)
+                        {
+                            *_b = *(curpos++); ++_b;
+                            *_g = *(curpos++); ++_g;
+                            *_r = *(curpos++); ++_r;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                bmp.UnlockBits(bd);
+            }
+            return res;
+        }
+
+        public unsafe static Bitmap ByteToBitmapRgb(Bitmap bmp, byte[,,] ress)
+        {
+            int width = bmp.Width,
+                height = bmp.Height;
+            byte[,,] res = ress;
+            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite,
+                PixelFormat.Format24bppRgb);
+            try
+            {
+                byte* curpos;
+                fixed (byte* _res = res)
+                {
+                    byte* _r = _res, _g = _res + width * height, _b = _res + 2 * width * height;
+                    for (int h = 0; h < height; h++)
+                    {
+                        curpos = ((byte*)bd.Scan0) + h * bd.Stride;
+                        for (int w = 0; w < width; w++)
+                        {
+                            *(curpos++) = *_b; ++_b;
+                            *(curpos++) = *_g; ++_g;
+                            *(curpos++) = *_r; ++_r;
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                bmp.UnlockBits(bd);
+            }
+            return bmp;
         }
 
         /// <summary>
@@ -356,10 +558,15 @@ namespace formsshower
         private void openFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             FileName = openFileDialog.FileName;
-
-            using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
-                OriginPicture = new Bitmap(fs);
-
+            try
+            {
+                using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
+                    OriginPicture = new Bitmap(fs);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
             PictureViewer.Image = OriginPicture;
             Bitmap editedPicture = new Bitmap(PictureViewer.Image);
             PictureViewer.Image = editedPicture;
@@ -1093,7 +1300,7 @@ namespace formsshower
                     float temp1 = 0;
                     float temp2 = 0;
                     float Y = 0;
-                    clr = WorkImage.GetPixel(x - 1 , y - 1);
+                    clr = WorkImage.GetPixel(x - 1, y - 1);
                     temp1 += clr.GetBrightness();
                     clr = WorkImage.GetPixel(x - 1, y);
                     temp1 += (2 * clr.GetBrightness());
@@ -1114,14 +1321,14 @@ namespace formsshower
 
                     clr = WorkImage.GetPixel(x - 1, y - 1);
                     temp1 += clr.GetBrightness();
-                    clr = WorkImage.GetPixel(x , y - 1);
+                    clr = WorkImage.GetPixel(x, y - 1);
                     temp1 += (2 * clr.GetBrightness());
                     clr = WorkImage.GetPixel(x + 1, y - 1);
                     temp1 += clr.GetBrightness();
 
                     clr = WorkImage.GetPixel(x - 1, y + 1);
                     temp2 += clr.GetBrightness();
-                    clr = WorkImage.GetPixel(x , y + 1);
+                    clr = WorkImage.GetPixel(x, y + 1);
                     temp2 += (2 * clr.GetBrightness());
                     clr = WorkImage.GetPixel(x + 1, y + 1);
                     temp2 += clr.GetBrightness();
@@ -1130,10 +1337,10 @@ namespace formsshower
 
                     float result = 0;
 
-                    if (qudr_sobel_radio.Checked) result = (float) Math.Sqrt(X * X + Y * Y);
+                    if (qudr_sobel_radio.Checked) result = (float)Math.Sqrt(X * X + Y * Y);
                     if (modul_sobel_radio.Checked) result = (float)Math.Abs(X) + Math.Abs(Y);
                     contrast_resulter[cur_pos] = result;
-                    int res_int = (int) (result * (float)Sobel_mnoj.Value);
+                    int res_int = (int)(result * (float)Sobel_mnoj.Value);
                     if (res_int > 255) res_int = 255;
                     if (this.invert_chkbx.Checked) res_int = 255 - res_int;
                     FilterImage.SetPixel(x, y, Color.FromArgb(255, res_int, res_int, res_int));
@@ -1191,15 +1398,15 @@ namespace formsshower
                     float temp2 = 0;
                     clr = WorkImage.GetPixel(x - 1, y);
                     temp1 = clr.GetBrightness();
-                    clr = WorkImage.GetPixel(x , y - 1);
+                    clr = WorkImage.GetPixel(x, y - 1);
                     temp1 *= (clr.GetBrightness());
                     clr = WorkImage.GetPixel(x + 1, y);
                     temp1 *= clr.GetBrightness();
-                    clr = WorkImage.GetPixel(x , y + 1);
+                    clr = WorkImage.GetPixel(x, y + 1);
                     temp1 *= clr.GetBrightness();
 
 
-                    clr = WorkImage.GetPixel(x , y );
+                    clr = WorkImage.GetPixel(x, y);
                     temp2 = clr.GetBrightness();
 
                     double result = Math.Log(Math.Pow((double)temp2, 4) / (double)temp1);
