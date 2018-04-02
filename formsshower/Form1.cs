@@ -23,7 +23,7 @@ namespace formsshower
         Random rnd1 = new Random();
         DataTable dataTable;
         byte[] dataToDisk;
-        float[] contrast_resulter;
+        float[,] contrast_resulter;
 
 
         public Form1()
@@ -88,23 +88,20 @@ namespace formsshower
                         byte R = (byte)rnd1.Next(0, 255);
                         byte G = (byte)rnd1.Next(0, 255);
                         byte B = (byte)rnd1.Next(0, 255);
-                        int nxt = rnd1.Next(0, total);
+                        int nxt = i;// rnd1.Next(0, total);
                         //int nxt = i;
                         pict_bytes[nxt * bytesPerPixel] = R;
                         pict_bytes[nxt * bytesPerPixel + 1] = G;
                         pict_bytes[nxt * bytesPerPixel + 2] = B;
                         pict_bytes[nxt * bytesPerPixel + 3] = 255;
                         tst++;
-                        if (tst % 50000 == 0) rnd1 = new Random();
+                        if (tst % 100 == 0) rnd1 = new Random();
                     }
                 }
-                /*
-                NoisePicture.SetPixel(rnd1.Next(OriginPicture.Size.Width), rnd1.Next(OriginPicture.Size.Height),
-                    Color.FromArgb(255, rnd1.Next(255), rnd1.Next(255), rnd1.Next(255)));*/
             });
             if (parr_res.IsCompleted)
             {
-                NoisePicture = arr2pic(NoisePicture, bytesPerPixel, pict_bytes);
+                arr2pic(NoisePicture, bytesPerPixel, pict_bytes);
                 PictureViewer.Image = NoisePicture;
             }
         }
@@ -319,7 +316,7 @@ namespace formsshower
                         chk_AutoFilter.Refresh();
                         AutoFilter = false;
                     }
-                    if (porog < 25) Prec = 0;
+                    if (porog < 100) Prec = 0;
                     if (porog < stop_auto)
                     {
                         chk_AutoFilter.Checked = false;
@@ -338,7 +335,7 @@ namespace formsshower
                 int WIW = WorkImage.Size.Width;
                 int WIH = WorkImage.Size.Height;
                 PictureViewer.Image = FilterImage;
-               
+
                 byte[,,] WI_bt_arr = BitmapToByteRgb(WorkImage);
                 byte[,,] FI_bt_arr = new byte[3, FilterImage.Height, FilterImage.Width];
 
@@ -406,7 +403,7 @@ namespace formsshower
 
                     /*
                     // рисовалка линии обработки
-                    if ((x > 3) && (x < (FilterImage.Size.Width - 3)) && ((x / (AutoFilter ? 30 : 5)) == ((double)x / (AutoFilter ? 30 : 5))))
+                    if ((x > 5) && (x < (FilterImage.Size.Width - 3)) && ((x / (AutoFilter ? 30 : 5)) == ((double)x / (AutoFilter ? 30 : 5))))
                     {
                         int xx = x - 2;
                         for (int yy = 0; yy < FilterImage.Size.Height; yy++)
@@ -422,7 +419,7 @@ namespace formsshower
                         }
                     }*/
                 }
-                
+
                 FilterImage = ByteToBitmapRgb(FilterImage, FI_bt_arr);
                 PictureViewer.Refresh();
                 if (AutoFilter)
@@ -508,15 +505,7 @@ namespace formsshower
         public void refresh_image(byte[,,] matrix)
         {
             Bitmap bmp = new Bitmap(PictureViewer.Image);
-            int heigh = bmp.Size.Height;
-            int wight = bmp.Size.Width;
-            for (int x = 0; x < wight; x++)
-            {
-                for (int y = 0; y < heigh; y++)
-                {
-                    bmp.SetPixel(x, y, Color.FromArgb(255, (byte)matrix[0, y, x], (byte)matrix[1, y, x], (byte)matrix[2, y, x]));
-                }
-            }
+            bmp = ByteToBitmapRgb(bmp, matrix);
             Invoke((MethodInvoker)delegate ()
             {
                 PictureViewer.Image = bmp;
@@ -1288,90 +1277,152 @@ namespace formsshower
         {
             Bitmap FilterImage = new Bitmap(PictureViewer.Image);
             Bitmap WorkImage = new Bitmap(PictureViewer.Image);
+            int WIH = WorkImage.Size.Height;
+            int WIW = WorkImage.Size.Width;
             PictureViewer.Image = FilterImage;
-            contrast_resulter = new float[WorkImage.Width * WorkImage.Height];
-            int cur_pos = 0;
-            for (int x = 1; x < WorkImage.Size.Width - 1; x++)
+            byte[,,] WI_bt_arr = BitmapToByteRgb(WorkImage);
+            byte[,,] FI_bt_arr = BitmapToByteRgb(FilterImage);
+            this.contrast_resulter = new float[WorkImage.Width, WorkImage.Height];
+            Parallel.For(1, WIW - 1, x =>
+           {
+               Parallel.For(1, WIH - 1, y =>
+             {
+                 Color clr;
+                 float X = 0;
+                 float temp1 = 0;
+                 float temp2 = 0;
+                 float Y = 0;
+                 clr = GetColorFromArr(WI_bt_arr, x - 1, y - 1);
+                 temp1 += clr.GetBrightness();
+                 clr = GetColorFromArr(WI_bt_arr, x - 1, y);
+                 temp1 += (2 * clr.GetBrightness());
+                 clr = GetColorFromArr(WI_bt_arr, x - 1, y + 1);
+                 temp1 += clr.GetBrightness();
+
+                 clr = GetColorFromArr(WI_bt_arr, x + 1, y - 1);
+                 temp2 += clr.GetBrightness();
+                 clr = GetColorFromArr(WI_bt_arr, x + 1, y);
+                 temp2 += (2 * clr.GetBrightness());
+                 clr = GetColorFromArr(WI_bt_arr, x + 1, y + 1);
+                 temp2 += clr.GetBrightness();
+
+                 X = temp1 - temp2;
+
+                 temp1 = 0;
+                 temp2 = 0;
+
+                 clr = GetColorFromArr(WI_bt_arr, x - 1, y - 1);
+                 temp1 += clr.GetBrightness();
+                 clr = GetColorFromArr(WI_bt_arr, x, y - 1);
+                 temp1 += (2 * clr.GetBrightness());
+                 clr = GetColorFromArr(WI_bt_arr, x + 1, y - 1);
+                 temp1 += clr.GetBrightness();
+
+                 clr = GetColorFromArr(WI_bt_arr, x - 1, y + 1);
+                 temp2 += clr.GetBrightness();
+                 clr = GetColorFromArr(WI_bt_arr, x, y + 1);
+                 temp2 += (2 * clr.GetBrightness());
+                 clr = GetColorFromArr(WI_bt_arr, x + 1, y + 1);
+                 temp2 += clr.GetBrightness();
+
+                 Y = temp1 - temp2;
+
+                 float result = 0;
+
+                 if (qudr_sobel_radio.Checked) result = (float)Math.Sqrt(X * X + Y * Y);
+                 if (modul_sobel_radio.Checked) result = (float)Math.Abs(X) + Math.Abs(Y);
+                 this.contrast_resulter[x, y] = result;
+                 int res_int = (int)(result * (float)Sobel_mnoj.Value);
+                 if (res_int > 255) res_int = 255;
+                 if (this.invert_chkbx.Checked) res_int = 255 - res_int;
+                 FI_bt_arr[0, y, x] = FI_bt_arr[1, y, x] = FI_bt_arr[2, y, x] = (byte)res_int;
+             });
+
+               if (x % 100 == 0)
+               {
+                   try
+                   {
+                       ByteToBitmapRgb(FilterImage, FI_bt_arr);
+                       PictureViewer.Refresh();
+                   }
+                   catch
+                   { }
+               }
+
+           });
+            try
             {
-                for (int y = 1; y < WorkImage.Size.Height - 1; y++)
-                {
-                    Color clr;
-                    float X = 0;
-                    float temp1 = 0;
-                    float temp2 = 0;
-                    float Y = 0;
-                    clr = WorkImage.GetPixel(x - 1, y - 1);
-                    temp1 += clr.GetBrightness();
-                    clr = WorkImage.GetPixel(x - 1, y);
-                    temp1 += (2 * clr.GetBrightness());
-                    clr = WorkImage.GetPixel(x - 1, y + 1);
-                    temp1 += clr.GetBrightness();
-
-                    clr = WorkImage.GetPixel(x + 1, y - 1);
-                    temp2 += clr.GetBrightness();
-                    clr = WorkImage.GetPixel(x + 1, y);
-                    temp2 += (2 * clr.GetBrightness());
-                    clr = WorkImage.GetPixel(x + 1, y + 1);
-                    temp2 += clr.GetBrightness();
-
-                    X = temp1 - temp2;
-
-                    temp1 = 0;
-                    temp2 = 0;
-
-                    clr = WorkImage.GetPixel(x - 1, y - 1);
-                    temp1 += clr.GetBrightness();
-                    clr = WorkImage.GetPixel(x, y - 1);
-                    temp1 += (2 * clr.GetBrightness());
-                    clr = WorkImage.GetPixel(x + 1, y - 1);
-                    temp1 += clr.GetBrightness();
-
-                    clr = WorkImage.GetPixel(x - 1, y + 1);
-                    temp2 += clr.GetBrightness();
-                    clr = WorkImage.GetPixel(x, y + 1);
-                    temp2 += (2 * clr.GetBrightness());
-                    clr = WorkImage.GetPixel(x + 1, y + 1);
-                    temp2 += clr.GetBrightness();
-
-                    Y = temp1 - temp2;
-
-                    float result = 0;
-
-                    if (qudr_sobel_radio.Checked) result = (float)Math.Sqrt(X * X + Y * Y);
-                    if (modul_sobel_radio.Checked) result = (float)Math.Abs(X) + Math.Abs(Y);
-                    contrast_resulter[cur_pos] = result;
-                    int res_int = (int)(result * (float)Sobel_mnoj.Value);
-                    if (res_int > 255) res_int = 255;
-                    if (this.invert_chkbx.Checked) res_int = 255 - res_int;
-                    FilterImage.SetPixel(x, y, Color.FromArgb(255, res_int, res_int, res_int));
-                    cur_pos++;
-                }
-                if (x % 10 == 0) PictureViewer.Refresh();
+                FilterImage = ByteToBitmapRgb(FilterImage, FI_bt_arr);
+                PictureViewer.Image = null;
+                PictureViewer.Image = FilterImage;
             }
-            PictureViewer.Refresh();
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
         }
+
+        private Color GetColorFromArr(byte[,,] array, int x, int y)
+        {
+            Color ret_val = Color.FromArgb(255, array[0, y, x], array[1, y, x], array[2, y, x]);
+            return ret_val;
+        }
+
 
         private void Sobel_mnoj_ValueChanged(object sender, EventArgs e)
         {
-            Bitmap FilterImage = new Bitmap(PictureViewer.Image);
-            Bitmap WorkImage = new Bitmap(PictureViewer.Image);
-            PictureViewer.Image = FilterImage;
-            int cur_pos = 0;
-            for (int x = 1; x < WorkImage.Size.Width - 1; x++)
+            if (this.contrast_resulter != null)
             {
-                for (int y = 1; y < WorkImage.Size.Height - 1; y++)
+                Bitmap FilterImage = new Bitmap(PictureViewer.Image);
+                Bitmap WorkImage = new Bitmap(PictureViewer.Image);
+                byte[,,] WI_bt_arr = BitmapToByteRgb(WorkImage);
+                byte[,,] FI_bt_arr = BitmapToByteRgb(FilterImage);
+                int WIH = WorkImage.Size.Height;
+                int WIW = WorkImage.Size.Width;
+                PictureViewer.Image = FilterImage;
+                int painting = 0;
+                ParallelLoopResult par_res_main = Parallel.For(1, WIW - 1, x =>
                 {
-                    float result = 0;
-                    result = contrast_resulter[cur_pos];
-                    int res_int = (int)(result * (float)Sobel_mnoj.Value);
-                    if (res_int > 255) res_int = 255;
-                    if (this.invert_chkbx.Checked) res_int = 255 - res_int;
-                    FilterImage.SetPixel(x, y, Color.FromArgb(255, res_int, res_int, res_int));
-                    cur_pos++;
+                    ParallelLoopResult par_res = Parallel.For(1, WIH - 1, y =>
+                    {
+                        float result = 0;
+                        result = this.contrast_resulter[x, y];
+                        int res_int = (int)(result * (float)Sobel_mnoj.Value);
+                        if (res_int > 255) res_int = 255;
+                        if (this.invert_chkbx.Checked) res_int = 255 - res_int;
+                        FI_bt_arr[0, y, x] = FI_bt_arr[1, y, x] = FI_bt_arr[2, y, x] = (byte)res_int;
+                    });
+
+                    if ((x % 100 == 0) && (par_res.IsCompleted) && (painting == 0))
+                    {
+                        painting++;
+                        try
+                        {
+                            if (painting == 1) ByteToBitmapRgb(FilterImage, FI_bt_arr);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                        }
+                        painting--;
+                    }
+
+                });
+                if (par_res_main.IsCompleted)
+                {
+                    try
+                    {
+                        FilterImage = ByteToBitmapRgb(FilterImage, FI_bt_arr);
+                        this.PictureViewer.Image = FilterImage;
+                        this.PictureViewer.Update();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
                 }
-                if (x % 10 == 0) PictureViewer.Refresh();
             }
-            PictureViewer.Refresh();
         }
 
         private void Uolis_contrast_menu_item_Click(object sender, EventArgs e)
@@ -1387,8 +1438,7 @@ namespace formsshower
             Bitmap FilterImage = new Bitmap(PictureViewer.Image);
             Bitmap WorkImage = new Bitmap(PictureViewer.Image);
             PictureViewer.Image = FilterImage;
-            contrast_resulter = new float[WorkImage.Width * WorkImage.Height];
-            int cur_pos = 0;
+            //this.contrast_resulter = new float[WorkImage.Width , WorkImage.Height];
             for (int x = 1; x < WorkImage.Size.Width - 1; x++)
             {
                 for (int y = 1; y < WorkImage.Size.Height - 1; y++)
@@ -1413,9 +1463,9 @@ namespace formsshower
                     double porog = (double)this.Uolis_porog.Value;
                     int res_int = 255;
                     if (result < porog) res_int = 0;
+                    //res_int = (int)result>255? 255: (int)result < 0 ? 0 : (int)result;
                     if (this.Uolis_invert_chkbx.Checked) res_int = 255 - res_int;
                     FilterImage.SetPixel(x, y, Color.FromArgb(255, res_int, res_int, res_int));
-                    cur_pos++;
                 }
                 if (x % 10 == 0) PictureViewer.Refresh();
             }
