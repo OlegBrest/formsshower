@@ -213,6 +213,8 @@ namespace formsshower
             int porog = (int)porog_txtbx.Value;
             if (AutoFilter)
             {
+                Stopwatch sw = new Stopwatch();
+                sw.Start();
                 /// Copying data from bitmap to array
                 Bitmap bmp = new Bitmap(PictureViewer.Image);
                 int width = bmp.Width,
@@ -250,9 +252,9 @@ namespace formsshower
                 {
                     do
                     {
-                        for (int y = 1; y < width - 1; y++)
+                        Parallel.For(1, width - 1, y =>
                         {
-                            for (int x = 1; x < height - 1; x++)
+                            Parallel.For(1, height - 1, x =>
                             {
                                 int R = 0, G = 0, B = 0;
                                 bool R11 = false, G11 = false, B11 = false;
@@ -294,8 +296,8 @@ namespace formsshower
                                 work_res[1, x, y] = (byte)G;
                                 work_res[2, x, y] = (byte)B;
                                 //                                bmp.SetPixel(y, x, Color.FromArgb(255, R, G, B));
-                            }
-                        }
+                            });
+                        });
                         Prec++;
                     } while (Prec < 5);
 
@@ -324,7 +326,8 @@ namespace formsshower
                         AutoFilter = false;
                     }
                 } while (AutoFilter);
-
+                sw.Stop();
+                this.sw_label.Text = "Worked by " + sw.ElapsedMilliseconds.ToString() + " msec.";
             }
             else
             {

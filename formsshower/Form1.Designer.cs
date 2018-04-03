@@ -35,6 +35,7 @@
             this.Filter_tabs = new System.Windows.Forms.TabControl();
             this.LF_filter_tab = new System.Windows.Forms.TabPage();
             this.LF_filtring_panel = new System.Windows.Forms.Panel();
+            this.sw_label = new System.Windows.Forms.Label();
             this.Stop_StepAuto = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.bttn_Filter = new System.Windows.Forms.Button();
@@ -99,7 +100,6 @@
             this.Uolis_contrast_menu_item = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileAsDialog = new System.Windows.Forms.SaveFileDialog();
             this.openFileAsDialog = new System.Windows.Forms.OpenFileDialog();
-            this.sw_label = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureViewer)).BeginInit();
             this.panel1.SuspendLayout();
@@ -215,6 +215,14 @@
             this.LF_filtring_panel.Name = "LF_filtring_panel";
             this.LF_filtring_panel.Size = new System.Drawing.Size(430, 63);
             this.LF_filtring_panel.TabIndex = 10;
+            // 
+            // sw_label
+            // 
+            this.sw_label.AutoSize = true;
+            this.sw_label.Location = new System.Drawing.Point(256, 48);
+            this.sw_label.Name = "sw_label";
+            this.sw_label.Size = new System.Drawing.Size(0, 13);
+            this.sw_label.TabIndex = 11;
             // 
             // Stop_StepAuto
             // 
@@ -887,14 +895,6 @@
             // saveFileAsDialog
             // 
             this.saveFileAsDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileAsDialog_FileOk);
-            // 
-            // sw_label
-            // 
-            this.sw_label.AutoSize = true;
-            this.sw_label.Location = new System.Drawing.Point(306, 48);
-            this.sw_label.Name = "sw_label";
-            this.sw_label.Size = new System.Drawing.Size(0, 13);
-            this.sw_label.TabIndex = 11;
             // 
             // Form1
             // 
