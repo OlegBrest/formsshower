@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using OpenCL.Net.Extensions;
 using OpenCL.Net;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace formsshower
 {
@@ -26,7 +27,8 @@ namespace formsshower
         float[,] contrast_resulter;
         private Context _context;
         private Device _device;
-
+        private Kernel kernel;
+        private Kernel kernel2;
 
         public Form1()
         {
@@ -50,7 +52,7 @@ namespace formsshower
             dataTable.Rows.Add("13.тип сжатия", "", "1");
             dataTable.Rows.Add("14.автор формата", "", "20");
             dataTable.Rows.Add("15.название программы, создающей файлы данного формата", "", "8");
-            this.getID();
+            this.SetupOCL();
         }
 
         /// <summary>
@@ -63,14 +65,151 @@ namespace formsshower
             openFileDialog.ShowDialog();
         }
 
-        private void getID()
+        private void CheckErr(ErrorCode err, string name)
+        {
+            if (err != ErrorCode.Success)
+            {
+                MessageBox.Show("ERROR: " + name + " (" + err.ToString() + ")");
+            }
+        }
+
+        private void ContextNotify(string errInfo, byte[] data, IntPtr cb, IntPtr userData)
+        {
+            MessageBox.Show("OpenCL Notification: " + errInfo);
+        }
+
+        private void SetupOCL()
         {
             ErrorCode error;
             Platform[] platforms = Cl.GetPlatformIDs(out error);
             List<Device> devicesList = new List<Device>();
-            Cl.Check(error);
-            MessageBox.Show(platforms[0].ToString());
+            CheckErr(error, "Cl.GetPlatformIDs");
+
+            foreach (Platform platform in platforms)
+            {
+                string platformName = Cl.GetPlatformInfo(platform, PlatformInfo.Name, out error).ToString();
+                Console.WriteLine("Platform: " + platformName);
+                CheckErr(error, "Cl.GetPlatformInfo");
+
+                //We will be looking only for GPU devices
+                foreach (Device device in Cl.GetDeviceIDs(platform, DeviceType.Gpu, out error))
+                {
+                    CheckErr(error, "Cl.GetDeviceIDs");
+                    MessageBox.Show("Device: " + device.ToString());
+                    devicesList.Add(device);
+                }
+            }
+            if (devicesList.Count <= 0)
+            {
+                MessageBox.Show("No devices found.");
+                return;
+            }
+            _device = devicesList[0];
+            if (Cl.GetDeviceInfo(_device, DeviceInfo.ImageSupport, out error).CastTo<Bool>() == Bool.False)
+            {
+                MessageBox.Show("No image support.");
+                return;
+            }
+
+            _context = Cl.CreateContext(null, 1, new[] { _device }, ContextNotify, IntPtr.Zero, out error); //Second parameter is amount of devices
+            CheckErr(error, "Cl.CreateContext");
+
+            string programSource =
+                @"
+__kernel void AnisoDiff2D
+                (
+                    __global uchar * res,
+                    int x,
+                    int y,
+                    int height, 
+                    int width,
+                    int porog,
+                    __global int out
+                )
+                {
+                 int retval =0;
+                 int iJob = get_global_id(0);
+
+            //Check boundary conditions
+            if (iJob >= 3*height*width) return; 
+            int R = 0, G = 0, B = 0;
+            bool R11 = false, G11 = false, B11 = false;
+
+            int R_por = res[x * 3 + y * 3 * width];
+            int G_por = res[1 + x * 3 + y * 3 * width];
+            int B_por = res[2 + x * 3 + y * 3 * width];
+
+            for (int j = 0; j < 3; j++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+
+                    if ((j != 1) || (k != 1))
+                    {
+                        int corr = (x - 1 + j) * 3 + (y - 1 + k) * 3 * width;
+                        if (abs(res[corr] - R_por) < porog) R11 = true;
+                        if (abs(res[1 + corr] - G_por) < porog) G11 = true;
+                        if (abs(res[2 + corr] - B_por) < porog) B11 = true;
+
+                        R += res[corr];
+                        G += res[1 + corr];
+                        B += res[2 + corr];
+                    }
+                }
+            }
+            
+            R = R >> 3;
+            G = G >> 3;
+            B = B >> 3;
+
+            if ((R11) && (G11) && (B11))
+            {
+                R = R_por;
+                G = G_por;
+                B = B_por;
+            }
+            retval = 255; retval=retval<<8;
+            retval += R;retval=retval<<8;
+            retval += G;retval=retval<<8;
+            retval += B;
+            out[iJob] = retval;
+            }
+";
+
+            using (OpenCL.Net.Program program = Cl.CreateProgramWithSource(_context, 1, new[] { programSource }, null, out error))
+            {
+                CheckErr(error, "Cl.CreateProgramWithSource");
+
+                //Compile kernel source
+                error = Cl.BuildProgram(program, 1, new[] { _device }, string.Empty, null, IntPtr.Zero);
+                CheckErr(error, "Cl.BuildProgram");
+
+                //Check for any compilation errors
+                if
+                (
+                    Cl.GetProgramBuildInfo
+                    (
+                        program,
+                        _device,
+                        ProgramBuildInfo.Status,
+                        out error
+                    ).CastTo<BuildStatus>() != BuildStatus.Success
+                )
+                {
+                    CheckErr(error, "Cl.GetProgramBuildInfo");
+                    Console.WriteLine("Cl.GetProgramBuildInfo != Success");
+                    Console.WriteLine(Cl.GetProgramBuildInfo(program, _device, ProgramBuildInfo.Log, out error));
+                    return;
+                }
+
+                //Create the required kernel (entry function)
+                kernel = Cl.CreateKernel(program, "GPUAntiNoise", out error);
+                kernel2 = Cl.CreateKernel(program, "GPUAntiNoise", out error);
+                CheckErr(error, "Cl.CreateKernel");
+            }
         }
+
+
 
         /// <summary>
         /// Random noise adding 
@@ -101,7 +240,7 @@ namespace formsshower
                         byte G = (byte)rnd1.Next(0, 255);
                         byte B = (byte)rnd1.Next(0, 255);
                         int nxt = i;// rnd1.Next(0, total);
-                        //int nxt = i;
+                                    //int nxt = i;
                         pict_bytes[nxt * bytesPerPixel] = R;
                         pict_bytes[nxt * bytesPerPixel + 1] = G;
                         pict_bytes[nxt * bytesPerPixel + 2] = B;
@@ -210,9 +349,6 @@ namespace formsshower
 
         }
 
-
-
-
         /// <summary>
         /// Filtering the picture
         /// </summary>
@@ -258,20 +394,58 @@ namespace formsshower
                 }
                 byte[,,] work_res = new byte[3, height, width];
                 work_res = res;
+                byte[] arr1D = this.Arr3Dto1D(res, height, width);
                 int Prec = 3; // how much for precious when porog <25
                 int stop_auto = Convert.ToInt32(Stop_StepAuto.Value);
                 do
                 {
                     do
                     {
-                        Parallel.For(1, width - 1, y =>
+                        arr1D = this.Arr3Dto1D(res, height, width);
+                        Parallel.For(1, height - 1, y =>
                         {
-                            Parallel.For(1, height - 1, x =>
+                            Parallel.For(1, width - 1, x =>
                             {
-                                Color result = this.AutoAntiNoise(res, x, y, porog);
-                                work_res[0, x, y] = result.R;
-                                work_res[1, x, y] = result.G;
-                                work_res[2, x, y] = result.B;
+                                //Color result = this.AutoAntiNoise(arr1D, x, y, height, width, porog);
+                                int intPtrSize = 0;
+                                intPtrSize = Marshal.SizeOf(typeof(IntPtr));
+                                ErrorCode error;
+                                
+                                IMem inp_buff = Cl.CreateBuffer(_context, MemFlags.CopyHostPtr, arr1D.Length*sizeof(byte),arr1D[0],out error);
+                                IMem x_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
+                                IMem y_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
+                                IMem height_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
+                                IMem width_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
+                                IMem porog_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
+                                IMem out_buff = Cl.CreateBuffer(_context, MemFlags.WriteOnly, sizeof(Int32), out error);
+                                CheckErr(error, "421.Cl.CreateBuffer");
+
+                                uint iArg = 0;
+                                error = Cl.SetKernelArg(kernel, iArg++,(IntPtr)intPtrSize, inp_buff);
+                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, x_buff);
+                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, y_buff);
+                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, height_buff);
+                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, width_buff);
+                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, porog_buff);
+                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, out_buff);
+                                CheckErr(error, "431.Cl.SetKernelArg");
+
+                                CommandQueue cmdQueue = Cl.CreateCommandQueue(_context, _device, (CommandQueueProperties)0, out error);
+                                CheckErr(error, "Cl.CreateCommandQueue");
+
+
+                                Cl.ReleaseMemObject(inp_buff);
+                                Cl.ReleaseMemObject(x_buff);
+                                Cl.ReleaseMemObject(y_buff);
+                                Cl.ReleaseMemObject(height_buff);
+                                Cl.ReleaseMemObject(width_buff);
+                                Cl.ReleaseMemObject(porog_buff);
+                                Cl.ReleaseMemObject(out_buff);
+                                CheckErr(error, "442.Cl.ReleaseMemObject");
+
+                                work_res[0, y, x] = result.R;
+                                work_res[1, y, x] = result.G;
+                                work_res[2, y, x] = result.B;
                                 //                                bmp.SetPixel(y, x, Color.FromArgb(255, R, G, B));
                             });
                         });
@@ -378,9 +552,12 @@ namespace formsshower
                                    }
                                }
                            }
-                           R /= 8;
-                           G /= 8;
-                           B /= 8;
+                           /*  R /= 8;
+                             G /= 8;
+                             B /= 8;*/
+                           R = R >> 3;
+                           G = G >> 3;
+                           B = B >> 3;
                        }
                        FI_bt_arr[0, y, x] = (byte)R;
                        FI_bt_arr[1, y, x] = (byte)G;
@@ -420,6 +597,23 @@ namespace formsshower
             }
         }
 
+        public byte[] Arr3Dto1D(byte[,,] source, int height, int width)
+        {
+            byte[] result = new byte[3 * height * width];
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    for (int z = 0; z < 3; z++)
+                    {
+                        result[z + x * 3 + y * 3 * width] = source[z, y, x];
+                    }
+                }
+            }
+            return result;
+        }
+
+
         /// <summary>
         /// Antinoise for auto
         /// </summary>
@@ -428,15 +622,15 @@ namespace formsshower
         /// <param name="y"></param>
         /// <param name="porog"></param>
         /// <returns></returns>
-        public Color AutoAntiNoise(byte[,,] res, int x,int y, int porog)
+        unsafe public Color AutoAntiNoise(byte[] res, int x, int y, int height, int width, int porog)
         {
             Color retval = new Color();
             int R = 0, G = 0, B = 0;
             bool R11 = false, G11 = false, B11 = false;
 
-            int R_por = res[0, x, y];
-            int G_por = res[1, x, y];
-            int B_por = res[2, x, y];
+            int R_por = res[x * 3 + y * 3 * width];
+            int G_por = res[1 + x * 3 + y * 3 * width];
+            int B_por = res[2 + x * 3 + y * 3 * width];
 
             for (int j = 0; j < 3; j++)
             {
@@ -445,21 +639,20 @@ namespace formsshower
 
                     if ((j != 1) || (k != 1))
                     {
+                        int corr = (x - 1 + j) * 3 + (y - 1 + k) * 3 * width;
+                        if (Math.Abs(res[corr] - R_por) < porog) R11 = true;
+                        if (Math.Abs(res[1 + corr] - G_por) < porog) G11 = true;
+                        if (Math.Abs(res[2 + corr] - B_por) < porog) B11 = true;
 
-                        if (Math.Abs(res[0, x - 1 + j, y - 1 + k] - R_por) < porog) R11 = true;
-                        if (Math.Abs(res[1, x - 1 + j, y - 1 + k] - G_por) < porog) G11 = true;
-                        if (Math.Abs(res[2, x - 1 + j, y - 1 + k] - B_por) < porog) B11 = true;
-
-                        R += res[0, x - 1 + j, y - 1 + k];
-                        G += res[1, x - 1 + j, y - 1 + k];
-                        B += res[2, x - 1 + j, y - 1 + k];
+                        R += res[corr];
+                        G += res[1 + corr];
+                        B += res[2 + corr];
                     }
                 }
             }
-
-            R /= 8;
-            G /= 8;
-            B /= 8;
+            R = R >> 3;
+            G = G >> 3;
+            B = B >> 3;
 
             if ((R11) && (G11) && (B11))
             {
@@ -470,6 +663,7 @@ namespace formsshower
             retval = Color.FromArgb(255, R, G, B);
             return retval;
         }
+
 
         public unsafe static byte[,,] BitmapToByteRgb(Bitmap bmp)
         {
@@ -658,7 +852,6 @@ namespace formsshower
                 Filter_tabs.SelectedTab = Median_filter_tab;
             }
         }
-
 
         // медианная взвешенная фильтрация
         private void median_filter_bttn_Click(object sender, EventArgs e)
@@ -1411,7 +1604,6 @@ namespace formsshower
             return ret_val;
         }
 
-
         private void Sobel_mnoj_ValueChanged(object sender, EventArgs e)
         {
             if (this.contrast_resulter != null)
@@ -1472,7 +1664,6 @@ namespace formsshower
             Filter_tabs.SelectedTab = Uoles_kontrast_tab;
             this.Text = "Обработка фото. Контрастирование Уолиса";
         }
-
 
         //Фильтр Уолиса (Контраст)
         private void Uolis_start_bttn_Click(object sender, EventArgs e)
