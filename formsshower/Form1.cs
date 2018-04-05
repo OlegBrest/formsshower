@@ -24,6 +24,8 @@ namespace formsshower
         DataTable dataTable;
         byte[] dataToDisk;
         float[,] contrast_resulter;
+        private Context _context;
+        private Device _device;
 
 
         public Form1()
@@ -48,6 +50,7 @@ namespace formsshower
             dataTable.Rows.Add("13.тип сжатия", "", "1");
             dataTable.Rows.Add("14.автор формата", "", "20");
             dataTable.Rows.Add("15.название программы, создающей файлы данного формата", "", "8");
+            this.getID();
         }
 
         /// <summary>
@@ -58,6 +61,15 @@ namespace formsshower
         private void bttn_Load_Click(object sender, EventArgs e)
         {
             openFileDialog.ShowDialog();
+        }
+
+        private void getID()
+        {
+            ErrorCode error;
+            Platform[] platforms = Cl.GetPlatformIDs(out error);
+            List<Device> devicesList = new List<Device>();
+            Cl.Check(error);
+            MessageBox.Show(platforms[0].ToString());
         }
 
         /// <summary>
@@ -256,45 +268,10 @@ namespace formsshower
                         {
                             Parallel.For(1, height - 1, x =>
                             {
-                                int R = 0, G = 0, B = 0;
-                                bool R11 = false, G11 = false, B11 = false;
-
-                                int R_por = res[0, x, y];
-                                int G_por = res[1, x, y];
-                                int B_por = res[2, x, y];
-
-                                for (int j = 0; j < 3; j++)
-                                {
-                                    for (int k = 0; k < 3; k++)
-                                    {
-
-                                        if ((j != 1) || (k != 1))
-                                        {
-
-                                            if (Math.Abs(res[0, x - 1 + j, y - 1 + k] - R_por) < porog) R11 = true;
-                                            if (Math.Abs(res[1, x - 1 + j, y - 1 + k] - G_por) < porog) G11 = true;
-                                            if (Math.Abs(res[2, x - 1 + j, y - 1 + k] - B_por) < porog) B11 = true;
-
-                                            R += res[0, x - 1 + j, y - 1 + k];
-                                            G += res[1, x - 1 + j, y - 1 + k];
-                                            B += res[2, x - 1 + j, y - 1 + k];
-                                        }
-                                    }
-                                }
-
-                                R /= 8;
-                                G /= 8;
-                                B /= 8;
-
-                                if ((R11) && (G11) && (B11))
-                                {
-                                    R = R_por;
-                                    G = G_por;
-                                    B = B_por;
-                                }
-                                work_res[0, x, y] = (byte)R;
-                                work_res[1, x, y] = (byte)G;
-                                work_res[2, x, y] = (byte)B;
+                                Color result = this.AutoAntiNoise(res, x, y, porog);
+                                work_res[0, x, y] = result.R;
+                                work_res[1, x, y] = result.G;
+                                work_res[2, x, y] = result.B;
                                 //                                bmp.SetPixel(y, x, Color.FromArgb(255, R, G, B));
                             });
                         });
@@ -303,13 +280,19 @@ namespace formsshower
 
                     if (AutoFilter)
                     {
-                        Thread trd = new Thread(delegate () { refresh_image(res); });
-                        trd.Start();
+                        try
+                        {
+                            Thread trd = new Thread(delegate () { refresh_image(res); });
+                            trd.Start();
 
-                        porog -= step;
-                        porog_txtbx.Value = porog;
-                        porog_txtbx.Refresh();
-                        res = work_res;
+                            porog -= step;
+                            porog_txtbx.Value = porog;
+                            porog_txtbx.Refresh();
+                            res = work_res;
+                        }
+                        catch
+                        {
+                        }
                     }
 
                     if (porog < (step))
@@ -437,6 +420,57 @@ namespace formsshower
             }
         }
 
+        /// <summary>
+        /// Antinoise for auto
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="porog"></param>
+        /// <returns></returns>
+        public Color AutoAntiNoise(byte[,,] res, int x,int y, int porog)
+        {
+            Color retval = new Color();
+            int R = 0, G = 0, B = 0;
+            bool R11 = false, G11 = false, B11 = false;
+
+            int R_por = res[0, x, y];
+            int G_por = res[1, x, y];
+            int B_por = res[2, x, y];
+
+            for (int j = 0; j < 3; j++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+
+                    if ((j != 1) || (k != 1))
+                    {
+
+                        if (Math.Abs(res[0, x - 1 + j, y - 1 + k] - R_por) < porog) R11 = true;
+                        if (Math.Abs(res[1, x - 1 + j, y - 1 + k] - G_por) < porog) G11 = true;
+                        if (Math.Abs(res[2, x - 1 + j, y - 1 + k] - B_por) < porog) B11 = true;
+
+                        R += res[0, x - 1 + j, y - 1 + k];
+                        G += res[1, x - 1 + j, y - 1 + k];
+                        B += res[2, x - 1 + j, y - 1 + k];
+                    }
+                }
+            }
+
+            R /= 8;
+            G /= 8;
+            B /= 8;
+
+            if ((R11) && (G11) && (B11))
+            {
+                R = R_por;
+                G = G_por;
+                B = B_por;
+            }
+            retval = Color.FromArgb(255, R, G, B);
+            return retval;
+        }
+
         public unsafe static byte[,,] BitmapToByteRgb(Bitmap bmp)
         {
             int width = bmp.Width,
@@ -507,13 +541,18 @@ namespace formsshower
         /// <param name="matrix"></param>
         public void refresh_image(byte[,,] matrix)
         {
-            Bitmap bmp = new Bitmap(PictureViewer.Image);
-            bmp = ByteToBitmapRgb(bmp, matrix);
-            Invoke((MethodInvoker)delegate ()
+            try
             {
-                PictureViewer.Image = bmp;
-                PictureViewer.Refresh();
-            });
+                Bitmap bmp = new Bitmap(PictureViewer.Image);
+                bmp = ByteToBitmapRgb(bmp, matrix);
+                Invoke((MethodInvoker)delegate ()
+                {
+                    PictureViewer.Image = bmp;
+                    PictureViewer.Refresh();
+                });
+            }
+            catch
+            { }
         }
 
         /// <summary>
