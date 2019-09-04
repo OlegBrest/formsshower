@@ -131,7 +131,7 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 16F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 11F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 215F));
             this.tableLayoutPanel1.Controls.Add(this.PictureViewer, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
@@ -151,7 +151,7 @@
             this.PictureViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureViewer.Location = new System.Drawing.Point(3, 3);
             this.PictureViewer.Name = "PictureViewer";
-            this.PictureViewer.Size = new System.Drawing.Size(1027, 372);
+            this.PictureViewer.Size = new System.Drawing.Size(1032, 372);
             this.PictureViewer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureViewer.TabIndex = 0;
             this.PictureViewer.TabStop = false;
@@ -167,7 +167,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 381);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1027, 75);
+            this.panel1.Size = new System.Drawing.Size(1032, 75);
             this.panel1.TabIndex = 1;
             // 
             // Filter_tabs
@@ -667,9 +667,9 @@
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.label4);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(1036, 3);
+            this.panel2.Location = new System.Drawing.Point(1041, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(10, 372);
+            this.panel2.Size = new System.Drawing.Size(5, 372);
             this.panel2.TabIndex = 13;
             this.panel2.Visible = false;
             // 
@@ -681,7 +681,7 @@
             this.panel3.Controls.Add(this.Headers_dgv);
             this.panel3.Location = new System.Drawing.Point(3, 16);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(4, 353);
+            this.panel3.Size = new System.Drawing.Size(0, 353);
             this.panel3.TabIndex = 4;
             // 
             // Headers_dgv
@@ -700,7 +700,7 @@
             this.Headers_dgv.ReadOnly = true;
             this.Headers_dgv.RowHeadersVisible = false;
             this.Headers_dgv.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.Headers_dgv.Size = new System.Drawing.Size(4, 353);
+            this.Headers_dgv.Size = new System.Drawing.Size(0, 353);
             this.Headers_dgv.TabIndex = 0;
             this.Headers_dgv.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.Headers_dgv_CellValueChanged);
             this.Headers_dgv.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Headers_dgv_EditingControlShowing);
@@ -747,15 +747,15 @@
             this.panel4.Controls.Add(this.custom_header_bttn);
             this.panel4.Controls.Add(this.header_bttn);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(1036, 381);
+            this.panel4.Location = new System.Drawing.Point(1041, 381);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(10, 75);
+            this.panel4.Size = new System.Drawing.Size(5, 75);
             this.panel4.TabIndex = 14;
             // 
             // custom_header_bttn
             // 
             this.custom_header_bttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.custom_header_bttn.Location = new System.Drawing.Point(-153, 5);
+            this.custom_header_bttn.Location = new System.Drawing.Point(-158, 5);
             this.custom_header_bttn.Name = "custom_header_bttn";
             this.custom_header_bttn.Size = new System.Drawing.Size(71, 68);
             this.custom_header_bttn.TabIndex = 14;
@@ -766,7 +766,7 @@
             // header_bttn
             // 
             this.header_bttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.header_bttn.Location = new System.Drawing.Point(-76, 5);
+            this.header_bttn.Location = new System.Drawing.Point(-81, 5);
             this.header_bttn.Name = "header_bttn";
             this.header_bttn.Size = new System.Drawing.Size(83, 68);
             this.header_bttn.TabIndex = 13;
@@ -805,34 +805,34 @@
             this.SaveToolStripMenuItem,
             this.SaveAsToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
-            this.FileToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.FileToolStripMenuItem.Text = "Файл";
             // 
             // LoadToolStripMenuItem
             // 
             this.LoadToolStripMenuItem.Name = "LoadToolStripMenuItem";
-            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.LoadToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.LoadToolStripMenuItem.Text = "Загрузить";
             this.LoadToolStripMenuItem.Click += new System.EventHandler(this.bttn_Load_Click);
             // 
             // LoadSpecificToolStripMenuItem
             // 
             this.LoadSpecificToolStripMenuItem.Name = "LoadSpecificToolStripMenuItem";
-            this.LoadSpecificToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.LoadSpecificToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.LoadSpecificToolStripMenuItem.Text = "Загрузить свой формат";
             this.LoadSpecificToolStripMenuItem.Click += new System.EventHandler(this.LoadSpecificToolStripMenuItem_Click);
             // 
             // SaveToolStripMenuItem
             // 
             this.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem";
-            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.SaveToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.SaveToolStripMenuItem.Text = "Сохранить";
             this.SaveToolStripMenuItem.Click += new System.EventHandler(this.bttn_save_Click);
             // 
             // SaveAsToolStripMenuItem
             // 
             this.SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem";
-            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.SaveAsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.SaveAsToolStripMenuItem.Text = "Сохранить свой формат";
             this.SaveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
@@ -844,7 +844,7 @@
             this.Median_vzvesh_Menu_Item,
             this.Median_Menu_Item});
             this.FilterToolStripMenuItem.Name = "FilterToolStripMenuItem";
-            this.FilterToolStripMenuItem.Size = new System.Drawing.Size(117, 20);
+            this.FilterToolStripMenuItem.Size = new System.Drawing.Size(125, 20);
             this.FilterToolStripMenuItem.Text = "Метод фильтрации";
             // 
             // LF_filtr_Menu_item
@@ -852,21 +852,21 @@
             this.LF_filtr_Menu_item.Checked = true;
             this.LF_filtr_Menu_item.CheckState = System.Windows.Forms.CheckState.Checked;
             this.LF_filtr_Menu_item.Name = "LF_filtr_Menu_item";
-            this.LF_filtr_Menu_item.Size = new System.Drawing.Size(426, 22);
+            this.LF_filtr_Menu_item.Size = new System.Drawing.Size(460, 22);
             this.LF_filtr_Menu_item.Text = "Низкочастотная пространственная фильтрация ";
             this.LF_filtr_Menu_item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
             // Median_vzvesh_Menu_Item
             // 
             this.Median_vzvesh_Menu_Item.Name = "Median_vzvesh_Menu_Item";
-            this.Median_vzvesh_Menu_Item.Size = new System.Drawing.Size(426, 22);
+            this.Median_vzvesh_Menu_Item.Size = new System.Drawing.Size(460, 22);
             this.Median_vzvesh_Menu_Item.Text = "Взвешенный двумерный медианный фильтр с квадратным окном 3х3";
             this.Median_vzvesh_Menu_Item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
             // Median_Menu_Item
             // 
             this.Median_Menu_Item.Name = "Median_Menu_Item";
-            this.Median_Menu_Item.Size = new System.Drawing.Size(426, 22);
+            this.Median_Menu_Item.Size = new System.Drawing.Size(460, 22);
             this.Median_Menu_Item.Text = "Медианный фильтр";
             this.Median_Menu_Item.Click += new System.EventHandler(this.filtr_Menu_item_Click);
             // 
@@ -876,20 +876,20 @@
             this.Sobel_contrast_menu_item,
             this.Uolis_contrast_menu_item});
             this.методКонтрастированияToolStripMenuItem.Name = "методКонтрастированияToolStripMenuItem";
-            this.методКонтрастированияToolStripMenuItem.Size = new System.Drawing.Size(150, 20);
+            this.методКонтрастированияToolStripMenuItem.Size = new System.Drawing.Size(159, 20);
             this.методКонтрастированияToolStripMenuItem.Text = "Метод контрастирования";
             // 
             // Sobel_contrast_menu_item
             // 
             this.Sobel_contrast_menu_item.Name = "Sobel_contrast_menu_item";
-            this.Sobel_contrast_menu_item.Size = new System.Drawing.Size(161, 22);
+            this.Sobel_contrast_menu_item.Size = new System.Drawing.Size(169, 22);
             this.Sobel_contrast_menu_item.Text = "фильтр Собела";
             this.Sobel_contrast_menu_item.Click += new System.EventHandler(this.Sobel_contrast_menu_item_Click);
             // 
             // Uolis_contrast_menu_item
             // 
             this.Uolis_contrast_menu_item.Name = "Uolis_contrast_menu_item";
-            this.Uolis_contrast_menu_item.Size = new System.Drawing.Size(161, 22);
+            this.Uolis_contrast_menu_item.Size = new System.Drawing.Size(169, 22);
             this.Uolis_contrast_menu_item.Text = "оператор Уолиса";
             this.Uolis_contrast_menu_item.Click += new System.EventHandler(this.Uolis_contrast_menu_item_Click);
             // 

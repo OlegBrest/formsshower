@@ -1,19 +1,17 @@
-﻿using System;
+﻿using OpenCL.Net;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using OpenCL.Net.Extensions;
-using OpenCL.Net;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
+using Environment = System.Environment;
 
 namespace formsshower
 {
@@ -52,7 +50,7 @@ namespace formsshower
             dataTable.Rows.Add("13.тип сжатия", "", "1");
             dataTable.Rows.Add("14.автор формата", "", "20");
             dataTable.Rows.Add("15.название программы, создающей файлы данного формата", "", "8");
-            this.SetupOCL();
+            //this.SetupOCL();
         }
 
         /// <summary>
@@ -92,7 +90,7 @@ namespace formsshower
                 CheckErr(error, "Cl.GetPlatformInfo");
 
                 //We will be looking only for GPU devices
-                foreach (Device device in Cl.GetDeviceIDs(platform, DeviceType.Gpu, out error))
+                foreach (Device device in Cl.GetDeviceIDs(platform, DeviceType.All, out error))
                 {
                     CheckErr(error, "Cl.GetDeviceIDs");
                     MessageBox.Show("Device: " + device.ToString());
@@ -175,7 +173,7 @@ __kernel void AnisoDiff2D
             out[iJob] = retval;
             }
 ";
-
+            programSource = programSource.Replace(Environment.NewLine, "");
             using (OpenCL.Net.Program program = Cl.CreateProgramWithSource(_context, 1, new[] { programSource }, null, out error))
             {
                 CheckErr(error, "Cl.CreateProgramWithSource");
@@ -216,7 +214,7 @@ __kernel void AnisoDiff2D
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        unsafe private void bttn_Noise_Click(object sender, EventArgs e)
+        private unsafe void bttn_Noise_Click(object sender, EventArgs e)
         {
             int total = this.OriginPicture.Size.Width * this.OriginPicture.Size.Height;
             double chanse = ((double)chanse_txtbx.Value);
@@ -230,7 +228,7 @@ __kernel void AnisoDiff2D
             ParallelLoopResult parr_res =
             Parallel.For(0, total, (i, loopState) =>
             {
-                if ((((((double)tst) / (double)total)) * 100) < chanse)
+                if ((((tst / (double)total)) * 100) < chanse)
                 {
 
                     double next_rnd = rnd1.Next(0, 100);
@@ -301,7 +299,7 @@ __kernel void AnisoDiff2D
             return pict_bytes;
         }
 
-        unsafe private Bitmap arr2pic(Bitmap NP, int bytesPerPixel, byte[] pict_bytes)
+        private unsafe Bitmap arr2pic(Bitmap NP, int bytesPerPixel, byte[] pict_bytes)
         {
             BitmapData bits = null;
             Rectangle rect = new Rectangle(0, 0, NP.Width, NP.Height);
@@ -402,53 +400,57 @@ __kernel void AnisoDiff2D
                     do
                     {
                         arr1D = this.Arr3Dto1D(res, height, width);
-                        Parallel.For(1, height - 1, y =>
+                        int sz = arr1D.Length * sizeof(byte);
+                        fixed (byte* _arr1D = arr1D)
                         {
-                            Parallel.For(1, width - 1, x =>
+                            Parallel.For(1, height - 1, y =>
                             {
-                                //Color result = this.AutoAntiNoise(arr1D, x, y, height, width, porog);
-                                int intPtrSize = 0;
-                                intPtrSize = Marshal.SizeOf(typeof(IntPtr));
-                                ErrorCode error;
-                                
-                                IMem inp_buff = Cl.CreateBuffer(_context, MemFlags.CopyHostPtr, arr1D.Length*sizeof(byte),arr1D[0],out error);
-                                IMem x_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
-                                IMem y_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
-                                IMem height_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
-                                IMem width_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
-                                IMem porog_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
-                                IMem out_buff = Cl.CreateBuffer(_context, MemFlags.WriteOnly, sizeof(Int32), out error);
-                                CheckErr(error, "421.Cl.CreateBuffer");
+                                for (int x = 1; x < (width - 1); x++)
+                                {
+                                    Color result = this.AutoAntiNoise(arr1D, x, y, height, width, porog);
+                                    /* int intPtrSize = 0;
+                                     intPtrSize = Marshal.SizeOf(typeof(IntPtr));
+                                     ErrorCode error;
 
-                                uint iArg = 0;
-                                error = Cl.SetKernelArg(kernel, iArg++,(IntPtr)intPtrSize, inp_buff);
-                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, x_buff);
-                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, y_buff);
-                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, height_buff);
-                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, width_buff);
-                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, porog_buff);
-                                error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, out_buff);
-                                CheckErr(error, "431.Cl.SetKernelArg");
+                                     IMem inp_buff = Cl.CreateBuffer(_context, MemFlags.CopyHostPtr, sz, out error);
+                                     IMem x_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
+                                     IMem y_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
+                                     IMem height_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
+                                     IMem width_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
+                                     IMem porog_buff = Cl.CreateBuffer(_context, MemFlags.ReadOnly, sizeof(Int32), out error);
+                                     IMem out_buff = Cl.CreateBuffer(_context, MemFlags.WriteOnly, sizeof(Int32), out error);
+                                     CheckErr(error, "424.Cl.CreateBuffer");
 
-                                CommandQueue cmdQueue = Cl.CreateCommandQueue(_context, _device, (CommandQueueProperties)0, out error);
-                                CheckErr(error, "Cl.CreateCommandQueue");
+                                     uint iArg = 0;
+                                     error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, inp_buff);
+                                     error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, x_buff);
+                                     error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, y_buff);
+                                     error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, height_buff);
+                                     error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, width_buff);
+                                     error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, porog_buff);
+                                     error = Cl.SetKernelArg(kernel, iArg++, (IntPtr)intPtrSize, out_buff);
+                                     CheckErr(error, "434.Cl.SetKernelArg");
+
+                                     CommandQueue cmdQueue = Cl.CreateCommandQueue(_context, _device, (CommandQueueProperties)0, out error);
+                                     CheckErr(error, "Cl.CreateCommandQueue");
 
 
-                                Cl.ReleaseMemObject(inp_buff);
-                                Cl.ReleaseMemObject(x_buff);
-                                Cl.ReleaseMemObject(y_buff);
-                                Cl.ReleaseMemObject(height_buff);
-                                Cl.ReleaseMemObject(width_buff);
-                                Cl.ReleaseMemObject(porog_buff);
-                                Cl.ReleaseMemObject(out_buff);
-                                CheckErr(error, "442.Cl.ReleaseMemObject");
-
-                                work_res[0, y, x] = result.R;
-                                work_res[1, y, x] = result.G;
-                                work_res[2, y, x] = result.B;
-                                //                                bmp.SetPixel(y, x, Color.FromArgb(255, R, G, B));
+                                     Cl.ReleaseMemObject(inp_buff);
+                                     Cl.ReleaseMemObject(x_buff);
+                                     Cl.ReleaseMemObject(y_buff);
+                                     Cl.ReleaseMemObject(height_buff);
+                                     Cl.ReleaseMemObject(width_buff);
+                                     Cl.ReleaseMemObject(porog_buff);
+                                     Cl.ReleaseMemObject(out_buff);
+                                     CheckErr(error, "447.Cl.ReleaseMemObject");
+                                     */
+                                    work_res[0, y, x] = result.R;
+                                    work_res[1, y, x] = result.G;
+                                    work_res[2, y, x] = result.B;
+                                    //                                bmp.SetPixel(y, x, Color.FromArgb(255, R, G, B));
+                                }
                             });
-                        });
+                        }
                         Prec++;
                     } while (Prec < 5);
 
@@ -622,7 +624,7 @@ __kernel void AnisoDiff2D
         /// <param name="y"></param>
         /// <param name="porog"></param>
         /// <returns></returns>
-        unsafe public Color AutoAntiNoise(byte[] res, int x, int y, int height, int width, int porog)
+        public unsafe Color AutoAntiNoise(byte[] res, int x, int y, int height, int width, int porog)
         {
             Color retval = new Color();
             int R = 0, G = 0, B = 0;
@@ -636,7 +638,6 @@ __kernel void AnisoDiff2D
             {
                 for (int k = 0; k < 3; k++)
                 {
-
                     if ((j != 1) || (k != 1))
                     {
                         int corr = (x - 1 + j) * 3 + (y - 1 + k) * 3 * width;
@@ -665,7 +666,7 @@ __kernel void AnisoDiff2D
         }
 
 
-        public unsafe static byte[,,] BitmapToByteRgb(Bitmap bmp)
+        public static unsafe byte[,,] BitmapToByteRgb(Bitmap bmp)
         {
             int width = bmp.Width,
                 height = bmp.Height;
@@ -697,7 +698,7 @@ __kernel void AnisoDiff2D
             return res;
         }
 
-        public unsafe static Bitmap ByteToBitmapRgb(Bitmap bmp, byte[,,] ress)
+        public static unsafe Bitmap ByteToBitmapRgb(Bitmap bmp, byte[,,] ress)
         {
             int width = bmp.Width,
                 height = bmp.Height;
@@ -739,11 +740,19 @@ __kernel void AnisoDiff2D
             {
                 Bitmap bmp = new Bitmap(PictureViewer.Image);
                 bmp = ByteToBitmapRgb(bmp, matrix);
-                Invoke((MethodInvoker)delegate ()
+                if (PictureViewer.InvokeRequired)
+                {
+                    Invoke((MethodInvoker)delegate ()
+                    {
+                        PictureViewer.Image = bmp;
+                        PictureViewer.Refresh();
+                    });
+                }
+                else
                 {
                     PictureViewer.Image = bmp;
                     PictureViewer.Refresh();
-                });
+                }
             }
             catch
             { }
@@ -858,6 +867,8 @@ __kernel void AnisoDiff2D
         {
             Bitmap FilterImage = new Bitmap(PictureViewer.Image);
             Bitmap WorkImage = new Bitmap(PictureViewer.Image);
+            byte[,,] WorkImageArray;
+            WorkImageArray = BitmapToByteRgb(WorkImage);
             PictureViewer.Image = FilterImage;
             int array_size = 0;
             foreach (DataGridViewRow dgvr in weigh_dgv.Rows)
@@ -870,9 +881,11 @@ __kernel void AnisoDiff2D
             byte[] median_arr_B = new byte[array_size];
 
             int median_center = array_size / 2 + 1;
-            for (int x = 1; x < WorkImage.Size.Width - 1; x++)
+            int WIWidth = WorkImage.Size.Width;
+            int WIHeight = WorkImage.Size.Height;
+            for (int x = 1; x < WIWidth - 1; x++)
             {
-                for (int y = 1; y < WorkImage.Size.Height - 1; y++)
+                for (int y = 1; y < WIHeight - 1; y++)
                 {
                     int med_arr_pos = 0;
                     for (int j = 0; j < 3; j++)
@@ -880,7 +893,8 @@ __kernel void AnisoDiff2D
                         for (int k = 0; k < 3; k++)
                         {
                             int arr_count = Convert.ToInt32(weigh_dgv.Rows[k].Cells[j].Value);
-                            Color clr = WorkImage.GetPixel(x - 1 + j, y - 1 + k);
+                            //Color clr = WorkImage.GetPixel(x - 1 + j, y - 1 + k);
+                            Color clr = GetColorFromArr(WorkImageArray, x - 1 + j, y - 1 + k);
 
                             for (int i = 0; i < arr_count; i++)
                             {
@@ -897,10 +911,13 @@ __kernel void AnisoDiff2D
                     Array.Sort(median_arr_G);
                     Array.Sort(median_arr_B);
 
+
                     FilterImage.SetPixel(x, y, Color.FromArgb(255, median_arr_R[median_center], median_arr_G[median_center], median_arr_B[median_center]));
+
                 }
 
                 // рисовалка линии обработки
+
                 if ((x > 3) && (x < (FilterImage.Size.Width - 3)))
                 {
                     int xx = x - 2;
@@ -1317,10 +1334,17 @@ __kernel void AnisoDiff2D
             Headers_dgv.CurrentCell = null;
         }
 
+        /// <summary>
+        /// Медианный фильтр
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Median_filter_bttn_Click_1(object sender, EventArgs e)
         {
             Bitmap FilterImage = new Bitmap(PictureViewer.Image);
             Bitmap WorkImage = new Bitmap(PictureViewer.Image);
+            byte[,,] WorkImageArray;
+            WorkImageArray = BitmapToByteRgb(WorkImage);
             PictureViewer.Image = FilterImage;
             int X_lengh = (int)Columns_nums.Value;
             int Y_lengh = (int)Rows_nums.Value;
@@ -1337,17 +1361,18 @@ __kernel void AnisoDiff2D
                 for (int y = ((Y_lengh + 1) / 2); y < WorkImage.Size.Height - ((Y_lengh + 1) / 2); y++)
                 {
                     int med_arr_pos = 0;
-                    for (int j = 0; j < X_lengh; j++)
-                    {
-                        for (int k = 0; k < Y_lengh; k++)
-                        {
-                            Color clr = WorkImage.GetPixel(x - ((X_lengh + 1) / 2) + j, y - ((Y_lengh + 1) / 2) + k);
-                            median_arr_R[med_arr_pos] = clr.R;
-                            median_arr_G[med_arr_pos] = clr.G;
-                            median_arr_B[med_arr_pos] = clr.B;
-                            med_arr_pos++;
-                        }
-                    }
+                    Parallel.For(0, X_lengh, j =>
+                   {
+                       for (int k = 0; k < Y_lengh; k++)
+                       {
+                           //Color clr = WorkImage.GetPixel(x - ((X_lengh + 1) / 2) + j, y - ((Y_lengh + 1) / 2) + k);
+                           Color clr = GetColorFromArr(WorkImageArray, x - ((X_lengh + 1) / 2) + j, y - ((Y_lengh + 1) / 2) + k);
+                           median_arr_R[med_arr_pos] = clr.R;
+                           median_arr_G[med_arr_pos] = clr.G;
+                           median_arr_B[med_arr_pos] = clr.B;
+                           med_arr_pos++;
+                       }
+                   });
 
                     Array.Sort(median_arr_R);
                     Array.Sort(median_arr_G);
@@ -1565,7 +1590,7 @@ __kernel void AnisoDiff2D
                  float result = 0;
 
                  if (qudr_sobel_radio.Checked) result = (float)Math.Sqrt(X * X + Y * Y);
-                 if (modul_sobel_radio.Checked) result = (float)Math.Abs(X) + Math.Abs(Y);
+                 if (modul_sobel_radio.Checked) result = Math.Abs(X) + Math.Abs(Y);
                  this.contrast_resulter[x, y] = result;
                  int res_int = (int)(result * (float)Sobel_mnoj.Value);
                  if (res_int > 255) res_int = 255;
@@ -1692,7 +1717,7 @@ __kernel void AnisoDiff2D
                     clr = WorkImage.GetPixel(x, y);
                     temp2 = clr.GetBrightness();
 
-                    double result = Math.Log(Math.Pow((double)temp2, 4) / (double)temp1);
+                    double result = Math.Log(Math.Pow(temp2, 4) / temp1);
                     double porog = (double)this.Uolis_porog.Value;
                     int res_int = 255;
                     if (result < porog) res_int = 0;
