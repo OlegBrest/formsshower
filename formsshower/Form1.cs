@@ -225,28 +225,31 @@ __kernel void AnisoDiff2D
             byte[] pict_bytes = pic2arr(NoisePicture, bytesPerPixel);
             int tst = 0;
             rnd1 = new Random();
+            Random rndpnt = new Random();
             ParallelLoopResult parr_res =
             Parallel.For(0, total, (i, loopState) =>
             {
-                if ((((tst / (double)total)) * 100) < chanse)
+                if /*((*/(tst/* / (double)total) * 100)*/ < chanse)
                 {
-
-                    double next_rnd = rnd1.Next(0, 100);
+                   /* double next_rnd = rnd1.Next(0, 100);
                     if (next_rnd <= chanse)
-                    {
-                        byte R = (byte)rnd1.Next(0, 255);
-                        byte G = (byte)rnd1.Next(0, 255);
-                        byte B = (byte)rnd1.Next(0, 255);
-                        int nxt = i;// rnd1.Next(0, total);
-                                    //int nxt = i;
+                    {*/
+                        byte R = (byte)(rnd1.NextDouble() * 255);
+                        byte G = (byte)(rnd1.NextDouble() * 255);
+                        byte B = (byte)(rnd1.NextDouble() * 255);
+                        //int nxt = rnd1.Next(0, total);
+                        int nxt = rndpnt.Next(0,total);
+      //                  if ((R == 0) && (G == 0) && (B == 0))
+      //                      MessageBox.Show(i.ToString());
                         pict_bytes[nxt * bytesPerPixel] = R;
                         pict_bytes[nxt * bytesPerPixel + 1] = G;
                         pict_bytes[nxt * bytesPerPixel + 2] = B;
                         pict_bytes[nxt * bytesPerPixel + 3] = 255;
-                        tst++;
-                        if (tst % 100 == 0) rnd1 = new Random();
-                    }
+                  //  }
                 }
+                tst++;
+                if (tst % 73 == 0) rnd1 = new Random();
+                if (tst >= 100) tst = 0;
             });
             if (parr_res.IsCompleted)
             {
